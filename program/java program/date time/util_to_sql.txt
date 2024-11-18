@@ -1,0 +1,3 @@
+        java.util.Date DOB = date_of_birth.getDatoFecha();//util date
+        Long dateofbirth = DOB.getTime();//long date
+        java.sql.Date DATE_OF_BIRTH = new java.sql.Date(dateofbirth);//sql date 

@@ -1,0 +1,10 @@
+auto it is a keyword what can hold any data_type.
+even then int,bool,char also.
+
+1.  auto it = vector.begin(); // pointer of fast index.
+2.  auto it = vector.front(); // mean fast element.
+
+3.  char c = 'R';
+    auto it = c;
+
+    

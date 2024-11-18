@@ -1,0 +1,5 @@
+        String query= "";
+        DefaultTableModel model = (DefaultTableModel) table_data.getModel();
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        table_data.setRowSorter(sorter);
+        sorter.setRowFilter(RowFilter.regexFilter(query));

@@ -1,0 +1,23 @@
+{
+    "files.associations": {
+        "iostream": "cpp",
+        "iosfwd": "cpp",
+        "random": "cpp",
+        "vector": "cpp",
+        "ostream": "cpp",
+        "new": "cpp",
+        "array": "cpp",
+        "regex": "cpp",
+        "cmath": "cpp",
+        "complex": "cpp",
+        "deque": "cpp",
+        "forward_list": "cpp",
+        "list": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp",
+        "initializer_list": "cpp",
+        "valarray": "cpp",
+        "*.tcc": "cpp"
+    }
+}

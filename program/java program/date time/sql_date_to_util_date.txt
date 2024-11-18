@@ -1,0 +1,3 @@
+java.sql.Date sqlDate = resultSet.getDate("your_date_column");//sql
+java.util.Date utilDate = new java.util.Date(sqlDate);//util
+java.util.Date utilDate = new java.util.Date(sqlDate.getDateO());//util

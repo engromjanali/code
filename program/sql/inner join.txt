@@ -1,0 +1,2 @@
+
+SELECT * FROM book_history INNER JOIN book_data ON book_history.book_id = book_data.book_id WHERE T_status = "GAVE" and student_id = ?;

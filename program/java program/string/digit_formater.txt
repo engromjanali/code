@@ -1,0 +1,12 @@
+public class NumberFormatExample {
+    public static void main(String[] args) {
+        // Example number
+        int number = 56;
+
+        // Format the number to be 8 digits with leading zeros
+        String formattedNumber = String.format("%08d", number);
+
+        // Print the formatted number
+        System.out.println(formattedNumber);
+    }
+}

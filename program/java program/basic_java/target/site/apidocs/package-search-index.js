@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"basic_java"},{"l":"basic_java.maths"}];updateSearchResults();

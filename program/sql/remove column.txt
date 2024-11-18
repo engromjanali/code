@@ -1,0 +1,11 @@
+ALTER TABLE
+    student_data
+    DROP COLUMN
+        approve_time,
+    DROP COLUMN
+        approve_date,
+    DROP COLUMN
+        registation_time,
+    DROP COLUMN
+        registation_date
+;

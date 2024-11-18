@@ -1,0 +1,62 @@
+@options
+@packages
+@argfile
+-encoding
+'UTF-8'
+-protected
+-source
+'1.8'
+-sourcepath
+'E:/java program/basic_java/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2023. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'E:/java program/basic_java/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'Basic_java 1.0-SNAPSHOT API'
+-linkoffline
+'https://docs.oracle.com/javase/8/docs/api' 'E:/java program/basic_java/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'Basic_java 1.0-SNAPSHOT API'
+basic_java
+basic_java.interface
+basic_java.maths
+'E:/java program/basic_java/src/main/java/fast_program.java'
+E:\java program\basic_java\src\main\java\fast_program.java = 1703487159024
+E:\java program\basic_java\src\main\java = 1703486881799
+E:\java program\basic_java\target\site\apidocs\allclasses-frame.html = 1693496804171
+E:\java program\basic_java\target\site\apidocs\allclasses-index.html = 1703487205877
+E:\java program\basic_java\target\site\apidocs\allclasses-noframe.html = 1693496804171
+E:\java program\basic_java\target\site\apidocs\allpackages-index.html = 1703487205882
+E:\java program\basic_java\target\site\apidocs\constant-values.html = 1693496803967
+E:\java program\basic_java\target\site\apidocs\copy.svg = 1703487205991
+E:\java program\basic_java\target\site\apidocs\deprecated-list.html = 1693496804155
+E:\java program\basic_java\target\site\apidocs\element-list = 1703487205513
+E:\java program\basic_java\target\site\apidocs\fast_program.html = 1703487205176
+E:\java program\basic_java\target\site\apidocs\help-doc.html = 1703487205976
+E:\java program\basic_java\target\site\apidocs\index-all.html = 1703487205956
+E:\java program\basic_java\target\site\apidocs\index.html = 1703487205795
+E:\java program\basic_java\target\site\apidocs\link.svg = 1703487205993
+E:\java program\basic_java\target\site\apidocs\member-search-index.js = 1703487205887
+E:\java program\basic_java\target\site\apidocs\module-search-index.js = 1703487205884
+E:\java program\basic_java\target\site\apidocs\overview-summary.html = 1703487205961
+E:\java program\basic_java\target\site\apidocs\overview-tree.html = 1703487205788
+E:\java program\basic_java\target\site\apidocs\package-list = 1693496803944
+E:\java program\basic_java\target\site\apidocs\package-search-index.js = 1703487205884
+E:\java program\basic_java\target\site\apidocs\package-summary.html = 1703487205523
+E:\java program\basic_java\target\site\apidocs\package-tree.html = 1703487205527
+E:\java program\basic_java\target\site\apidocs\package-use.html = 1703487205774
+E:\java program\basic_java\target\site\apidocs\script.js = 1703487205982
+E:\java program\basic_java\target\site\apidocs\search-page.js = 1703487206000
+E:\java program\basic_java\target\site\apidocs\search.html = 1703487205959
+E:\java program\basic_java\target\site\apidocs\search.js = 1703487205996
+E:\java program\basic_java\target\site\apidocs\stylesheet.css = 1703487205980
+E:\java program\basic_java\target\site\apidocs\tag-search-index.js = 1703487205888
+E:\java program\basic_java\target\site\apidocs\type-search-index.js = 1703487205885

@@ -1,0 +1,6 @@
+dinamic array has a limit.
+function don't take following this input. fun(i--, arr); decriment/imcrement dosen't reconize.
+custom sort function: 
+    sort(array, array + size_or_wanted_index, function_name);
+        # function_name will return a boolean value. and take two argument
+        # if the function_name return true, the sort function will not do anything, otherwise swap the two value.

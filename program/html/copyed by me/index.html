@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="intro.css">
+    <title>Home</title>
+</head>
+
+<body>
+    <header class="container">
+        <div class="page-header">
+            <div class="logo">
+                <a href="#">MR.R</a>
+            </div>
+            <input type="checkbox" id="click">
+
+            <label for="click" class="mainicon">
+                <div class="menu">
+                    <i class='bx bx-menu'></i>
+                </div>
+            </label>
+            <ul>
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="skills.html">Skills</a></li>
+                <li><a href="#">Portfolio</a></li>
+                <li><a href="#">POST</a></li>
+                <li><a href="mailto:romjanali01673@gmail.com">Contact</a></li>
+            </ul>
+            <label class="mode">
+                <input type="checkbox" id="darkModeToggle">
+                <i class='bx bxs-moon'></i>
+            </label>
+        </div>
+    </header>
+
+
+    <section class="container">
+        <div class="main">
+            <div class="detail">
+                <h3>Hi, It's Me</h3>
+                <h1>I'm <span style="color:#f9532d;">Romjan Ali</span></h1>
+                <p>I'm a professional Cyber security specialist & ethical hacker. Our Main Goal to help & Satisficed the Local & Global Clients by
+                    finding his/her vulnerability to safe from an black hat hackers! <br><br> I also programmer!
+                </p>
+                <div class="social">
+                    <a href="https://www.linkedin.com/in/romjanali01673"><i class='bx bxl-linkedin'></i></a>
+                    
+                    <a href="https://github.com/romjanali01673"><i class='bx bxl-github'></i></a>
+
+                    <!--
+
+		    <a href="https://www.facebook.com/romjanali01673"><i class='bx bxl-facebook-circle'></i></a>
+		    <a href="https://www.instagram.com/romjanali01673/"><i class='bx bxl-instagram'></i></a>
+
+                    -->
+
+		    <a href="https://wa.me/+8801779852361"><i class='bx bxl-whatsapp'></i></a>
+                </div>
+            </div>
+            <div class="img-sec">
+                <div class="images">
+                    <img src="self photo 2
+.png" alt="" class="img-w">
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+        const isDarkMode = localStorage.getItem('darkMode') === 'enabled';
+        if (isDarkMode) {
+            body.classList.add('dark-mode');
+            darkModeToggle.checked = true;
+        }
+        darkModeToggle.addEventListener('change', () => {
+            if (darkModeToggle.checked) {
+                body.classList.add('dark-mode');
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                body.classList.remove('dark-mode');
+                localStorage.setItem('darkMode', 'disabled');
+            }
+        });
+    </script>
+
+
+
+    
+</body>
+
+
+
+</html>
+

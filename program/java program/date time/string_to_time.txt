@@ -1,0 +1,22 @@
+ 
+        public java.sql.Time string_to_time(String dateString){
+        // Define the format of the input date string
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss"); //"hh:mm:ss a": 03:30:00 PM (12-hour format with AM/PM)  //"HH:mm:ss": 15:30:00 (24-hour format)
+
+
+        try {
+            // Parse the date string into a java.util.Date object
+            java.util.Date parsedUtilDate = dateFormat.parse(dateString);
+
+            // Convert the java.util.Date object to a java.sql.Date object
+            java.sql.Time sqlTime = new java.sql.Time(parsedUtilDate.getTime());
+
+            // Print the java.sql.Date object
+            System.out.println("Converted java.sql.Date: " + sqlTime);
+            return sqlTime;
+        } catch (ParseException e) {
+            // Handle parsing errors
+            e.printStackTrace();
+        }
+        return null;
+    }
