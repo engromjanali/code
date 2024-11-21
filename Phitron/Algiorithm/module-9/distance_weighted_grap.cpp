@@ -9,23 +9,24 @@ vector<bool>visited;
 vector<int>parent;
 vector<int>Distance;
 
-void dijkstra(two_d grap, int s)
+void dijkstra(two_d grap, int s) //like bfs
 {
-    priority_queue< pair<int,int> , vector<pair<int,int>> , greater<pair<int,int>> >q; // priority queue depand on frist value of pair.
+    priority_queue< pair<int,int> , vector<pair<int,int>> , greater<pair<int,int>> >q; // priority queue depand on frist value of pair if the two frist value is same depand on second value.
     Distance[s] = 0;
     q.push({Distance[s],s});
     while (!q.empty())
     {
-        pir u = q.top();
+        pir u = q.top();  
         q.pop();
+        if(visited[u.second]) continue;
         visited[u.second] = true; 
         for(pair<int,int> x : grap[u.second])
         {
             int v = x.first;
             int w = x.second;
 
-            if(visited[v]) continue;
-            if(Distance[v] > w + Distance[u.second])
+            // if(visited[v]) continue; // we can use it here also.
+            if(Distance[v] > w + Distance[u.second]) // prime condition. 
             {
                 Distance[v] = w + Distance[u.second];
                 q.push({Distance[v],v});

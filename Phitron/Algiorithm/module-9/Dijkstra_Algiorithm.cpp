@@ -18,13 +18,14 @@ void dijkstra(two_d grap, int s) //like bfs
     {
         pir u = q.top();  
         q.pop();
+        if(visited[u.second]) continue;
         visited[u.second] = true; 
         for(pair<int,int> x : grap[u.second])
         {
             int v = x.first;
             int w = x.second;
 
-            if(visited[v]) continue;
+            // if(visited[v]) continue; // we can use it here also.
             if(Distance[v] > w + Distance[u.second]) // prime condition. 
             {
                 Distance[v] = w + Distance[u.second];

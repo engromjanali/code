@@ -47,7 +47,7 @@ void mergesort(int f,int l){  //devide
     mergesort((mid+1),l);
     merge(f,l,mid);
 
-    // if(f<l)  it's standerd for hendel exception
+    // if(f<l)  // it's standerd for hendel exception
     // {
     //     int mid = (f+l)/2;
     //     mergesort(f , mid);
