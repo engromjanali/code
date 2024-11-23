@@ -1,2 +1,3 @@
-6
-4
+YES
+9
+RDDLLDDRR
