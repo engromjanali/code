@@ -1,0 +1,4 @@
+nothing new.
+Naive Dijkstra.
+it's not necessary or importent.
+ignoreable.

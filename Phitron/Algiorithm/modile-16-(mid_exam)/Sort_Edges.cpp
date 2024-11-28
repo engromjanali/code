@@ -10,6 +10,7 @@ class cmp{
     return true;
     }
 };
+
 int main(){
 
     priority_queue<pir, vector<pir>, cmp>q;
@@ -26,6 +27,5 @@ int main(){
         cout<<q.top().first<<" "<<q.top().second<<endl;
         q.pop();
     }
-
 return 0;
 }
