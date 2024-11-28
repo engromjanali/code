@@ -17,7 +17,8 @@ vector<pair<pir,int>>list_of_edges;
 
 // remamber it's work for (when start node from 0).
 void bellman_ford(int s) //O(N * M) //by List of Edges.
-{    Distance[s] =0;
+{    
+    Distance[s] =0;
 	for(int i=1; i<n;i++)
 	{
 		for(auto edge: list_of_edges) //O(M) // traverse full grap or all edges relaxation
@@ -26,7 +27,7 @@ void bellman_ford(int s) //O(N * M) //by List of Edges.
 			int v = edge.first.second;
 			int w = edge.second;
 
-			if(Distance[v] > Distance[u]+w)
+			if(Distance[u]<INT_MAX && Distance[v] > Distance[u]+w) // remember if we don't use "Distance[u] < INT_MAX" it. if Distance[u]+w geter-then INT_MAX we get a error or wrong value/ans. 
 				Distance[v] = Distance[u] + w;
 		}
 	}

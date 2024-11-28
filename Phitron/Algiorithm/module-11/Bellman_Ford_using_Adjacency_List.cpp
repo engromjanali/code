@@ -27,7 +27,7 @@ void bellman_ford(int s) // by Adjacency List
                 int v = x.first;
                 int w = x.second;
 
-                if(Distance[u] + w < Distance[v])
+                if(Distance[u]<INT_MAX && Distance[u] + w < Distance[v])// remember if we don't use "Distance[u] < INT_MAX" it. if Distance[u]+w geter-then INT_MAX we get a error or wrong value/ans. 
                 {
                     Distance[v] = Distance[u] + w;
                 }

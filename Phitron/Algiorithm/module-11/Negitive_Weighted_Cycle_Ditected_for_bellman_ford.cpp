@@ -6,6 +6,9 @@
         // otherwise we don't see any changes.
         // remember some time we can't detected cycle because negitive weight less then increment of this cycle. example increment (2+3 > -1). for example we don't get "cycle_detected".        
     
+
+// for List-Of-Edges --------------------------
+
 // #include<bits/stdc++.h>
 // using namespace std;
 
@@ -72,7 +75,7 @@
 //  return 0;
 //  }
 
- // for ajdacency list. --------------------------
+// for ajdacency list. --------------------------
     
 #include<bits/stdc++.h>
 using namespace std;
@@ -95,7 +98,7 @@ void bellman_ford(int s) // by Adjacency List
                 int v = x.first;
                 int w = x.second;
 
-                if(Distance[u] + w < Distance[v])
+                if(Distance[u] < INT_MAX &&  Distance[u] + w < Distance[v])// remember if we don't use "Distance[u] < INT_MAX" it. if Distance[u]+w geter-then INT_MAX we get a error or wrong value/ans. 
                 {
                     Distance[v] = Distance[u] + w;
                 }

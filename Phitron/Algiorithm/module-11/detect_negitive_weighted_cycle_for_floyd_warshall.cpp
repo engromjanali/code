@@ -1,3 +1,6 @@
+// if we get any value in Distance[i][i] != 0; that's mean cycle detected.
+// because from sorce to sorce to visit we don't need any positive/negitive weight.
+
 // undirected possible for non_negitive Weight.
 // and for directed requere non-negitive weighted cycle.
 
@@ -27,13 +30,21 @@ void floyed_warshall() // O(N^3)s.
                {
                     Dist[i][j] = v1+v2;
                }
-                //Dist[i][j] = min(u , x); // second way
-                // if( Dist[i][k] < INT_MAX && Dist[k][j] < INT_MAX && Dist[i][j] > Dist[i][k]+Dist[k][j]){//3rd way.
+            //    Dist[i][j] = min(u , x); // second way
+            // if( Dist[i][k] < INT_MAX && Dist[k][j] < INT_MAX && Dist[i][j] > Dist[i][k]+Dist[k][j]){//3rd way.
 
             // }
             }
 		}
 	}
+}
+bool cycleDetected(vector<vector<int>> distance)
+{
+    for(int i =0; i<n; i++)
+    {
+        if(distance[i][i] != 0) return true;
+    }
+    return false;
 }
 void print_grap()
 {
@@ -81,5 +92,7 @@ int main(){
     cout<<"after Floyed Warshall :"<<endl;
     floyed_warshall();
     print_grap();
+    if(cycleDetected(Dist)) cout<<"cycle Detected"<<endl;
+    else cout<<"cycle dose not detected";
     return 0;
 }
