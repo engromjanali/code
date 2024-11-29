@@ -1,6 +1,10 @@
 "Disjoint Set" more name :
     DSU 
+<<<<<<< HEAD
     Disjoint set union
+=======
+>>>>>>> bc6a93684c48078840213eeca6781c3243ed05f1
     Disjoint set data structure
     Union-find
     dsu-find dsu-union
+    
