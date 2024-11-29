@@ -1,0 +1,6 @@
+"Disjoint Set" more name :
+    DSU 
+    Disjoint set union
+    Disjoint set data structure
+    Union-find
+    dsu-find dsu-union
