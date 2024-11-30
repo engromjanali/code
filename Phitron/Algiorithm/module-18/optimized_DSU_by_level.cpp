@@ -1,8 +1,8 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-int parent[]={-1,-1,1,1,1,-1,5,5,5,7};
-int lavel[]={0,2,1,1,1,3,1,1,1,1};// here we just need level of leader.
+int parent[]={-1,-1,1,1,1,-1,5,5,5,7}; // initial value -1
+int level[]={0,2,1,1,1,3,1,1,1,1};// initial value 1
 
 int dsu_find(int s)
 {
@@ -20,17 +20,17 @@ void dsu_union(int a, int b)
     
     if(leaderA != leaderB)
     {
-        int lavelA = lavel[leaderA];
-        int lavelB = lavel[leaderB];
+        int lavelA = level[leaderA];
+        int lavelB = level[leaderB];
 
         if(lavelA > lavelB)
         {
             parent[leaderB] = leaderA;// new leader A.
-            lavel[leaderA]++; //leader of lavel increment.
+            level[leaderA]++; //leader of lavel increment.
         }
         else{
             parent[leaderA] = leaderB;// new leader B.
-            lavel[leaderB]++; //leader of lavel increment.
+            level[leaderB]++; //leader of lavel increment.
         }
     }
 }

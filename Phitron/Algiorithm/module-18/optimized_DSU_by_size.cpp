@@ -1,9 +1,8 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-int parent[]={-1,-1,1,1,1,-1,5,5,5,7};
-int lavel[]={0,2,1,1,1,3,1,1,1,1};// here we just need level of leader.
-
+vector<int>parent; //initial value -1
+vector<int>SIZE;  // initial value 1
 int dsu_find(int s)
 {
     int current= s;
@@ -13,6 +12,7 @@ int dsu_find(int s)
     }
     return current;
 }
+
 void dsu_union(int a, int b) //optimized
 {
     int leaderA = dsu_find(a);
@@ -20,17 +20,17 @@ void dsu_union(int a, int b) //optimized
     
     if(leaderA != leaderB)
     {
-        int lavelA = lavel[leaderA];
-        int lavelB = lavel[leaderB];
+        int sizeA = SIZE[leaderA];
+        int sizeB = SIZE[leaderB];
 
-        if(lavelA > lavelB)
+        if(sizeA > sizeB)
         {
             parent[leaderB] = leaderA;// new leader A.
-            lavel[leaderA]++; //leader of lavel increment.
+            SIZE[leaderA] += SIZE[leaderB]; //leader of size increment.
         }
         else{
             parent[leaderA] = leaderB;// new leader B.
-            lavel[leaderB]++; //leader of lavel increment.
+            SIZE[leaderB] += SIZE[leaderA]; //leader of size increment.
         }
     }
 }
@@ -39,13 +39,7 @@ int main(){
     int leader;
     leader = dsu_find(9);
     cout<<leader<<endl;
-    int A=1;
-    int B=8;
-    if(dsu_find(A)==dsu_find(B)) // we can sure cycle detectd if the two node under a same leader.
-    {
-        cout<<"detect_cycle"<<endl;
-    }
-    else dsu_union(1,8);
+    dsu_union(1,8);
     cout<<dsu_find(9)<<endl;
 return 0;
 }
