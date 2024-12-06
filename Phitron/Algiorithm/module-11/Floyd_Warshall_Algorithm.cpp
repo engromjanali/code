@@ -21,6 +21,7 @@ void floyed_warshall() // O(N^3)s.
                 long long int u = Dist[i][j];
                 long long int v1 = Dist[i][k];
                 long long int v2 = Dist[k][j];
+                if(v1 == INT_MAX || v2 == INT_MAX) continue; // beause if a value has infinity that's mean it's mean here can't possible to reach. if we don't use it we get nearest value of INT_MAX not exitllay INT_MAX because(INT_MAX + -2 == 2147483645).  
                 long long int x = v1+v2;
                 // remember it "if we don't convert it int to long int we get wrong ans because v1+v2 greater then INT_MAX".
                if( u > x) // fast way

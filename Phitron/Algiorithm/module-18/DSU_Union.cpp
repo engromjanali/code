@@ -21,24 +21,26 @@ void dsu_union(int a, int b)// it's not optimized
         parent[leaderB] = leaderA;// new leader A.
     }
 }
-// void dsu_union(int a, int b) // optimized
+// void dsu_union(int a, int b)//optimized
 // {
 //     int leaderA = dsu_find(a);
 //     int leaderB = dsu_find(b);
     
 //     if(leaderA != leaderB)
 //     {
-//         int lavelA = lavel[leaderA];
-//         int lavelB = lavel[leaderB];
+//         int lavelA = level[leaderA];
+//         int lavelB = level[leaderB];
 
 //         if(lavelA > lavelB)
 //         {
 //             parent[leaderB] = leaderA;// new leader A.
-//             lavel[leaderA]++; //leader of lavel increment.
+//         }
+//         else if(lavelA < lavelB){
+//             parent[leaderA] = leaderB;// new leader B.
 //         }
 //         else{
-//             parent[leaderA] = leaderB;// new leader B.
-//             lavel[leaderB]++; //leader of lavel increment.
+//             parent[leaderB] = leaderA;// new leader A.
+//             level[leaderA]++; //leader of lavel increment.
 //         }
 //     }
 // }

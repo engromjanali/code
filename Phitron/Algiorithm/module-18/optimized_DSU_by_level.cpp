@@ -26,11 +26,13 @@ void dsu_union(int a, int b)
         if(lavelA > lavelB)
         {
             parent[leaderB] = leaderA;// new leader A.
-            level[leaderA]++; //leader of lavel increment.
+        }
+        else if(lavelA < lavelB){
+            parent[leaderA] = leaderB;// new leader B.
         }
         else{
-            parent[leaderA] = leaderB;// new leader B.
-            level[leaderB]++; //leader of lavel increment.
+            parent[leaderB] = leaderA;// new leader A.
+            level[leaderA]++; //leader of lavel increment.
         }
     }
 }
