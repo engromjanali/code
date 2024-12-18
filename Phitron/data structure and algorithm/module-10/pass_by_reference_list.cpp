@@ -8,7 +8,7 @@ void xxx(list<string> &a)// pass by reference. if we change somthing here main "
         cout<<x<<endl;
     }
 }
-void xxx(list<string> &a)// pass by value. if we change somthing here main "mylist" won't change.
+void xxx(list<string> a)// pass by value. if we change somthing here main "mylist" won't change.
 {
     a.front()="hello";
     for(auto x : a)

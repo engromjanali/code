@@ -14,7 +14,7 @@ public class test{
         t.Display();
 
         /*
-        // polymorphism with dinamic method despose.
+        // polymorphism with dynamic method despose.
         person p = new person();
         p.Display();
 

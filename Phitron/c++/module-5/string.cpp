@@ -3,7 +3,7 @@ using namespace std;
 int main(){
 
     // string s;
-    // cout<<s.capacity(); //it's return 15 for fast time. and String is a  dinamic datatype/class, and it's auto increment it's size.
+    // cout<<s.capacity(); //it's return 15 for fast time. and String is a  dynamic datatype/class, and it's auto increment it's size.
     // s = "md romjan ali";
 
     // // capacity:

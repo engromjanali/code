@@ -5,17 +5,17 @@ class Persion {
         int roll;
         int age;
         string name;
-        // Persion(int i){ //we can use constractor in dinamic object not static object.
+        // Persion(int i){ //we can use constractor in dynamic object not static object.
         //     age=i;
         // }
          
 };
 int main(){
 //Persion arr[5];// we can use static boject.
-Persion * arr[3];// we can use dinamic boject also. but we have to initializ it after.
+Persion * arr[3];// we can use dynamic boject also. but we have to initializ it after.
 for(int i=0; i<3; i++){
     arr[i]= new Persion();
-    //arr[i]= new Persion(0);//initialization but we can use constractor in dinamic object.
+    //arr[i]= new Persion(0);//initialization but we can use constractor in dynamic object.
     cin>>arr[i]->roll>>arr[i]->age;
     cin.ignore();
     getline(cin,arr[i]->name);

@@ -1,0 +1,8 @@
+// here if we delete an tuple from parent table the referenced all recored of the tuple in secondery table will be (delete for delete and update for update), there are more way like will be set default value, null value and assigned condition value.
+
+ALTER TABLE child_table
+ADD CONSTRAINT fk_parent
+FOREIGN KEY (parent_id)
+REFERENCES parent_table(id)
+ON DELETE CASCADE
+ON UPDATE CASCADE;

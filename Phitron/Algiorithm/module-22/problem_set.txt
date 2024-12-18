@@ -1,0 +1,17 @@
+Website for Visualizing Recursion: https://recursion.vercel.app/ 
+
+Code for running the 0-1 knapsack recursion: 
+def fn(n, s):
+    if n == 0 or s == 0:
+        return 0
+    if w[n - 1] <= s:
+        op1 = fn(n - 1, s - w[n - 1]) + v[n - 1]
+        op2 = fn(n - 1, s)
+        return max(op1, op2)
+    else:
+        return fn(n - 1, s)
+
+
+Problem Links:
+U. Knapsack - Codeforces -> https://codeforces.com/group/MWSDmqGsZm/contest/223339/problem/U
+0 - 1 Knapsack Problem | Practice | GeeksforGeeks -> https://practice.geeksforgeeks.org/problems/0-1-knapsack-problem0945/1?utm_source=gfg&utm_medium=article&utm_campaign=bottom_sticky_on_article
