@@ -20,7 +20,6 @@ int main(){
     {
         for(int j=0; j<=s; j++)
         {
-            // if(i==0 || j == 0) // hay romjan if you feal any problem uncomment it. and comment next this line. and make j =1 in main loop(39 line).
             if(i==0)
                 dp[i][j] =0;
         }

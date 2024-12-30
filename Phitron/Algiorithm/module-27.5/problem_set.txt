@@ -1,0 +1,18 @@
+Introduction to Algorithms
+Module 27.5: Practice Day 02
+(Geeksforgeeks, Leetcode Links)
+
+
+Topics:
+LCS Variations
+
+
+https://practice.geeksforgeeks.org/problems/shortest-common-supersequence0322/1?utm_source=gfg&utm_medium=article&utm_campaign=bottom_sticky_on_article
+https://leetcode.com/problems/shortest-common-supersequence/
+https://practice.geeksforgeeks.org/problems/minimum-number-of-deletions-and-insertions0209/1?utm_source=gfg&utm_medium=article&utm_campaign=bottom_sticky_on_article
+https://practice.geeksforgeeks.org/problems/longest-palindromic-subsequence-1612327878/1?utm_source=gfg&utm_medium=article&utm_campaign=bottom_sticky_on_article
+https://www.geeksforgeeks.org/problems/minimum-number-of-deletions4610/1?utm_source=gfg&utm_medium=article&utm_campaign=bottom_sticky_on_article
+https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/description/
+https://leetcode.com/problems/is-subsequence/description/
+
+

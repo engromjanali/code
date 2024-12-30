@@ -3,14 +3,14 @@ using namespace std;
 int dp[10000][10000];
 int top_down(int n, int s, int arr[]){
     if(n==0){
-        if(s==0)return 0;
-        else return INT_MAX-1;
+        if(s==0)return 1;
+        else return 0;
     }
     if(dp[n][s] != -1) return dp[n][s];
     if(arr[n-1] <= s){
-        int a= top_down(n,s-arr[n-1],arr)+ 1;
+        int a= top_down(n,s-arr[n-1],arr);
         int b= top_down(n-1,s,arr);
-        return dp[n][s] = min(a,b);
+        return dp[n][s] = a+b;
     }
     else{
         return dp[n][s] = top_down(n-1,s,arr);

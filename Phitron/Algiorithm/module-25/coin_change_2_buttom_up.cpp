@@ -13,7 +13,7 @@ int main(){
     
     for(int i =0; i<=s; i++)
     {
-        dp[0][i] = INT_MAX;
+        dp[0][i] = INT_MAX-1;
     }
     dp[0][0] = 0;
     for(int i =0; i<=n; i++)
@@ -27,7 +27,7 @@ int main(){
     
     for(int i =1; i<=n; i++)
     {
-        for(int j =1; j<= s; j++)
+        for(int j =0; j<= s; j++)
         {
             if(j>=value[i-1])
             {
