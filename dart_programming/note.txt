@@ -1,0 +1,8 @@
+1.  we  have to create a "lib" folder because dart/vscode work like a project.
+    and create a main.dart file in lib folder, because an project start working from main file.
+
+2.  datatype in dart:
+        1. Number (int, BigIntm, double, num).
+        2. String 
+        3. bool
+        4. List 

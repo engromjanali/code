@@ -66,7 +66,7 @@ int main(){
         }
     }
     xxx(mylist);
-        for(auto x : mylist)
+    for(auto x : mylist)
     {
         cout<<x<<endl;
     }

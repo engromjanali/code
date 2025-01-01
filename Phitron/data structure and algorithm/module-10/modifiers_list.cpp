@@ -27,7 +27,7 @@ int main(){
     // mylist.pop_back();
     // mylist.pop_front();
 
-    // mylist.erase(next(mylist.begin(),4));
+    // mylist.erase(next(mylist.begin(),4));// 4 mean 4th index will be erase.
     // mylist.erase(mylist.begin(), prev(mylist.end(),2));
     // mylist.remove(40); // every 40 will be delete.
 // replace
@@ -46,6 +46,9 @@ int main(){
 // sort
     mylist.sort(); // for assending
     mylist.sort(greater<int>()); // desanding  
+    mylist.sort(cmp);// for descending order
+    // inline function
+    mylist.sort([](int a, int b){return a>b;});// for descending order
     mylist.reverse();  
     mylist.unique();  
 return 0;

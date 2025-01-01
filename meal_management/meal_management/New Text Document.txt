@@ -1,0 +1,29 @@
+book_issue bi = new book_issue(id);
+bi.setVisible(true);
+this.dispose();
+
+queue ue = new queue(id);
+ue.setVisible(true);
+this.dispose();
+
+reading rd = new reading (id);
+rd.setVisible(true);
+this.dispose();
+
+Return rn = new Return(id);
+rn.setVisible(true);
+this.dispose();
+
+returned rd = new returned(id);
+rd.setVisible(true);
+this.dispose();
+
+all_history ah = new all_history(id);
+ah.setVisible(true);
+this.dispose();
+
+
+255,0,0  - red
+51,51,51  - cai
+0,0,0 
+
