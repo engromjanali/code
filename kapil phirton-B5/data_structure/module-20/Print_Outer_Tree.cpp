@@ -1,3 +1,5 @@
+
+
 #include<bits/stdc++.h>
 using namespace std;
 class Node{
@@ -56,45 +58,39 @@ Node* level_order_input_binary_tree(void)
     }
     return root;
 }
-vector<int>v;
-void leaf_node(Node * root)
-{
-    if(root == NULL) return ;
-    if((!root->left) && (!root->right)) v.push_back(root->val);
-    leaf_node(root->left);
-    leaf_node(root->right);
-}
-void level_order_print(Node*root)
-{
-    if(root == NULL) return;
 
-    queue<Node*>q;
-    q.push(root);
-    while(!q.empty())
+void print_l(Node * root)
+{
+    if(!root) return;
+    print_l(root->left);
+    if(!root->left)
     {
-        // taken
-        Node*p;
-        p = q.front();
-        q.pop();
-        if(p->left == p->right){ // men two pointer are NULL.
-            v.push_back(p->val);
-            continue;
-        }
-        // insert
-        if(p->left)
-            q.push(p->left);
-        if(p->right)
-            q.push(p->right);
+        print_l(root->right);
+    }
+    cout<<root->val<<" ";
+}
+void print_r(Node * root)
+{
+    if(!root) return;
+    cout<<root->val<<" ";
+    print_r(root->right);
+    if(!root->right)
+    {
+        print_r(root->left);
     }
 }
+
+
 int main(){
 
     Node * root = level_order_input_binary_tree();
-    level_order_print(root);
-    reverse(v.begin(), v.end());
-    for(int x : v)
-    {
-        cout<<x<<" ";
+    if(root){
+        Node * left = root->left;
+        Node * right = root->right;
+        print_l(left);
+        cout<<root->val<<" ";
+        print_r(right);
     }
+
 return 0;
 }

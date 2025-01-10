@@ -1,3 +1,5 @@
+
+
 #include<bits/stdc++.h>
 using namespace std;
 class Node{
@@ -56,45 +58,25 @@ Node* level_order_input_binary_tree(void)
     }
     return root;
 }
-vector<int>v;
-void leaf_node(Node * root)
-{
-    if(root == NULL) return ;
-    if((!root->left) && (!root->right)) v.push_back(root->val);
-    leaf_node(root->left);
-    leaf_node(root->right);
-}
-void level_order_print(Node*root)
-{
-    if(root == NULL) return;
 
-    queue<Node*>q;
-    q.push(root);
-    while(!q.empty())
-    {
-        // taken
-        Node*p;
-        p = q.front();
-        q.pop();
-        if(p->left == p->right){ // men two pointer are NULL.
-            v.push_back(p->val);
-            continue;
-        }
-        // insert
-        if(p->left)
-            q.push(p->left);
-        if(p->right)
-            q.push(p->right);
-    }
+bool perfect(Node * root)
+{
+    if(!root) return true;
+    if(root->left && !root->right) return false; 
+    if(!root->left && root->right) return false; 
+    
+
+    bool left = perfect(root->left);
+    bool right = perfect(root->right);
+
+    if(left && right) return true;
+    else return false;
 }
 int main(){
 
     Node * root = level_order_input_binary_tree();
-    level_order_print(root);
-    reverse(v.begin(), v.end());
-    for(int x : v)
-    {
-        cout<<x<<" ";
-    }
+    if(perfect(root)) cout<<"YES"<<endl;
+    else cout<<"NO";
+
 return 0;
 }

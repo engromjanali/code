@@ -21,5 +21,8 @@ void main()
   {
     print("hello ${l[i]}");
   }
-  
+  // for each loop as for in loop
+  for(int x in l){
+    print(x);
+  }
 }

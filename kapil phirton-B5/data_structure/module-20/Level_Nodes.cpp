@@ -13,6 +13,32 @@ class Node{
         }
 };
 
+vector<int> level_order(Node * root, int l)
+{
+    vector<int> res;
+    queue <pair<Node *, int>> qu;
+    qu.push({root, 0});
+
+    while (!qu.empty())
+    {
+        pair<Node * , int> p=qu.front();
+        Node * a= p.first;
+        int level = p.second;
+        qu.pop();
+        
+        if(!a);
+        else
+        { 
+            if(level == l) res.push_back(a->val);
+            
+            if(a->left) qu.push({a->left, level+1});
+            if(a->right) qu.push({a->right, level+1});
+        }
+    }
+    return res;
+}
+
+
 Node* level_order_input_binary_tree(void)
 {
     int i;
@@ -56,45 +82,21 @@ Node* level_order_input_binary_tree(void)
     }
     return root;
 }
-vector<int>v;
-void leaf_node(Node * root)
-{
-    if(root == NULL) return ;
-    if((!root->left) && (!root->right)) v.push_back(root->val);
-    leaf_node(root->left);
-    leaf_node(root->right);
-}
-void level_order_print(Node*root)
-{
-    if(root == NULL) return;
-
-    queue<Node*>q;
-    q.push(root);
-    while(!q.empty())
-    {
-        // taken
-        Node*p;
-        p = q.front();
-        q.pop();
-        if(p->left == p->right){ // men two pointer are NULL.
-            v.push_back(p->val);
-            continue;
-        }
-        // insert
-        if(p->left)
-            q.push(p->left);
-        if(p->right)
-            q.push(p->right);
-    }
-}
 int main(){
 
     Node * root = level_order_input_binary_tree();
-    level_order_print(root);
-    reverse(v.begin(), v.end());
-    for(int x : v)
+    int l;
+    cin>>l;
+
+    vector<int>v = level_order(root, l);
+
+    if(v.empty()) cout<<"Invalid"<<endl;
+    else 
     {
-        cout<<x<<" ";
+        for(auto it = v.begin(); it<v.end(); it++)
+        {
+            cout<<* it<<" ";
+        }
     }
 return 0;
 }
