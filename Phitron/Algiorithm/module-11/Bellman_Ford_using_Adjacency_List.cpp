@@ -20,7 +20,7 @@ void bellman_ford(int s) // by Adjacency List
     Distance[s] = 0;
     for(int i =0; i<n; i++) // O(N * M) // traverse N time full Grap
     {
-        for(int u =0; u<n; u++) // O(M) // raverse full Grap
+        for(int u =0; u<n; u++) // O(M) // traverse full Grap
         {
             for(pir x : grap[u]) // traverse naighvor or all edges relaxation
             {

@@ -8,7 +8,13 @@ void main()
   double pi2= 3;
   String s = "romajn";// there are no char datatype/class. only string.
   int one =3,two=4; 
+  BigInt bi = BigInt.parse("989867865968868987868"); // have to take as string. but it's return int value.
+  num nm = 123; // num store (int and double) value
+  nm = 12.3;
+  print(nm);  
+  print(bi);
 
+  
 
   print(a);
   print(flag);

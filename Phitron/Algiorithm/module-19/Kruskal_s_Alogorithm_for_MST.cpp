@@ -56,7 +56,7 @@ void dsu_union(int a, int b) // optimized
 vector<edge> kruskal_s_algorithm(vector<edge>list_of_edge)
 {
     vector<edge>list_of_edge_ans;
-    sort(list_of_edge.begin(), list_of_edge.end(), cmp);
+    sort(list_of_edge.begin(), list_of_edge.end(), cmp); //O(E log V)
 
     for(edge x : list_of_edge)
     {

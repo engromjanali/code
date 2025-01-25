@@ -41,7 +41,7 @@ vector<edge> prim_s_algorithm(vector<vector<pir>>grap, int s)
 
     priority_queue<edge, vector<edge>, cmp>pq;
     pq.push(edge{s,s,0});
-    while (!pq.empty())
+    while (!pq.empty()) // O(v^2) or O(E log v)
     {
         edge u = pq.top();
         pq.pop();

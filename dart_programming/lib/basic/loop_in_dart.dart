@@ -25,4 +25,9 @@ void main()
   for(int x in l){
     print(x);
   }
+  int x = 5;
+  do{
+    print(x);
+    x++;
+  }while(x<10);
 }

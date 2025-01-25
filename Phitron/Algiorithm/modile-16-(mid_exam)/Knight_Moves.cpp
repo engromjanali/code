@@ -33,7 +33,6 @@ void bfs(pir s)
             level[v.first][v.second] = level[u.first][u.second] +1;
         }
     }
-    
 }
 int main(){
 

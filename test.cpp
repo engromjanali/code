@@ -1,100 +1,41 @@
-#include<bits/stdc++.h>
-using namespace std;
-class Node{
-    public :
-        int val;
-        Node * left;
-        Node * right;
-        Node(int val)
+class Solution {
+public:
+    
+    long long dp[501][501][3];
+    
+    long long ans(int i,int j,int k,vector<vector<int>>& a)
+    {
+        if(i==a.size()-1 && j==a[0].size()-1)
         {
-            this->val=val;
-            left  = NULL;
-            right = NULL;
+            if(a[i][j]<0 && k<2)
+            {
+                return 0;
+            }
+            return a[i][j];
         }
+        
+        if(i==a.size() || j==a[0].size())
+        {
+            return -1e9;
+        }
+        
+        if(dp[i][j][k]!=-1)
+        {
+            return dp[i][j][k];
+        }
+        
+        long long res=a[i][j]+max(ans(i+1,j,k,a),ans(i,j+1,k,a));
+        
+        if(a[i][j]<0 && k<2)
+        {
+            res=max(res,max(ans(i+1,j,k+1,a),ans(i,j+1,k+1,a)));
+        }
+        
+        return dp[i][j][k] = res;
+    }
+    long long maximumAmount(vector<vector<int>>& coins) {
+        
+        memset(dp,-1,sizeof(dp));
+        return ans(0,0,0,coins);
+    }
 };
-
-Node* level_order_input_binary_tree(void)
-{
-    int i;
-    cin>>i;
-    Node * root = NULL;
-
-    if(i==-1) return root;
-
-    root = new Node(i);
-    queue<Node*>qu;
-    qu.push(root);
-   
-    while(!qu.empty())
-    {
-        //take
-        Node * p = qu.front();
-        qu.pop();
-
-        //opration
-        int l, r;
-        cin>>l>>r;
-        Node* myLeft;
-        Node * myRight;
-        if(l==-1) 
-            myLeft =NULL;
-        else 
-            myLeft= new Node(l);
-        if(r==-1) 
-            myRight = NULL;
-        else 
-            myRight= new Node(r);
-
-        p->left = myLeft;
-        p->right = myRight;
-
-        //insertion
-        if(p->left)
-            qu.push(p->left);
-        if(p->right)
-            qu.push(p->right);
-    }
-    return root;
-}
-vector<int>v;
-void leaf_node(Node * root)
-{
-    if(root == NULL) return ;
-    if((!root->left) && (!root->right)) v.push_back(root->val);
-    leaf_node(root->left);
-    leaf_node(root->right);
-}
-void level_order_print(Node*root)
-{
-    if(root == NULL) return;
-
-    queue<Node*>q;
-    q.push(root);
-    while(!q.empty())
-    {
-        // taken
-        Node*p;
-        p = q.front();
-        q.pop();
-        if(p->left == p->right){ // men two pointer are NULL.
-            v.push_back(p->val);
-            continue;
-        }
-        // insert
-        if(p->left)
-            q.push(p->left);
-        if(p->right)
-            q.push(p->right);
-    }
-}
-int main(){
-
-    Node * root = level_order_input_binary_tree();
-    level_order_print(root);
-    reverse(v.begin(), v.end());
-    for(int x : v)
-    {
-        cout<<x<<" ";
-    }
-return 0;
-}

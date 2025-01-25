@@ -5,7 +5,7 @@ class child extends Person {
   
   // access element() of parent class by "super" keyword.
   // method "overwrite" mean display has in both class.
-  void display(){
+  void display1(){
     super.name = "romjan";
     super.display();
     print("Age : $age");
@@ -17,4 +17,5 @@ void main(){
   // child ch = child(67547, 30);
   child ch = child();
   ch.display();
+  ch.display1();
 }

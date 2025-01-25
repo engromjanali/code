@@ -14,5 +14,6 @@ void main()
   stdout.write("hello deal all friends how are you?");
   int i = age.toInt(); // double to int 
   double d = i.toDouble();
+  int n =int.parse(stdin.readLineSync()!yy);
   print(i);
 }
