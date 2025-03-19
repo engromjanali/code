@@ -1,4 +1,6 @@
 // it's our default code what we get in main file when we create a new project.
+// ✅ Use TextField if you just need a simple input field without validation.
+// ✅ Use TextFormField if you are working with forms and need validation.
 import 'package:flutter/material.dart';
 
 void main() {
@@ -62,7 +64,10 @@ class HomePageState extends State<HomePage>{
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              TextFormField(
+              ),
               TextField(
+                autofocus: false,
                 controller: text1,
                 enabled: true,
                 obscureText: true,
@@ -138,3 +143,48 @@ class HomePageState extends State<HomePage>{
 
 }
 
+
+class MyForm extends StatefulWidget {
+  @override
+  _MyFormState createState() => _MyFormState();
+}
+
+class _MyFormState extends State<MyForm> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          TextFormField(
+            controller: _controller,
+            decoration: InputDecoration(
+              labelText: "Enter Text",
+              border: OutlineInputBorder(),
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Please enter some text";
+              }
+              return null;
+            },
+          ),
+          SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Submitted: ${_controller.text}")),
+                );
+              }
+            },
+            child: Text("Submit"),
+          ),
+        ],
+      ),
+    );
+  }
+}

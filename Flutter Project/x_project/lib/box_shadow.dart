@@ -52,7 +52,7 @@ class DeashBoardScreen extends StatelessWidget{
                       blurRadius: 12,
                       color: Colors.green,// default color box/container color not border
                       spreadRadius: 12,
-
+                      offset: Offset(0, 2), // left,right=0 & top,down=2 shadow
                     )
                   ],
                 shape: BoxShape.circle,// if we use shape we can't use borderRadius.

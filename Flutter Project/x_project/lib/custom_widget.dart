@@ -1,6 +1,6 @@
 // it's our default code what we get in main file when we create a new project.
 import 'package:flutter/material.dart';
-import 'package:x_project/widgets/reactangle_bitton.dart';
+import 'package:x_project/widgets/reactangle_button.dart';
 
 void main() {
   runApp(MyApp());

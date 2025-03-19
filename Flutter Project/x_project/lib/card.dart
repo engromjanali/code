@@ -63,7 +63,7 @@ class HomePageState extends State<HomePage>{
                 Card(
                   color: Colors.grey,
                   shadowColor: Colors.red,
-                  elevation: 10,
+                  elevation: 10, // shado in under like 3d
                   surfaceTintColor: Colors.white,// color mixing
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(5,0,5,0),
@@ -72,7 +72,7 @@ class HomePageState extends State<HomePage>{
                 ),
                 Card(
                   shadowColor: Colors.red,
-                  elevation: 10,
+                  elevation: 10, // shado in under like 3d
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(5,0,5,0),
                     child: Text("I'm fine and you?,",style: style_font().text18(),),
@@ -80,7 +80,7 @@ class HomePageState extends State<HomePage>{
                 ),
                 Card(
                   shadowColor: Colors.red,
-                  elevation: 10,
+                  elevation: 10, // shado in under like 3d
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(5,0,5,0),
                     child: Text("yeah, i am fine also\n so, what are you doing now days?",style: style_font().text18(color: Colors.black),),
@@ -88,10 +88,8 @@ class HomePageState extends State<HomePage>{
                 ),
               ],
         ),
-
       ),
     );
   }
-
 }
 

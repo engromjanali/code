@@ -56,7 +56,7 @@ class HomePageState extends State<HomePage>{
         ),
       body: Container(
           child: Stack( // child can't go out of stack sized
-
+            alignment: Alignment.topLeft,// for center we can make it as Alignment.center,
             children: [
               Container(   // here stack gain full size of container, so stack size is this container size.
                 color: Colors.green,

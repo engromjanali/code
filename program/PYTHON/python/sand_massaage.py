@@ -5,8 +5,8 @@ import time
 time.sleep(10)
 i = 0
 #n = int (inpaut("inter  a number :"))
-while i< 10:
-    pyautogui.typewrite("4 Betari") 
+while i< 20:
+    pyautogui.typewrite("kire siam tor bon tw phone dortace na rag korca naki? dekh tw ki somossa.")
     pyautogui.press("enter")
 
     time.sleep(0)

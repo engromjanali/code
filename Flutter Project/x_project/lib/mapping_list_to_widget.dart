@@ -50,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // ListView ------------------------------------------------------------------------------------------------------------------
       body:ListView(
         // scrollDirection: Axis.horizontal, // default is vertical
-        // reverse: true,  for vertical start from buttom and element will be reverse also. and for horizontal start from right.
+        // reverse: true,  for vertical start from bottom and element will be reverse also. and for horizontal start from right.
         children:  arrNames.map((val) => Container(
           child: Text(val, style: style_font().text14(),),
         )).toList(),

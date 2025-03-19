@@ -94,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
       body: ListView.builder(
         // reverse: true,
-        itemExtent: 1000, // gep between two child.
+        itemExtent: 1000, // height of each child for column, for row width
         scrollDirection: Axis.horizontal, //default vertical
         itemBuilder: (context, index) {
           //first way. ----------------

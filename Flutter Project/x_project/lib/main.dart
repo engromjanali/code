@@ -1,7 +1,8 @@
 // it's our default code what we get in main file when we create a new project.
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
 void main() {
+  // fun();
   runApp(MyApp());
 }
 
@@ -53,10 +54,17 @@ class HomePageState extends State<HomePage>{
 
         ),
       body: Container(
-
+        color: Colors.green,
+        child: ElevatedButton(onPressed: fun, child: Icon(Icons.add)),
       ),
     );
   }
+}
 
+void fun(){
+DateTime d = DateTime.now();
+String f = DateFormat("yyyy-mm-dd HH:mm:ss").format(d);
+print(d);
+print(f);
 }
 
