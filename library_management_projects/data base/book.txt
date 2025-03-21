@@ -1,0 +1,175 @@
+there are a keyword "uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP" it's used to store time.
+    book_id 
+    book_name 
+    book_author 
+    book_part 
+    book_type 
+    book_price
+    few_intrasting_line 
+    total_quantity 
+    last update status(added, remove, info change, E_D status)
+    by_who 
+    last update date
+    last update time
+    last added remove quantity
+    enabled desabled status
+
+CREATION COMMAND,
+
+CREATE TABLE Book_Info(
+    book_id INT(8) ZEROFILL PRIMARY KEY,    
+    book_name VARCHAR(500),
+    book_author VARCHAR(500),
+    book_part INT(2) DEFAULT 0,
+    book_type VARCHAR(50),
+    book_price INT(4),
+    few_intrasting_line VARCHAR(1000),
+    total_quantity INT(4),
+    L_U_S VARCHAR(10),
+    by_who INT(10),
+    the_date DATE,
+    the_time TIME,
+    L_A_R_quantity INT(4),
+    E_D_S VARCHAR(10)
+);
+
+// INSART COMMAND,
+
+INSERT INTO Book_Info(
+    book_id,
+    book_name,
+    book_author,
+    book_part,
+    book_type,
+    book_price,
+    few_intrasting_line,
+    total_quantity,
+    L_U_S,
+    by_who,
+    L_A_R_quantity,
+    E_D_S
+)
+VALUES(
+    55,
+    "java",
+    "romjan ali",
+    5,
+    "Story",
+    999,
+    "hello romjan how are you?",
+    3452,
+    "added",
+    "romjan ali",
+    3452,
+    "ENABLED"
+);
+
+
+CREATE TABLE registaed_student_data(
+    fast_name VARCHAR(100),
+    last_name VARCHAR(100),
+    phone VARCHAR(15),
+    email VARCHAR(100),
+    gender VARCHAR(10),
+    dob DATE,
+    nid_birth INT(17),
+    institute_office VARCHAR(200),
+    ins_office_id VARCHAR(30),
+    full_address VARCHAR(200),
+    pass VARCHAR(100),
+    registation_time TIME,
+    registation_date DATE
+);
+
+
+ALTER TABLE
+student_data
+RENAME TO
+registaed_student_data;
+
+
+CREATE TABLE student_data(
+    fast_name VARCHAR(100),
+    last_name VARCHAR(100),
+    phone VARCHAR(15),
+    email VARCHAR(100),
+    gender VARCHAR(10),
+    dob DATE,
+    nid_birth INT(17),
+    institute_office VARCHAR(200),
+    ins_office_id VARCHAR(30),
+    full_address VARCHAR(200),
+    pass VARCHAR(100),
+    registation_time TIME,
+    registation_date DATE,
+    approve_time TIME,
+    approve_date DATE,
+    user_id INT(8) ZEROFILL NOT NULL AUTO_INCREMENT PRIMARY KEY;
+);
+
+CREATE TABLE employee_data(
+    user_id INT(8) ZEROFILL NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    POSITION VARCHAR(10) NOT NULL,
+    fast_name VARCHAR(10) NOT NULL,
+    last_name VARCHAR(10) NOT NULL,
+    nid INT(17) NOT NULL,
+    phone VARCHAR(15) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    full_address VARCHAR(200) NOT NULL,
+    dob DATE NOT NULL,
+    gender VARCHAR(10) NOT NULL,
+    pass VARCHAR(100) NOT NULL,
+    adding_time TIME,
+    adding_date DATE
+);
+
+CREATE TABLE admin_data(
+    user_id INT(8),
+    admin_type VARCHAR(20) DEFAULT 'SHARE_HOLDER'
+);
+
+CREATE TABLE student_history(
+    user_id INT(8),
+    T_status VARCHAR(20),
+    by_who VARCHAR(150),
+    employee_id INT(8),
+    TIME TIME,
+    DATE DATE
+);
+
+ 
+CREATE TABLE employee_history(
+    E_id INT(8),
+    T_status VARCHAR(20),
+    by_who VARCHAR(200),
+    P_E_id INT(8),
+    T_time TIME,
+    T_DATE DATE
+);
+
+
+CREATE TABLE book_data(
+    book_id INT(6),
+    book_name VARCHAR(200),
+    author VARCHAR(100),
+    book_part INT(2),
+    book_type VARCHAR(20),
+    price INT(5),
+    few_i_line VARCHAR(500),
+    quantity INT(4),
+    avialable_quantity INT(4),
+    E_D_status VARCHAR(10),
+    A_time TIME,
+    A_date DATE
+);
+
+CREATE TABLE book_history(
+    book_id INT(6),
+    T_status VARCHAR(20),
+    T_by VARCHAR(200),
+    T_time TIME,
+    T_date DATE
+);
+
+//join table 
+SELECT * FROM book_history INNER JOIN book_data ON book_history.book_id = book_data.book_id WHERE T_status = "GAVE" and student_id = ?;

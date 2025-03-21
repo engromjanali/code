@@ -1,0 +1,64 @@
+java version - javac 22.0.1
+
+
+if student change nid number and admin search the student by nid wanted data wan't show but student pasent data will show.
+
+student can't request for same book in a day for multiple time.but valid in an deffirend day.
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class Main {
+    public static void main(String[] args) {
+        // Database connection parameters
+        String jdbcUrl = "jdbc:mysql://localhost:3306/your_database";
+        String username = "your_username";
+        String password = "your_password";
+
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            // Establish the connection
+            connection = DriverManager.getConnection(jdbcUrl, username, password);
+            System.out.println("Connection established successfully!");
+
+            // Create a statement object
+            statement = connection.createStatement();
+
+            // SQL query to count the number of rows
+            String sql = "SELECT COUNT(*) FROM your_table";
+
+            // Execute the query
+            resultSet = statement.executeQuery(sql);
+
+            // Process the result set
+            if (resultSet.next()) {
+                int rowCount = resultSet.getInt(1);
+                System.out.println("Number of rows: " + rowCount);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Close the resources
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
+
