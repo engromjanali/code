@@ -47,6 +47,14 @@ class _homePageState extends State<homePage> {
                     s.setUrl(url: "https://www.facebook.com/");
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>ApplicationPage()));
                   }),
+                  BuildApplicationsType(label: "Chat GPT", iconData: FontAwesomeIcons.robot, onTap: () { 
+                    s.setUrl(url: "https://chatgpt.com/");
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>ApplicationPage()));
+                  }),
+                  BuildApplicationsType(label: "Deepseek", iconData: FontAwesomeIcons.d, onTap: () { 
+                    s.setUrl(url: "https://chat.deepseek.com/");
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>ApplicationPage()));
+                  }),
                   BuildApplicationsType(label: "Instagram", iconData: FontAwesomeIcons.instagram, onTap: () { 
                     s.setUrl(url: "https://www.instagram.com/"); 
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>ApplicationPage()));

@@ -47,7 +47,6 @@ class _ApplicationPageState extends State<ApplicationPage> {
           if(Navigator.canPop(context)){
             Navigator.pop(context);
           }
-          print("romjana 2------------");
         }
       }),
       
