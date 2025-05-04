@@ -99,6 +99,7 @@ class GameProvider extends ChangeNotifier{
     _playWhitesTimer = value;
     notifyListeners();
   }
+  
   // set is whites turn
   Future<void> setIsWhitesTurn({required bool value}) async {
     _isWhitesTurn = value;
@@ -598,7 +599,7 @@ class GameProvider extends ChangeNotifier{
       // check are there any available game
       if(availableGames.docs.isNotEmpty){
         final List<DocumentSnapshot> gameList =
-          availableGames.docs.where((element) => element[Constants.isPlaying]==false).toList();
+          availableGames.docs.where((element) => element[Constants.isPlaying]==false).toList(); // here where take value as true/false. 
 
         // check there are any player ready to play with you
         if(gameList.isEmpty){
@@ -779,8 +780,5 @@ class GameProvider extends ChangeNotifier{
       );
     }
   }
-
-
-
-
+  
 }

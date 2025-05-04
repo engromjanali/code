@@ -96,6 +96,7 @@ class HomePageState extends State<HomePage>{
                     Text("hour AM/PM: ${DateFormat("j").format(datetime)}",style: style_font().text18(),),
                     Text("hour:minute AM/PM: ${DateFormat("jm").format(datetime)}",style: style_font().text18(),),
                     Text("hour:minute:second AM/PM: ${DateFormat("jms").format(datetime)}",style: style_font().text18(),),
+                    Text("dd/MM/yyyy: ${DateFormat("dd/MM/yyyy").format(datetime)}",style: style_font().text18(),),
 
                   ],
                 ),
@@ -106,4 +107,12 @@ class HomePageState extends State<HomePage>{
       ),
     );
   }
+}
+
+// TimeOfDay to String time
+String formatTimeOfDay(TimeOfDay time) {
+  final hour = time.hourOfPeriod == 0 ? 12 : time.hourOfPeriod;
+  final minute = time.minute.toString().padLeft(2, '0');
+  final period = time.period == DayPeriod.am ? 'AM' : 'PM';
+  return '$hour:$minute $period';
 }

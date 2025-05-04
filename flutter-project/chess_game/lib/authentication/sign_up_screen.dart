@@ -65,7 +65,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         // user has been created- now we save the user to fireStore
         // send Email Verification
 
-
         print("signup Success");
         print("user id : ${userCredential.user!.uid}");
 
