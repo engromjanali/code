@@ -1,0 +1,15 @@
+D:/programming/flutter-project/bbpi_campus/bbpi/build/windows/x64/runner/Debug/data/icudtl.dat
+D:/programming/flutter-project/bbpi_campus/bbpi/build/windows/x64/runner/Debug/flutter_windows.dll
+D:/programming/flutter-project/bbpi_campus/bbpi/build/windows/x64/runner/Debug/data/flutter_assets/AssetManifest.bin
+D:/programming/flutter-project/bbpi_campus/bbpi/build/windows/x64/runner/Debug/data/flutter_assets/AssetManifest.json
+D:/programming/flutter-project/bbpi_campus/bbpi/build/windows/x64/runner/Debug/data/flutter_assets/assets/lottie_animation/Animation%20-%201742774709301.json
+D:/programming/flutter-project/bbpi_campus/bbpi/build/windows/x64/runner/Debug/data/flutter_assets/FontManifest.json
+D:/programming/flutter-project/bbpi_campus/bbpi/build/windows/x64/runner/Debug/data/flutter_assets/fonts/MaterialIcons-Regular.otf
+D:/programming/flutter-project/bbpi_campus/bbpi/build/windows/x64/runner/Debug/data/flutter_assets/kernel_blob.bin
+D:/programming/flutter-project/bbpi_campus/bbpi/build/windows/x64/runner/Debug/data/flutter_assets/NativeAssetsManifest.json
+D:/programming/flutter-project/bbpi_campus/bbpi/build/windows/x64/runner/Debug/data/flutter_assets/NOTICES.Z
+D:/programming/flutter-project/bbpi_campus/bbpi/build/windows/x64/runner/Debug/data/flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf
+D:/programming/flutter-project/bbpi_campus/bbpi/build/windows/x64/runner/Debug/data/flutter_assets/packages/font_awesome_flutter/lib/fonts/fa-brands-400.ttf
+D:/programming/flutter-project/bbpi_campus/bbpi/build/windows/x64/runner/Debug/data/flutter_assets/packages/font_awesome_flutter/lib/fonts/fa-regular-400.ttf
+D:/programming/flutter-project/bbpi_campus/bbpi/build/windows/x64/runner/Debug/data/flutter_assets/packages/font_awesome_flutter/lib/fonts/fa-solid-900.ttf
+D:/programming/flutter-project/bbpi_campus/bbpi/build/windows/x64/runner/Debug/data/flutter_assets/shaders/ink_sparkle.frag

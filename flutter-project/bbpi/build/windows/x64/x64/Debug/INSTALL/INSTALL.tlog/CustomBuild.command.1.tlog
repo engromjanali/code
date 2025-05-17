@@ -1,0 +1,10 @@
+^D:\PROGRAMMING\FLUTTER-PROJECT\BBPI_CAMPUS\BBPI\BUILD\WINDOWS\X64\CMAKEFILES\D040A3D0A6DDEDA2953A638995708E42\INSTALL_FORCE.RULE
+setlocal
+cd .
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
