@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meal_hisab/constants.dart';
 import 'package:meal_hisab/home.dart';
 import 'package:meal_hisab/sign_in.dart';
 import 'package:meal_hisab/x.dart';
@@ -33,7 +34,11 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home:  HomeScreen(),
+      // home:  HomeScreen(),
+      initialRoute: Constants.HomeScreen,
+      routes: {  
+        Constants.HomeScreen : (context) => const HomeScreen(),
+      },
     );
   }
 }

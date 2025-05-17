@@ -12,27 +12,58 @@ class _MyWidgetState extends State<MyWidget> {
     return const Placeholder();
   }
 }
+
+// header menu items
 Widget getMenuItems({required String label, required Function() ontap, IconData ? icon, selected = false}){
-  return MaterialButton(
-    onPressed: ontap,
-  
-    padding: EdgeInsets.all(5),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(10),
+  return Container(
+    margin: EdgeInsets.all(2),
+    child: MaterialButton(
+      onPressed: ontap,
+      padding: EdgeInsets.all(5),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      color: Colors.grey,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text("$label", style: TextStyle(fontSize: 20),),
+          if (icon != null) ...[ // here by the there dot we make it list of Widget, default it just was a list
+              SizedBox(
+                width: 10,
+              ),
+              Icon(icon),
+            ],
+          selected ? Icon(Icons.done, color: Colors.red, size: 20) : SizedBox.shrink(),
+        ],
+      ),
     ),
-    color: Colors.grey,
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text("$label", style: TextStyle(fontSize: 20),),
-        if (icon != null) ...[
-          SizedBox(
-            width: 10,
-          ),
-          Icon(icon),
-         ],
-        selected ? Icon(Icons.done, color: Colors.red, size: 20) : SizedBox.shrink(),
-      ],
+  );
+}
+
+Widget getMaterialButton({required String label, required Function() ontap, IconData ? icon, selected = false}){
+  return Container(
+    margin: EdgeInsets.all(2),
+    child: MaterialButton(
+      onPressed: ontap,
+      padding: EdgeInsets.all(5),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      color: Colors.grey,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text("$label", style: TextStyle(fontSize: 20),),
+          if (icon != null) ...[ // here by the there dot we make it list of Widget, default it just was a list
+              SizedBox(
+                width: 10,
+              ),
+              Icon(icon),
+            ],
+          selected ? Icon(Icons.done, color: Colors.red, size: 20) : SizedBox.shrink(),
+        ],
+      ),
     ),
   );
 }
@@ -70,4 +101,19 @@ void showSnackber({required BuildContext context, required String content}){
       ],
     ));
     return res?? false;
+  }
+
+  void showMessageDialog({required BuildContext context, required String title, required String Discreption}){
+    showDialog(context: context, builder:(context)=>AlertDialog(
+      title: Text(title),
+      content: Text(Discreption),
+      actions: [
+        TextButton(
+          onPressed: (){
+            Navigator.of(context).pop();
+          }, 
+          child: Text("Ok"), 
+        )
+      ],
+    ));
   }

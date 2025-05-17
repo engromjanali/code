@@ -10,8 +10,7 @@ class BazerListScreen extends StatefulWidget {
 class _BazerListScreenState extends State<BazerListScreen> {
   @override
   Widget build(BuildContext context) {
-    return 
-       Expanded(
+    return Expanded(
          child: Container(
           child: ListView.builder(itemBuilder: (context , index){
             return ListTile(
@@ -77,8 +76,10 @@ class _BazerListScreenState extends State<BazerListScreen> {
                 debugPrint("show Details Here");
               },
             );
-          }),
-             ),
-       );
+          },
+          itemCount: 50,
+        ),
+      ),
+    );
   }
 }

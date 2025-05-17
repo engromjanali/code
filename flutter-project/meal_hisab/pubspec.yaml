@@ -36,8 +36,8 @@ dependencies:
   cupertino_icons: ^1.0.8
   font_awesome_flutter: ^10.8.0
   animate_do: ^4.2.0
-  dropdown_search: ^5.0.6
-  intl: ^0.20.2
+  dropdown_search: ^5.0.6 # for dropdpwn search opetion
+  intl: ^0.20.2 # date format
 
 dev_dependencies:
   flutter_test:

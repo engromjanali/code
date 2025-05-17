@@ -77,6 +77,9 @@ GlobalKey<FormState> formKey = GlobalKey<FormState>();
                                 margin: EdgeInsets.all(10),
                                 child: TextFormField(
                                   focusNode: FocusNodeCurrent,
+                                  onTapOutside: (event) {// close keyboard
+                                    FocusScope.of(context).unfocus();
+                                  },
                                   onFieldSubmitted: (value) {
                                     FocusScope.of(context).requestFocus(FocusNodeNew);
                                   },
@@ -151,9 +154,15 @@ GlobalKey<FormState> formKey = GlobalKey<FormState>();
                                 margin: EdgeInsets.all(10),
                                 child: TextFormField(
                                   focusNode: FocusNodeConfirm,
+                                  onTapOutside: (event) {// close keyboard
+                                    FocusScope.of(context).unfocus();
+                                  },
                                   onFieldSubmitted: (value){
                                     FocusScope.of(context).unfocus();
                                   },
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly, // Only allows digits
+                                  ],
                                   textInputAction: TextInputAction.done,
                                   obscureText: visibleConfirm,
                                   keyboardType: TextInputType.text,

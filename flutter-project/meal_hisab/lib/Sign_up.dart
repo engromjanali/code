@@ -15,7 +15,7 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   GlobalKey<FormState> FormKey = GlobalKey<FormState>();
-  String pass = "";
+  String pass  = "";
   String Fname = "";
   String email = "";
   String phone = "";
@@ -273,6 +273,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 }
+
 
 class HaveAccountWidget extends StatelessWidget {
   const HaveAccountWidget({

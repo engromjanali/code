@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:meal_hisab/constants.dart';
+import 'package:meal_hisab/member/add_member.dart';
 import 'package:meal_hisab/ui_helper/ui_helper.dart';
 
 class MemberScreen extends StatefulWidget {
@@ -9,11 +11,16 @@ class MemberScreen extends StatefulWidget {
 }
 
 class _MemberScreenState extends State<MemberScreen> {
+
+  Member memberScreemItemGrpup = Member.members;
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.red,
+        color: Colors.grey.shade100,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -28,84 +35,106 @@ class _MemberScreenState extends State<MemberScreen> {
                     getMenuItems(
                       label: "Members", 
                       ontap: (){
-              
+                        setState(() {
+                          memberScreemItemGrpup = Member.members;
+                        });
                       },
+                      selected: memberScreemItemGrpup==Member.members,
+                      icon: Icons.group
+                    ),
+                    getMenuItems(
+                      label: "Add Member", 
+                      ontap: (){
+                        setState(() {
+                          memberScreemItemGrpup = Member.AddMember;
+                          
+                        });
+                      },
+                      selected: memberScreemItemGrpup==Member.AddMember,
+                      icon: (Icons.add_circle_outline_outlined),
                     ),
                   ],
                 ),
               ),
               
-              Column(
-                children: [
+              memberScreemItemGrpup==Member.members? getListOfMember()
+              :
+              AddMemberScreen()
 
-                  Card(
-                    child: ListTile(
-                      contentPadding: EdgeInsets.only(left: 10),
-                      leading: CircleAvatar(
-                        child: Text(""),
-                        backgroundColor: Colors.amber,
-                      ),
-                      title: Text("Md Romjan Ali"),
-                      subtitle: Text("12345678   (Member)"),
-                      trailing: PopupMenuButton(
-                        icon: Icon(Icons.more_vert),
-                        itemBuilder: (BuildContext context) {  
-                           return [
-                              PopupMenuItem(
-                                onTap: (){
-
-                                },
-                                value: 1,
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.transfer_within_a_station_sharp),
-                                    Text("Transfer Owner"),
-                                  ],
-                                ),
-                              ),
-                              PopupMenuItem(
-                                onTap: ()async{
-                                  bool? a = await showConfirmDialog(context: context, title: "Do You Want to Transfer The Ownership?");
-                                  if(a??false){
-                                    debugPrint("YES--------------");
-                                  }
-                                  else{
-                                    debugPrint("NO--------------");
-                                  }
-                                },
-                                value: 1,
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.highlight_remove_outlined),
-                                    Text("kick"),
-                                  ],
-                                ),
-                              ),
-                              PopupMenuItem(
-                                onTap: (){
-
-                                },
-                                value: 1,
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.do_not_disturb_alt_outlined),
-                                    Text("Hold"),
-                                  ],
-                                ),
-                              ),
-                           ];
-                        },
-                      ),
-                    ),
-                  ),
-
-                ],
-              )
-              
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget getListOfMember(){
+    return Expanded(
+      child: ListView.builder(
+        itemCount: 12,
+        itemBuilder: (context, index) {
+          return  Card(
+          child: ListTile(
+            contentPadding: EdgeInsets.only(left: 10),
+            leading: CircleAvatar(
+              child: Text(""),
+              backgroundColor: Colors.amber,
+            ),
+            title: Text("Md Romjan Ali"),
+            subtitle: Text("12345678   (Member)"),
+            trailing: PopupMenuButton(
+              icon: Icon(Icons.more_vert),
+              itemBuilder: (BuildContext context) {  
+                 return [
+                    PopupMenuItem(
+                      onTap: (){
+        
+                      },
+                      value: 1,
+                      child: Row(
+                        children: [
+                          Icon(Icons.transfer_within_a_station_sharp),
+                          Text("Transfer Owner"),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem(
+                      onTap: ()async{
+                        bool? a = await showConfirmDialog(context: context, title: "Do You Want to Transfer The Ownership?");
+                        if(a??false){
+                          debugPrint("YES--------------");
+                        }
+                        else{
+                          debugPrint("NO--------------");
+                        }
+                      },
+                      value: 1,
+                      child: Row(
+                        children: [
+                          Icon(Icons.highlight_remove_outlined),
+                          Text("kick"),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem(
+                      onTap: (){
+        
+                      },
+                      value: 1,
+                      child: Row(
+                        children: [
+                          Icon(Icons.do_not_disturb_alt_outlined),
+                          Text("Hold"),
+                        ],
+                      ),
+                    ),
+                 ];
+              },
+            ),
+          ),
+        );
+        },
+           ),
     );
   }
 }

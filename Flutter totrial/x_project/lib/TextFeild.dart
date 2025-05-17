@@ -73,7 +73,12 @@ class HomePageState extends State<HomePage>{
                 obscureText: true,
                 obscuringCharacter: '*',
                 keyboardType: TextInputType.phone,
-
+                onTapOutside: (event) {// close keyboard
+                  FocusScope.of(context).unfocus();
+                },
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly, // Only allows digits
+                ],
                 decoration: InputDecoration(
                   label: Text("Name *"),
                   helperText: "helper Text 1",
@@ -161,6 +166,9 @@ class _MyFormState extends State<MyForm> {
         children: [
           TextFormField(
             controller: _controller,
+            onTapOutside: (event) {// close keyboard
+              FocusScope.of(context).unfocus();
+            },
             decoration: InputDecoration(
               labelText: "Enter Text",
               border: OutlineInputBorder(),

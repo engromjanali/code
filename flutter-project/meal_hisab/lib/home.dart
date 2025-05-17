@@ -7,9 +7,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:meal_hisab/bazer/bazer_list.dart';
 import 'package:meal_hisab/bazer/bazer_screen.dart';
 import 'package:meal_hisab/constants.dart';
+import 'package:meal_hisab/diposite/diposite.dart';
 import 'package:meal_hisab/edit_info.dart';
 import 'package:meal_hisab/fand/fand.dart';
+import 'package:meal_hisab/meal/meal.dart';
 import 'package:meal_hisab/member/member_screen.dart';
+import 'package:meal_hisab/mess/mess_screen.dart';
 import 'package:meal_hisab/notice_and_announcement.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -31,13 +34,17 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.grey,
+        
         actions: [
+          
           IconButton(
             onPressed: (){},
             icon: Icon(Icons.notifications),
           ),
           SizedBox(width: 10,),
         ],
+        
       ),
       drawer: Drawer(
         child: ListView(
@@ -120,6 +127,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 });
               },
             ),
+            getItems(icon: Icons.assessment, 
+              label: "Diposite",
+              selected: DrawerItemGroup==DrawerItem.Diposite, 
+              ontap: () {
+                Navigator.pop(context);
+                DrawerItemGroup=DrawerItem.Diposite;
+                setState(() {
+                
+                });
+              },
+            ),
             getItems(
               icon: Icons.announcement, 
               label: "Notice & Announcements",
@@ -171,9 +189,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-
+      
       body:
-      DrawerItemGroup == DrawerItem.Meal ? SettingScreen()
+      DrawerItemGroup == DrawerItem.Meal ? MealScreen()
       :
       DrawerItemGroup == DrawerItem.Members ? MemberScreen()
       :
@@ -185,6 +203,10 @@ class _HomeScreenState extends State<HomeScreen> {
       :
       DrawerItemGroup == DrawerItem.Settings ? SettingScreen()
       :
+      DrawerItemGroup == DrawerItem.Diposite ? DipositeScreen()
+      :
+      DrawerItemGroup == DrawerItem.Mess ? MessScreen()
+      :
       Container(  // home Screen
         height: double.infinity,
         width: double.infinity,
@@ -193,8 +215,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
     );
   }
-
 }
+
+
 
 
 class SettingScreen extends StatefulWidget {
@@ -542,4 +565,11 @@ Widget getButton({required String label, required Function() ontap, Icon? icon})
     ),);
 }
 
+
+
+
+
+// "editor.codeActionsOnSave": {
+//   "source.fixAll": true
+// }
 
