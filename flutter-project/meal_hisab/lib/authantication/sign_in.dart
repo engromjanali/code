@@ -1,35 +1,70 @@
-import 'dart:async';
-
 import 'package:animate_do/animate_do.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:meal_hisab/home.dart';
-import 'package:meal_hisab/sign_in.dart';
+import 'package:meal_hisab/authantication/Sign_up.dart';
+import 'package:meal_hisab/constants.dart';
+import 'package:meal_hisab/helper/helper_method.dart';
+import 'package:meal_hisab/helper/ui_helper.dart';
+import 'package:meal_hisab/provaiders/authantication_provaider.dart';
+import 'package:provider/provider.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+class SignInScreen extends StatefulWidget {
+  const SignInScreen({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignInScreenState extends State<SignInScreen> {
   GlobalKey<FormState> FormKey = GlobalKey<FormState>();
-  String pass  = "";
-  String Fname = "";
+
+  String pass = "";
   String email = "";
-  String phone = "";
 
+  
 
-
-  void signUp(){
+  void signIn()async{
     if(FormKey.currentState!.validate()){
-
+      FormKey.currentState!.save();
+      final AuthenticationProvider authProvaider = context.read<AuthenticationProvider>();
+      authProvaider.setLoading(val: true);
+      UserCredential? userCredential = await authProvaider.signInWithEmailAndPassword(
+        email: email, 
+        password: pass, 
+        onFail: (message){
+          showSnackber(context: context, content: message);
+          authProvaider.setLoading(val: false);
+        },
+      );
+      if(userCredential!=null){
+        //user valid, now try to fatch user data
+        String uid = userCredential.user!.uid;
+        bool isSuccess = await authProvaider.getUserProfileData(onFail: (message){
+          showSnackber(context: context, content: "somthing Wrong\n try again!");
+        });
+        // 
+        if(isSuccess){
+          // get user data, 
+          isSuccess = await authProvaider.saveUserDataToSharedPref();
+        }
+        if(isSuccess){
+          // now try to save user data to local store
+          await authProvaider.setSignedIn(val: true);
+          showSnackber(context: context, content: "Sign In Success");
+          Navigator.pushReplacementNamed(context, Constants.LandingScreen);
+        }
+      
+      }
+      else{
+        showSnackber(context: context, content: "Data Not Found In DataBase! \nplease try again.");
+      }
+      authProvaider.setLoading(val: false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final AuthenticationProvider authProvaider = context.watch<AuthenticationProvider>();
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -53,7 +88,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  FadeInUp(duration: Duration(milliseconds: 1000),child: Text("SignUp", style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),)),
+                  FadeInUp(duration: Duration(milliseconds: 1000),child: Text("SignIn", style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),)),
                   SizedBox(height:10,),
                   FadeInUp(duration: Duration(milliseconds: 1200),child: Text("Welcome Back!",style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w400),)),
                 ],  
@@ -94,33 +129,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   
-                                  FadeInUp(
-                                    duration: Duration(milliseconds: 1600),
-                                    child: Container(
-                                      padding: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        border: Border(bottom: BorderSide(color: Colors.grey.shade200))
-                                      ),
-                                      child: TextFormField(
-                                      onChanged: (value){
-                                        Fname = value.trim();
-                                      },
-                                      validator: (value) {
-                                        if(Fname.length<4){
-                                          return "Name should Contain at least 4 character";
-                                        }
-                                        return null;
-                                      },
-                                      keyboardType: TextInputType.text,
-                                      textInputAction: TextInputAction.next,
-                                      decoration: InputDecoration(
-                                        label: Text("Full Name"),
-                                        border: InputBorder.none,
-                                                      
-                                      ),
-                                    ),
-                                    ),
-                                  ),
+                               
                               
                                   FadeInUp(
                                     duration: Duration(milliseconds: 1600),
@@ -134,12 +143,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         email = value.trim();
                                       },
                                       validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Email is required';
-                                        }
-                                        final pattern = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-                                        if (!pattern.hasMatch(value)) {
-                                          return 'Enter a valid email';
+                                        if(!validateEmail(value.toString().trim())){
+                                          return "Ennter a valid Email";
                                         }
                                         return null;
                                       },
@@ -154,40 +159,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     ),
                                   ),
                               
-                                  FadeInUp(
-                                    duration: Duration(milliseconds: 1600),
-                                    child: Container(
-                                      padding: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        border: Border(bottom: BorderSide(color: Colors.grey.shade200))
-                                      ),
-                                      child:  TextFormField(
-                                      onChanged: (value){
-                                        phone = value.trim();
-                                      },
-                                      validator: (value) {
-                                        // ^(?:\+88|88)? → allows optional country code +88 or 88.
-                                        // 01[2-9] → valid operator codes (e.g., 013 to 019).
-                                        // \d{8}$ → exactly 8 digits after the operator code (total 11 digits).
-                                        final pattern = RegExp(r'^(?:\+88|88)?01[2-9]\d{8}$');
-                                        if (value == null || value.isEmpty) {
-                                          return 'Phone number is required';
-                                        }
-                                        if(!pattern.hasMatch(value.toString())){
-                                          return "Enter Valid Phone Number";
-                                        }
-                                        return null;
-                                      },
-                                      keyboardType: TextInputType.number,
-                                      textInputAction: TextInputAction.next,
-                                      decoration: InputDecoration(
-                                        label: Text("Phone"),
-                                        border: InputBorder.none,
-                                        hintText: "Enter Your Phone With Country Code"
-                                      ),
-                                    ),
-                                    ),
-                                  ),
+                                 
                               
                                   FadeInUp(
                                     duration: Duration(milliseconds: 1800),
@@ -224,14 +196,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             height: 30,
                           ),
                           FadeInUp(duration: Duration(milliseconds:2200),
-                            child: SizedBox(
+                            child: !authProvaider.isLoading? SizedBox(
                               width: 200,
-                              child: getButton(label: "Sign Up", ontap: (){
-                                signUp();
+                              child: getButton(label: "Sign In", ontap: (){
+                                signIn();
                                 
                                 // Navigator.push(context, MaterialPageRoute(builder: (context)=>MemberHomeScreen()));
-                                },),
-                            ),
+                                },
+                              )
+                            )
+                            :
+                              Container(
+                            
+                                child: CircularProgressIndicator(),
+                              )
                           ),
                           SizedBox(
                             height: 30,
@@ -257,8 +235,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           SizedBox(
                             height: 20,
                           ),
-                          FadeInUp(duration:Duration(milliseconds:2800),child: HaveAccountWidget(label: "Don Have An Account? ", acctionText: "SignIn", ontap: (){
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){return SignInScreen();}));
+                          FadeInUp(duration:Duration(milliseconds:2800),child: HaveAccountWidget(label: "Don't Have An Account? ", acctionText: "SignUp", ontap: (){
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){return SignUpScreen();}));
                           })),
                         ],
                       ),
@@ -273,7 +251,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 }
-
 
 class HaveAccountWidget extends StatelessWidget {
   const HaveAccountWidget({
@@ -297,3 +274,4 @@ class HaveAccountWidget extends StatelessWidget {
     );
   }
 }
+

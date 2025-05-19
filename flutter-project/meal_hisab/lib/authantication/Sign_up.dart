@@ -1,31 +1,87 @@
-import 'package:animate_do/animate_do.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:meal_hisab/Sign_up.dart';
-import 'package:meal_hisab/home.dart';
 
-class SignInScreen extends StatefulWidget {
-  const SignInScreen({super.key});
+import 'package:animate_do/animate_do.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:meal_hisab/constants.dart';
+import 'package:meal_hisab/helper/helper_method.dart';
+import 'package:meal_hisab/helper/ui_helper.dart';
+import 'package:meal_hisab/authantication/sign_in.dart';
+import 'package:meal_hisab/model/user_model.dart';
+import 'package:meal_hisab/provaiders/authantication_provaider.dart';
+import 'package:provider/provider.dart';
+
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
-  GlobalKey<FormState> FormKey = GlobalKey<FormState>();
-
-  String pass = "";
+class _SignUpScreenState extends State<SignUpScreen> {
+  GlobalKey<FormState> fromKey = GlobalKey<FormState>();
+  String pass  = "";
+  String Fname = "";
   String email = "";
+  String phone = "";
 
 
-  void signIn(){
-    if(FormKey.currentState!.validate()){
 
+
+  // sign up here
+  void signUp()async{
+    if(fromKey.currentState!.validate()){
+      // debugPrint("Singup---------");
+      // debugPrint(pass);
+      // debugPrint(Fname);
+      // debugPrint(email);
+      // debugPrint(phone);
+      final authProvaider = context.read<AuthenticationProvider>();
+      fromKey.currentState!.save();
+      authProvaider.setLoading(val: true);
+      UserCredential? userCredential = await authProvaider.createUserWithEmailAndPassword(
+        email:email,
+        password: pass,
+        onFail: (ErrorMessage) {
+          showSnackber(context: context, content: ErrorMessage);
+        },
+
+      );
+      if(userCredential!=null){
+        debugPrint("account has created");
+        // account has created successfully
+        // now save user data to firestore
+        UserModel userModel = UserModel(
+          number: phone,
+          email: email,
+          fname: Fname, 
+          uId: userCredential.user!.uid, 
+          image: '', 
+          createdAt: '',
+        );
+        await authProvaider.saveUserDataToFireStore(
+          currentUser: userModel, 
+          fileImage: null, 
+          onSuccess: (){
+            showSnackber(context: context, content: "Account Creation Success.");
+            Navigator.pushReplacementNamed(context, Constants.logInScreen);
+          }, 
+          onFail: (message){
+            showSnackber(context: context, content: "$message");
+          }
+        );
+      }
+      authProvaider.setLoading(val: false);
+    }
+    else{
+      showSnackber(context: context, content: "please fill the all fields");
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final AuthenticationProvider authProvaider = context.watch<AuthenticationProvider>();
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -41,15 +97,15 @@ class _SignInScreenState extends State<SignInScreen> {
           ), 
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: 50,),
             Padding(
               padding: EdgeInsets.all(10), 
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  FadeInUp(duration: Duration(milliseconds: 1000),child: Text("SignIn", style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),)),
+                  FadeInUp(duration: Duration(milliseconds: 1000),child: Text("SignUp", style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),)),
                   SizedBox(height:10,),
                   FadeInUp(duration: Duration(milliseconds: 1200),child: Text("Welcome Back!",style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w400),)),
                 ],  
@@ -85,12 +141,38 @@ class _SignInScreenState extends State<SignInScreen> {
                               ],                  
                             ),
                             child: Form(
-                              key: FormKey,
+                              key: fromKey,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   
-                               
+                                  FadeInUp(
+                                    duration: Duration(milliseconds: 1600),
+                                    child: Container(
+                                      padding: EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        border: Border(bottom: BorderSide(color: Colors.grey.shade200))
+                                      ),
+                                      child: TextFormField(
+                                      onChanged: (value){
+                                        Fname = value.trim();
+                                      },
+                                      validator: (value) {
+                                        if(Fname.length<4){
+                                          return "Name should Contain at least 4 character";
+                                        }
+                                        return null;
+                                      },
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: InputDecoration(
+                                        label: Text("Full Name"),
+                                        border: InputBorder.none,
+                                                      
+                                      ),
+                                    ),
+                                    ),
+                                  ),
                               
                                   FadeInUp(
                                     duration: Duration(milliseconds: 1600),
@@ -104,12 +186,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                         email = value.trim();
                                       },
                                       validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Email is required';
-                                        }
-                                        final pattern = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-                                        if (!pattern.hasMatch(value)) {
-                                          return 'Enter a valid email';
+                                        if(!validateEmail(value.toString().trim())){
+                                          return "invalid Email";
                                         }
                                         return null;
                                       },
@@ -124,7 +202,35 @@ class _SignInScreenState extends State<SignInScreen> {
                                     ),
                                   ),
                               
-                                 
+                                  FadeInUp(
+                                    duration: Duration(milliseconds: 1600),
+                                    child: Container(
+                                      padding: EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        border: Border(bottom: BorderSide(color: Colors.grey.shade200))
+                                      ),
+                                      child:  TextFormField(
+                                      onChanged: (value){
+                                        phone = value.trim();
+                                      },
+                                      validator: (value) {
+                                        
+                    
+                                        if(!numberVAladator(value.toString().trim())){
+                                          return "Enter Valid Phone Number";
+                                        }
+                                        return null;
+                                      },
+                                      keyboardType: TextInputType.numberWithOptions(signed: true),
+                                      textInputAction: TextInputAction.next,
+                                      decoration: InputDecoration(
+                                        label: Text("Phone"),
+                                        border: InputBorder.none,
+                                        hintText: "Enter Your Phone With Country Code"
+                                      ),
+                                    ),
+                                    ),
+                                  ),
                               
                                   FadeInUp(
                                     duration: Duration(milliseconds: 1800),
@@ -161,41 +267,52 @@ class _SignInScreenState extends State<SignInScreen> {
                             height: 30,
                           ),
                           FadeInUp(duration: Duration(milliseconds:2200),
-                            child: SizedBox(
+                            child: authProvaider.isLoading?
+                              SizedBox(
+                                height: 50,
+                                width: 50,
+                                child: CircularProgressIndicator(),
+                              )
+                              :
+                              SizedBox(
                               width: 200,
-                              child: getButton(label: "Sign In", ontap: (){
-                                signIn();
+                              child: 
+                              getButton(label: "Sign Up", ontap: (){
+                                signUp();
                                 
                                 // Navigator.push(context, MaterialPageRoute(builder: (context)=>MemberHomeScreen()));
                                 },),
-                            ),
+                            )
+                          
                           ),
                           SizedBox(
                             height: 30,
                           ),
-                          // FadeInUp(duration:Duration(milliseconds:2400), child: Text("-Or-\nContinue With Socail Media-",textAlign: TextAlign.center,)),
-                          // SizedBox(
-                          //   height: 30,
-                          // ),
+                          FadeInUp(duration:Duration(milliseconds:2400), child: Text("-Or-\nContinue With Socail Media-",textAlign: TextAlign.center,)),
+                          SizedBox(
+                            height: 30,
+                          ),
                           // FadeInUp(
                           //   duration:Duration(milliseconds:2600),
                           //   child:Row(
                           //     mainAxisAlignment: MainAxisAlignment.center,
                           //     crossAxisAlignment: CrossAxisAlignment.center,
                           //     children: [
-                          //       getButton(label: "Facebook",icon: Icon(Icons.facebook),ontap:(){}),
+                          //       getButton(label: "Google", icon: Icon(FontAwesomeIcons.google), ontap:(){}),
                           //       SizedBox(
                           //         width: 20,
                           //       ),
-                          //       getButton(label: "Github", icon: Icon(Icons.facebook_outlined), ontap:(){}),
+                          //       getButton(label: "Facebook",icon: Icon(Icons.facebook),ontap:(){}),
                           //     ],
                           //   ),
                           // ),
                           SizedBox(
                             height: 20,
                           ),
-                          FadeInUp(duration:Duration(milliseconds:2800),child: HaveAccountWidget(label: "Don't Have An Account? ", acctionText: "SignUp", ontap: (){
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){return SignUpScreen();}));
+                          FadeInUp(
+                            duration:Duration(milliseconds:2800),
+                            child: HaveAccountWidget(label: "Don Have An Account? ", acctionText: "SignIn", ontap: (){
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){return SignInScreen();}));
                           })),
                         ],
                       ),
@@ -211,6 +328,7 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 }
 
+
 class HaveAccountWidget extends StatelessWidget {
   const HaveAccountWidget({
     super.key,
@@ -225,7 +343,7 @@ class HaveAccountWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      // mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(label??"" , style: TextStyle(color: Colors.blue, fontSize: 20),),
         TextButton(onPressed: ontap, child: Text(acctionText,style: TextStyle(color: Colors.orange, fontSize: 20),),),

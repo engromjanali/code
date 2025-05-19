@@ -3,7 +3,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:meal_hisab/constants.dart';
-import 'package:meal_hisab/helper_method.dart';
+import 'package:meal_hisab/helper/helper_method.dart';
 
 class BazerEntryScreen extends StatefulWidget {
   const BazerEntryScreen({super.key});

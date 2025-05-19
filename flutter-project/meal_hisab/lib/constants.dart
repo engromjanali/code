@@ -11,7 +11,26 @@ class Constants {
   // meal 
   static const String mealEntry = "Meal Entry";
   static const String mealList = "Meal List";
+  //authantication
+  static const String logInScreen = "login sereen";
+  static const String SignUpScreen = "signup sereen";
   
+
+  // userModel
+  static const String uId= "uId";
+  static const String fname = "fname";
+  static const String email = "email";
+  static const String image = "image";
+  static const String number = "number";
+  static const String createdAt = "createdAt";
+
+  //
+  static const String userImages = "userImages";
+  static const String users = "users";
+  static const String userModel ="userModel";
+
+  // 
+  static const String isSignedIn = "isSignedIn";
 
 }
 

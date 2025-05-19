@@ -117,3 +117,27 @@ void showSnackber({required BuildContext context, required String content}){
       ],
     ));
   }
+
+
+Widget getButton({required String label, required Function() ontap, Icon? icon}){
+  return MaterialButton(
+    onPressed: ontap,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(50),
+    ),
+    height: 50,
+    color: Colors.grey,
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text("$label", style: TextStyle(fontSize: 25),),
+        if (icon != null) ...[
+          SizedBox(
+            width: 10,
+          ),
+          icon,
+         ],
+      ],
+    ),);
+}
+   

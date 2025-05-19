@@ -85,3 +85,29 @@ Future<File?> cropImage(BuildContext context, String path)async{
   if(croppedFile!= null) return File(croppedFile.path);
   return null;
 }
+
+// TimeOfDay to String time
+String formatTimeOfDay(TimeOfDay time) {
+  final hour = time.hourOfPeriod == 0 ? 12 : time.hourOfPeriod;
+  final minute = time.minute.toString().padLeft(2, '0');
+  final period = time.period == DayPeriod.am ? 'AM' : 'PM';
+  return '$hour:$minute $period';
+}
+
+void add_in_bazer_List(List<Map<String, dynamic>> list, Map<String,dynamic> map){
+  list.add(map);
+}
+
+// email validator
+bool validateEmail(String email){
+  final pattern = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+  return pattern.hasMatch(email);
+}
+// phone number validator
+// ^(?:\+88|88)? → allows optional country code +88 or 88.
+// 01[2-9] → valid operator codes (e.g., 013 to 019).
+// \d{8}$ → exactly 8 digits after the operator code (total 11 digits).
+bool numberVAladator(String phone){
+  final pattern = RegExp(r'^(?:\+88|88)?01[2-9]\d{8}$');
+  return pattern.hasMatch(phone);
+}

@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:meal_hisab/authantication/Sign_up.dart';
+import 'package:meal_hisab/authantication/landing_screen.dart';
+import 'package:meal_hisab/authantication/sign_in.dart';
 import 'package:meal_hisab/constants.dart';
 import 'package:meal_hisab/firebase_options.dart';
 import 'package:meal_hisab/home.dart';
@@ -15,6 +19,7 @@ void main()async{
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  
   runApp(
     MultiProvider(
       providers: [
@@ -53,9 +58,12 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       // home:  HomeScreen(),
-      initialRoute: Constants.HomeScreen,
+      initialRoute: Constants.LandingScreen,
       routes: {  
         Constants.HomeScreen : (context) => const HomeScreen(),
+        Constants.logInScreen:(context)=> const SignInScreen(),
+        Constants.SignUpScreen:(context)=> const SignUpScreen(),
+        Constants.LandingScreen:(context)=> const LandingScreen(),
       },
     );
   }
