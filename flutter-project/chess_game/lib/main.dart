@@ -4,7 +4,6 @@ import 'package:chess_game/authentication/landing_acreen.dart';
 import 'package:chess_game/constants.dart';
 import 'package:chess_game/main_screens/about_screen.dart';
 import 'package:chess_game/main_screens/game_screen.dart';
-import 'package:chess_game/main_screens/game_start_up_screen.dart';
 import 'package:chess_game/main_screens/game_time_screen.dart';
 import 'package:chess_game/main_screens/home_screen.dart';
 import 'package:chess_game/main_screens/setting_screen.dart';

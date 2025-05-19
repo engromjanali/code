@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:meal_hisab/helper_method.dart';
-import 'package:meal_hisab/ui_helper/ui_helper.dart';
+import 'package:meal_hisab/helper/ui_helper.dart';
 
 class MealEntryScreen extends StatefulWidget {
   const MealEntryScreen({super.key});

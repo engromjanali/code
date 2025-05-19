@@ -1,10 +1,7 @@
-import 'dart:ffi';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:meal_hisab/bazer/bazer_list.dart';
 import 'package:meal_hisab/bazer/bazer_screen.dart';
 import 'package:meal_hisab/constants.dart';
 import 'package:meal_hisab/diposite/diposite.dart';

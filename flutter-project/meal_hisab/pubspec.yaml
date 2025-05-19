@@ -38,6 +38,20 @@ dependencies:
   animate_do: ^4.2.0
   dropdown_search: ^5.0.6 # for dropdpwn search opetion
   intl: ^0.20.2 # date format
+  provider: ^6.1.5 # for state management
+
+  # "firebase_core" for access firebase, it requird for all firebase plagin, it's ready firebase for usage.
+  firebase_core: ^3.12.1 
+  cloud_firestore: ^5.6.7 #database
+  firebase_storage: ^12.4.4 # storage
+  firebase_auth: ^5.5.1 # authantication
+
+  #crope image
+  image_cropper: ^9.1.0
+  #pick image
+  image_picker: ^1.1.2
+  shared_preferences: ^2.5.2
+  # uuid: ^4.5.1
 
 dev_dependencies:
   flutter_test:

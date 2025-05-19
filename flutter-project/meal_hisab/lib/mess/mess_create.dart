@@ -1,6 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:meal_hisab/ui_helper/ui_helper.dart';
+import 'package:meal_hisab/helper/ui_helper.dart';
 
 class MessCreate extends StatefulWidget {
   const MessCreate({super.key});

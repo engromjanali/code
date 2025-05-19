@@ -1,0 +1,25 @@
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  // default it’s will be called but even then we should call it .
+  await FirebaseFirestore.instance.enablePersistence();
+
+  runApp(MyApp());
+}
+
+ // if we read those data for one time then the last loaded data will be cashed in local store. 
+// data get from : 
+FirebaseFirestore.instance
+  .collection('users')
+  .doc('abc123')
+  // শুধু ক্যাশ থেকে রিড
+  .get(GetOptions(source: Source.cache)) 
+  // for only server
+  .get(GetOptions(source: Source.server))
+  // default : at first try in server of get timeout then try for cash
+  .get(GetOptions(source: Source.serverAndCache))
+  .then((doc) {
+    print("Offline Data: ${doc.data()}");
+  });
+

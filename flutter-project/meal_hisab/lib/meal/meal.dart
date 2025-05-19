@@ -4,7 +4,7 @@ import 'package:meal_hisab/constants.dart';
 import 'package:meal_hisab/home.dart';
 import 'package:meal_hisab/meal/group_meal_list.dart';
 import 'package:meal_hisab/meal/meal_entry.dart';
-import 'package:meal_hisab/ui_helper/ui_helper.dart';
+import 'package:meal_hisab/helper/ui_helper.dart';
 
 class MealScreen extends StatefulWidget {
   const MealScreen({super.key});

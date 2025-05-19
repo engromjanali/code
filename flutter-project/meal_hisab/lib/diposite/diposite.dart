@@ -4,7 +4,7 @@ import 'package:meal_hisab/constants.dart';
 import 'package:meal_hisab/Diposite/add_diposite.dart';
 import 'package:meal_hisab/diposite/history_of_diposite.dart';
 import 'package:meal_hisab/diposite/refund.dart';
-import 'package:meal_hisab/ui_helper/ui_helper.dart';
+import 'package:meal_hisab/helper/ui_helper.dart';
 
 class DipositeScreen extends StatefulWidget {
   const DipositeScreen({super.key});

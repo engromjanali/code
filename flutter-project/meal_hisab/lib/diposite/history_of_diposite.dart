@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:meal_hisab/constants.dart';
-import 'package:meal_hisab/ui_helper/ui_helper.dart';
+import 'package:meal_hisab/helper/ui_helper.dart';
 
 class DipositeHistory extends StatefulWidget {
   const DipositeHistory({super.key});
