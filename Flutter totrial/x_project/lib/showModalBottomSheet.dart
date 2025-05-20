@@ -17,13 +17,17 @@ class _xxxState extends State<xxx> {
                 builder: (BuildContext content){
                   return StatefulBuilder(builder: (BuildContext context, StateSetter setModalState){
                     return Container(
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom,// by this padding we are fixing the keyboard ovarlapping, when keyboard open it return keyboard size. it's will be valid for snackber, etc also
+                      ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
                     // color: Colors.green,
                     ),
-                    height: 600,
+                    height: 600,//if we use here we get fixed height otherwise we get taken height by child
                     width: double.infinity,
-                    child: Column(
+                    child: SingleChildScrollView(// we always use it must
+                      child: Column(
                       children: [
                         SizedBox(
                           height: 20,
@@ -43,6 +47,7 @@ class _xxxState extends State<xxx> {
                               suffixIcon:
                               IconButton(
                                 onPressed: (){ 
+                                  // in buttomsheet for any kind of operations like keyboard open/close, resize, the buttomsheet will be rebuild mind it.
                                   setModalState(() { // the setModalState work in "showModalBottomSheet"
                                     setState(() { // the setstate work in main page
                                       
@@ -65,6 +70,7 @@ class _xxxState extends State<xxx> {
                         )
                       ],
                     ),
+                    )
                   );
                   });
               });

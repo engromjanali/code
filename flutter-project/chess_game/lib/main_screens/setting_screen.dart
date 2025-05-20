@@ -1,4 +1,5 @@
 import 'package:chess_game/providers/authantication_provider.dart';
+import 'package:chess_game/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,6 +30,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   .signOutUser()
                   .whenComplete(() {
                 // navigate to the login screen
+                showSnackBar(context: context, content: "User Signout Success");
                 Navigator.pushNamedAndRemoveUntil(
                     context, Constants.signInScreen, (route) => false);
               });

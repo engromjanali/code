@@ -1,0 +1,1 @@
+/Users/romjanali/Documents/programming/flutter-project/bmi/build/app/intermediates/cxx/RelWithDebInfo/2g1f3h1g/obj/arm64-v8a

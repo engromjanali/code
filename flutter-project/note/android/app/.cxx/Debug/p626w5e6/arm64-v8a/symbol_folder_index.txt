@@ -1,0 +1,1 @@
+/Users/romjanali/Documents/programming/flutter-project/note/build/app/intermediates/cxx/Debug/p626w5e6/obj/arm64-v8a

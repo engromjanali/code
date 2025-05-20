@@ -1,0 +1,2 @@
+/Users/romjanali/Documents/programming/flutter-project/note/android/app/.cxx/RelWithDebInfo/5u4h4v1q/x86_64/CMakeFiles/edit_cache.dir
+/Users/romjanali/Documents/programming/flutter-project/note/android/app/.cxx/RelWithDebInfo/5u4h4v1q/x86_64/CMakeFiles/rebuild_cache.dir

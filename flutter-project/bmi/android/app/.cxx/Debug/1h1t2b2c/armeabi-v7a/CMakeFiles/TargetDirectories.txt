@@ -1,0 +1,2 @@
+/Users/romjanali/Documents/programming/flutter-project/bmi/android/app/.cxx/Debug/1h1t2b2c/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/romjanali/Documents/programming/flutter-project/bmi/android/app/.cxx/Debug/1h1t2b2c/armeabi-v7a/CMakeFiles/rebuild_cache.dir

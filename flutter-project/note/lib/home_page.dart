@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.grey,
         title: Text('Notes'),
       ),
 
@@ -38,49 +39,64 @@ class _HomePageState extends State<HomePage> {
           ? ListView.builder(
           itemCount: allNotes.length,
           itemBuilder: (_, index) {
-            return ListTile(
-              // leading: Text('${index+1}'),
-              leading: Text('${allNotes[index][DBHelper.noteNo]}'),
-              title: Text(allNotes[index][DBHelper.noteTitle]),
-              subtitle: Text(allNotes[index][DBHelper.noteDesc]),
-              trailing: SizedBox(
-                width: 50,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("",style: TextStyle(fontSize: 12),),
-                    InkWell(
-                        onTap: () {
-                          print(DBHelper.noteNo);
-                          // print(allNotes[index][DBHelper.noteNo]+DBHelper.noteNo);
-                          showModalBottomSheet(
-                              context: context,
-                              builder: (context) {
-                                titleController.text = allNotes[index]
-                                [DBHelper.noteTitle];
-                                descController.text = allNotes[index]
-                                [DBHelper.noteDesc];
-                                return getBottomSheetWidget(
-                                    isUpdate: true,
-                                    sno: allNotes[index]
-                                    [DBHelper.noteNo],
-                                );
-                              });
+            return Card(
+              color: Colors.amber.shade100,
+              child: ListTile(
+                // leading: Text('${index+1}'),
+                leading: Text('${allNotes[index][DBHelper.noteNo]}'),
+                title: Text(allNotes[index][DBHelper.noteTitle]),
+                subtitle: Text(allNotes[index][DBHelper.noteDesc]),
+                trailing: SizedBox(
+                  width: 50,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("",style: TextStyle(fontSize: 12),),
+                      InkWell(
+                          onTap: () {
+                            titleController.text = allNotes[index]
+                            [DBHelper.noteTitle];
+                            descController.text = allNotes[index]
+                            [DBHelper.noteDesc];
+                            print(DBHelper.noteNo);
+                            // print(allNotes[index][DBHelper.noteNo]+DBHelper.noteNo);
+                            showModalBottomSheet(
+                              isScrollControlled: true,
+                                context: context,
+                                builder: (context) {
+                                  return Container(
+                                    padding: EdgeInsets.only(
+                                    bottom: MediaQuery.of(context).viewInsets.bottom, // return keyboard size if open, and it's valid for all widget what like keyboard 
+                                  ),
+                                    // height: 600, // if i use size here height we get fix height otherwise we gat what size has taken by child
+                                    child: SingleChildScrollView(
+                                      child: getBottomSheetWidget(
+                                          isUpdate: true,
+                                          sno: allNotes[index]
+                                          [DBHelper.noteNo],
+                                      ),
+                                    ),
+                                  );
+                                });
+                          },
+                          child: Icon(Icons.edit)),
+                      InkWell(
+                        onTap: ()async{
+                          bool confirm =await showConfirmDialog(context: context, title: "Do you want to delete This note?");
+                          if(confirm){
+                            bool check = await dbRef!.deleteNote(sl_no: allNotes[index][DBHelper.noteNo]);
+                            if(check){
+                              getNotes();
+                            }
+                          }
                         },
-                        child: Icon(Icons.edit)),
-                    InkWell(
-                      onTap: ()async{
-                        bool check = await dbRef!.deleteNote(sl_no: allNotes[index][DBHelper.noteNo]);
-                        if(check){
-                          getNotes();
-                        }
-                      },
-                      child: Icon(
-                        Icons.delete,
-                        color: Colors.red,
+                        child: Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             );
@@ -92,13 +108,22 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           /// note to be added from here
+          titleController.clear();
+          descController.clear();
           showModalBottomSheet(
-              context: context,
-              builder: (context) {
-                titleController.clear();
-                descController.clear();
-                return getBottomSheetWidget();
-              });
+  isScrollControlled: true,
+  context: context,
+  builder: (context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom,// by this padding we are fixing the keyboard ovarlapping, when keyboard open it return keyboard size. it's will be valid for snackber, etc
+      ),
+      child: SingleChildScrollView(
+        child: getBottomSheetWidget(),
+      ),
+    );
+  },
+);
         },
         child: Icon(Icons.add),
       ),
@@ -111,6 +136,9 @@ class _HomePageState extends State<HomePage> {
       width: double.infinity,
       child: Column(
         children: [
+          // SizedBox(
+          //   height: 777,
+          // ),
           Text(
             isUpdate ? 'Update Note' : 'Add Note',
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
@@ -120,7 +148,9 @@ class _HomePageState extends State<HomePage> {
           ),
           TextField(
             controller: titleController,
+            enabled: true,
             decoration: InputDecoration(
+              
                 hintText: "Enter title here",
                 label: Text('Title'),
                 focusedBorder: OutlineInputBorder(
@@ -128,7 +158,8 @@ class _HomePageState extends State<HomePage> {
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(11),
-                )),
+                )
+              ),
           ),
           SizedBox(
             height: 11,
@@ -201,3 +232,26 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
+
+
+ Future<bool> showConfirmDialog({required BuildContext context, required String title}) async{
+    bool? res =  await showDialog(context: context, builder: (context) => AlertDialog(
+      title: Text(title),
+      actions: [
+        TextButton(
+          onPressed: (){
+            Navigator.pop(context, false);
+          },
+          child:Text("No"),
+        ),
+        TextButton(
+          onPressed: (){
+            Navigator.pop(context, true);
+          },
+          child:Text("Yes"),
+        ),
+      ],
+    ));
+    return res?? false;
+  }
