@@ -31,6 +31,8 @@ class AuthenticationProvider extends ChangeNotifier {
 
   // set -------------------
 
+
+
   Future<void> setSignedIn ({required bool val, })async{
     SharedPreferences sharedPreferences =await SharedPreferences.getInstance();
     _isSignedIn = val;
@@ -47,8 +49,43 @@ class AuthenticationProvider extends ChangeNotifier {
 
 
 
-
   // function here ---------------------------------------
+  
+
+  //
+  Future<void> sessionValid({required Function(bool) onSuccess,required Function(String) onFail})async{
+    try {
+      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      String StringUserModel =  await sharedPreferences.getString(Constants.userModel).toString();
+      UserModel userM = UserModel.fromMap(jsonDecode(StringUserModel));
+
+      onSuccess(userM.sessionKey == userModel!.sessionKey);
+      print(userModel!.sessionKey);
+      print(userM.sessionKey);
+    } catch (e) {
+      onFail(e.toString()+"0002");
+    }
+  }
+
+  // set session key to firestore
+  Future<void> setSessionKey({required Function(String) onFail,Function()? onSuccess})async{
+    try {
+      firebaseFirestore 
+        .collection(Constants.users)
+        .doc(firebaseAuth.currentUser!.uid)
+        .set(
+          {
+            Constants.sessionKey : DateTime.now().millisecondsSinceEpoch.toString()
+          },
+          SetOptions(
+            merge: true
+          ),
+        );
+        onSuccess!=null? onSuccess() :(){} ;
+    } catch (e) {
+      onFail(e.toString());
+    }
+  }
 
   //check is Sign In
   Future<bool> checkIsSignedIn()async{
@@ -79,8 +116,6 @@ class AuthenticationProvider extends ChangeNotifier {
     // way 2
     DocumentSnapshot? documentSnapshot;
     try{
-      print("getUserProfileData");
-      debugPrint(uid);
       documentSnapshot = await firebaseFirestore
         .collection(Constants.users)
         .doc(firebaseAuth.currentUser!.uid) //"firebaseAuth.currentUser" it's stored local memory (in rom). so we can access it untill cashed was not cleared or logout.
@@ -168,7 +203,7 @@ class AuthenticationProvider extends ChangeNotifier {
       // save data to firestore
       await firebaseFirestore
         .collection(Constants.users)
-        .doc(uid)
+        .doc(firebaseAuth.currentUser!.uid)
         .set(currentUser.toMap());
 
       onSuccess();

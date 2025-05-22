@@ -24,9 +24,11 @@ class _SignInScreenState extends State<SignInScreen> {
   
 
   void signIn()async{
+    
     if(FormKey.currentState!.validate()){
       FormKey.currentState!.save();
       final AuthenticationProvider authProvaider = context.read<AuthenticationProvider>();
+      print(authProvaider.userModel!.sessionKey);
       authProvaider.setLoading(val: true);
       UserCredential? userCredential = await authProvaider.signInWithEmailAndPassword(
         email: email, 
@@ -38,21 +40,37 @@ class _SignInScreenState extends State<SignInScreen> {
       );
       if(userCredential!=null){
         //user valid, now try to fatch user data
-        String uid = userCredential.user!.uid;
-        bool isSuccess = await authProvaider.getUserProfileData(onFail: (message){
-          showSnackber(context: context, content: "somthing Wrong\n try again!");
-        });
-        // 
+        bool isSuccess = false;
+        // get
+        await authProvaider.setSessionKey(
+          onSuccess: (){
+            isSuccess = true;
+          },
+          onFail: (message){
+            isSuccess =false;
+            showSnackber(context: context, content: "User Data fatch Error");
+          }
+        );
         if(isSuccess){
-          // get user data, 
+          isSuccess = await authProvaider.getUserProfileData(onFail: (message){
+            showSnackber(context: context, content: "somthing Wrong\n try again!");
+          });
+        }
+
+        
+        if(isSuccess){
+        // get user data, 
           isSuccess = await authProvaider.saveUserDataToSharedPref();
         }
+
         if(isSuccess){
+        
           // now try to save user data to local store
           await authProvaider.setSignedIn(val: true);
           showSnackber(context: context, content: "Sign In Success");
           Navigator.pushReplacementNamed(context, Constants.LandingScreen);
         }
+        
       
       }
       else{
@@ -143,10 +161,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                         email = value.trim();
                                       },
                                       validator: (value) {
-                                        if(!validateEmail(value.toString().trim())){
-                                          return "Ennter a valid Email";
-                                        }
-                                        return null;
+                                        return emailValidator(value.toString().trim());
                                       },
                                       keyboardType: TextInputType.text,
                                       textInputAction: TextInputAction.next,

@@ -7,6 +7,7 @@ class UserModel {
   String image;
   String number;
   String createdAt;
+  String sessionKey;
 
   UserModel({
     required this.uId,
@@ -14,7 +15,9 @@ class UserModel {
     required this.email,
     required this.image,
     required this.number,
-    required this.createdAt
+    required this.createdAt,
+    required this.sessionKey,
+
   });
 
   Map<String, dynamic>toMap(){
@@ -25,6 +28,7 @@ class UserModel {
       Constants.image  : image,
       Constants.number  : number,
       Constants.createdAt  : createdAt,
+      Constants.sessionKey  : sessionKey,
     };
   }
 
@@ -36,6 +40,7 @@ class UserModel {
       image: data[Constants.image]??"", 
       number: data[Constants.number]??"",
       createdAt: data[Constants.createdAt]??"",
+      sessionKey: data[Constants.sessionKey]??"",
     );
   }
 }

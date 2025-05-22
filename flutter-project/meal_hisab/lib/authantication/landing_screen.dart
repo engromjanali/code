@@ -28,19 +28,39 @@ class _LandingScreenState extends State<LandingScreen> {
       try{
         // get user data from fireStore
         print("Aaaaaaaaaaaaaaaaaaaaaaa");
-        await authProvider.getUserProfileData(onFail: (message) {  showSnackber(context: context, content: message.toString());}, 
+        await authProvider.getUserProfileData(onFail: (message) {  
+          showSnackber(context: context, content: message.toString());
+        });
 
+        await authProvider.sessionValid(
+          onSuccess:(res)async{
+            if(res){
+               // set user data to shared preference
+            print("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+            await authProvider.saveUserDataToSharedPref();
+
+            //navigate to home screen
+            // await Future.delayed(Duration(seconds: 5));
+            print("ccccccccccccccccccccccccccccc");
+            print(authProvider.userModel!.email);
+            navigate(isSignedIn: true);
+            }
+            else{
+              // perform an opration from here for clear cache 
+
+              // Navigate to sigin screen
+              showSnackber(context: context, content: "session has closed by the user");
+              navigate(isSignedIn: false);
+            }
+          },
+          onFail: (message){
+            showSnackber(context: context, content: "Somthing Wrong-0001");
+            // Navigate to sigin screen
+            navigate(isSignedIn: false);
+          }
         );
 
-        // get user data from shared preference
-        print("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
-        await authProvider.saveUserDataToSharedPref();
 
-        //navigate to home screen
-        await Future.delayed(Duration(seconds: 5));
-        print("ccccccccccccccccccccccccccccc");
-        print(authProvider.userModel!.email);
-        navigate(isSignedIn: true);
 
       }catch(e){
         print("xyz@${e.toString()}");

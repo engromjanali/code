@@ -23,6 +23,7 @@ class Constants {
   static const String image = "image";
   static const String number = "number";
   static const String createdAt = "createdAt";
+  static const String sessionKey = "sessionKey";
 
   //
   static const String userImages = "userImages";
@@ -31,6 +32,20 @@ class Constants {
 
   // 
   static const String isSignedIn = "isSignedIn";
+
+  // mess model
+  static const String mess = "mess";
+  static const String messId="messId";
+  static const String messName="messName";
+  static const String messAddress="messAddress";
+  static const String messAuthorityId="messAuthorityId";
+  static const String messAuthorityId2nd="messAuthorityId2nd";
+  static const String messAuthorityName="messAuthorityName";
+  static const String messAuthorityName2nd="messAuthorityName2nd";
+  static const String messAuthorityNumber="messAuthorityNumber";
+  static const String messAuthorityEmail="messAuthorityEmail";
+
+  //
 
 }
 

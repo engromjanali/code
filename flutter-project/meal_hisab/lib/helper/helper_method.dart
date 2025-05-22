@@ -99,15 +99,50 @@ void add_in_bazer_List(List<Map<String, dynamic>> list, Map<String,dynamic> map)
 }
 
 // email validator
-bool validateEmail(String email){
+String? emailValidator(String email){
+  email = email.trim();
+  if(email.isEmpty) return "Email Required";
   final pattern = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-  return pattern.hasMatch(email);
+  return pattern.hasMatch(email)?null : "Invalid Email";
 }
+
 // phone number validator
 // ^(?:\+88|88)? → allows optional country code +88 or 88.
 // 01[2-9] → valid operator codes (e.g., 013 to 019).
 // \d{8}$ → exactly 8 digits after the operator code (total 11 digits).
-bool numberVAladator(String phone){
+String? numberVAladator(String phone){
+  phone = phone.trim();
+  if(phone.isEmpty) return "Number Required";
   final pattern = RegExp(r'^(?:\+88|88)?01[2-9]\d{8}$');
-  return pattern.hasMatch(phone);
+  return pattern.hasMatch(phone)?null:"Invalid Phone";
+}
+
+
+String? nameValidator(String value) {
+  value = value.trim();
+  if (value.trim().isEmpty) {
+    return 'Name is required';
+  }
+  if(value.length<4){
+    return "Name shouldcontain  at least 4 character!";
+  }
+  final nameRegExp = RegExp(r'^[a-zA-Z\s]+$');
+
+  if (!nameRegExp.hasMatch(value.trim())) {
+    return 'Name must contain only letters and spaces';
+  }
+
+  return null; // valid
+}
+
+String? addressValidator(String value) {
+  value = value.trim();
+  if (value.trim().isEmpty) {
+    return 'Address is required';
+  }
+  if(value.length<10){
+    return "Address should contain at least 10 character!";
+  }
+
+  return null; // valid
 }

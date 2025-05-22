@@ -191,7 +191,7 @@ class _HomePageState extends State<HomePage> {
                       onPressed: () async {
                         var title = titleController.text;
                         var desc = descController.text;
-                        if (title.isNotEmpty && desc.isNotEmpty) {
+                        if (title.isNotEmpty || desc.isNotEmpty) {
                           bool check = isUpdate
                               ? await dbRef!.updateNote(
                               title: title, desc: desc, sl_no: sno)

@@ -46,6 +46,8 @@ dependencies:
   firebase_storage: ^12.4.4 # storage
   firebase_auth: ^5.5.1 # authantication
 
+  connectivity_plus: ^6.1.4 #for checking network status. 
+
   #crope image
   image_cropper: ^9.1.0
   #pick image

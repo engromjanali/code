@@ -8,6 +8,7 @@ import 'package:meal_hisab/constants.dart';
 import 'package:meal_hisab/firebase_options.dart';
 import 'package:meal_hisab/home.dart';
 import 'package:meal_hisab/provaiders/authantication_provaider.dart';
+import 'package:meal_hisab/provaiders/service_provaider.dart';
 import 'package:provider/provider.dart';
 
 // void main() {
@@ -19,12 +20,12 @@ void main()async{
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  
   runApp(
     MultiProvider(
       providers: [
         // add all provaider here
-        ChangeNotifierProvider(create: (_)=>AuthenticationProvider()),
+        ChangeNotifierProvider(create: (_) => AuthenticationProvider()),
+        ChangeNotifierProvider(create: (_) =>  ServiceProvaider()),
       ],
       child: const MyApp(),
     )

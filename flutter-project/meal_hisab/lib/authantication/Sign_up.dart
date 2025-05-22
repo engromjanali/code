@@ -19,6 +19,7 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  
   GlobalKey<FormState> fromKey = GlobalKey<FormState>();
   String pass  = "";
   String Fname = "";
@@ -58,6 +59,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           uId: userCredential.user!.uid, 
           image: '', 
           createdAt: '',
+          sessionKey:" ",
         );
         await authProvaider.saveUserDataToFireStore(
           currentUser: userModel, 
@@ -186,10 +188,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         email = value.trim();
                                       },
                                       validator: (value) {
-                                        if(!validateEmail(value.toString().trim())){
-                                          return "invalid Email";
-                                        }
-                                        return null;
+                                        return emailValidator(value.toString().trim());
                                       },
                                       keyboardType: TextInputType.text,
                                       textInputAction: TextInputAction.next,
@@ -214,12 +213,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         phone = value.trim();
                                       },
                                       validator: (value) {
-                                        
-                    
-                                        if(!numberVAladator(value.toString().trim())){
-                                          return "Enter Valid Phone Number";
-                                        }
-                                        return null;
+                                        return numberVAladator(value.toString());
                                       },
                                       keyboardType: TextInputType.numberWithOptions(signed: true),
                                       textInputAction: TextInputAction.next,
