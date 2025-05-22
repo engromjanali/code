@@ -1,2 +1,0 @@
-C:/romjan_one_drive/OneDrive/programming/Flutter Project/x_project/android/app/.cxx/Debug/4fqtx522/armeabi-v7a/CMakeFiles/edit_cache.dir
-C:/romjan_one_drive/OneDrive/programming/Flutter Project/x_project/android/app/.cxx/Debug/4fqtx522/armeabi-v7a/CMakeFiles/rebuild_cache.dir

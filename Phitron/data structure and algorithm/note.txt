@@ -1,4 +1,0 @@
-vector is most useable for only 2D string.  
-we can see capacity of vector.
-we can't see capacity of list like vector.
-initial value of "List" is '0'.

@@ -1,8 +1,0 @@
-# the module-22.5 
-https://codeforces.com/group/MWSDmqGsZm/contest/223339/problem/U
-https://codeforces.com/group/MWSDmqGsZm/contest/223339/problem/V
-https://codeforces.com/group/MWSDmqGsZm/contest/223339/problem/W
-https://codeforces.com/group/MWSDmqGsZm/contest/223339/problem/X
-https://leetcode.com/problems/min-cost-climbing-stairs/description/
-https://leetcode.com/problems/house-robber/description/
-https://www.spoj.com/problems/FARIDA/en/

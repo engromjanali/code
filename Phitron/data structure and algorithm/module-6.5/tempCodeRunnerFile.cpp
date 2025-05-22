@@ -1,1 +1,0 @@
-out<<temp->val<<" "<<temp->next->val<<endl;

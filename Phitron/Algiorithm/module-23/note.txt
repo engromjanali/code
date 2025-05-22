@@ -1,3 +1,0 @@
-23-4 Count Zero in Subset Sum
-we have to startd from [1][0].
-otherwise has an exception.

@@ -1,4 +1,0 @@
-Problem Links:
-
-CSES - Building Roads : https://cses.fi/problemset/task/1666
-CSES - Road Construction : https://cses.fi/problemset/task/1676

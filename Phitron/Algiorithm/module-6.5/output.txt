@@ -1,2 +1,0 @@
-max height = 3
-height of 1 = 3
