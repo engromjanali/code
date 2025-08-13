@@ -10,8 +10,8 @@ class DepositProvider extends ChangeNotifier{
 
   bool _isLoading = false;
   DepositModel? _depositModel;
-  double _totalDeposit = -1;
-  double _totalDepositOfMess = -1;
+  double _totalDeposit = 0;
+  double _totalDepositOfMess = 0;
 
   //set -------------
 
@@ -41,6 +41,8 @@ class DepositProvider extends ChangeNotifier{
 
   void reset(){
     _depositModel = null;
+    _totalDeposit = 0;
+    _totalDepositOfMess = 0;
   }
 
   // function -----------
@@ -197,7 +199,7 @@ class DepositProvider extends ChangeNotifier{
 
       onSuccess!=null? onSuccess():(){};
       _isLoading = false;
-      return list;
+      return list?.reversed.toList();
     
     } catch (e) {
       onFail(e.toString());
@@ -210,6 +212,7 @@ class DepositProvider extends ChangeNotifier{
   // add a deposit transaction to database 
   Future<void> addADepositTransaction({required DepositModel depositModel, required String uId,  required String messId,required String mealSessionId,required Function(String) onFail, Function()? onSuccess,})async{
     final batch = firebaseFirestore.batch();
+    setIsLoading(value: true);
         try {
 
           // add member diposite transaction
@@ -266,11 +269,13 @@ class DepositProvider extends ChangeNotifier{
         } catch (e) {
           onFail(e.toString());
         } 
+        setIsLoading(value: false);
   }
 
   // update a deposit transaction to database 
   Future<void> updateADepositTransaction({required DepositModel depositModel, required String uId,required double extraAmount, required String messId,required String mealSessionId,required Function(String) onFail, Function()? onSuccess,})async{
     final batch = firebaseFirestore.batch();
+    setIsLoading(value: true);
         try {
           
           // add new data data 
@@ -335,6 +340,7 @@ class DepositProvider extends ChangeNotifier{
         } catch (e) {
           onFail(e.toString());
         } 
+        setIsLoading(value: false);
   }
 
   // delete a deposit transaction to database 

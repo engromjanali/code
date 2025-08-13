@@ -27,6 +27,8 @@ class MessProvider extends ChangeNotifier {
   bool _isLoading = false;
   MessModel? _messModel;
 
+  int limit = 50;
+
   MessProvider(){
     initConnectivity();
     _connectivitySubscription = _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
@@ -106,20 +108,24 @@ class MessProvider extends ChangeNotifier {
   
 
   void listenToMess({required String messId}) {
-    _messSubscription?.cancel(); // পুরানো subscription থাকলে বন্ধ করো
+ try {
+      _messSubscription?.cancel(); // পুরানো subscription থাকলে বন্ধ করো
 
-    _messSubscription = firebaseFirestore
-        .collection(Constants.mess)
-        .doc(messId)
-        .snapshots()
-        .listen((snapshot) {
-      if (snapshot.exists) {
-        final data = snapshot.data() as Map<String, dynamic>;
-        _messModel = MessModel.fromMap(data);
-        notifyListeners();
-        debugPrint("listenToMess-1" +"notifyListener called");
-      }
-    });
+      _messSubscription = firebaseFirestore
+          .collection(Constants.mess)
+          .doc(messId)
+          .snapshots()
+          .listen((snapshot) {
+        if (snapshot.exists) {
+          final data = snapshot.data() as Map<String, dynamic>;
+          _messModel = MessModel.fromMap(data);
+          notifyListeners();
+          debugPrint("listenToMess-1" +"notifyListener called");
+        }
+      });
+    } catch (e) {
+      
+    }
   }
 
  
@@ -314,6 +320,30 @@ class MessProvider extends ChangeNotifier {
   //   }
   // }
 
+
+  Future<void> fun()async{
+    final x =await firebaseFirestore.
+      collection(Constants.mess)
+      .doc("1751809113692")
+      // .doc(getMessModel!.messId)
+      .collection(Constants.mealSessionList)
+      .doc(getMessModel!.mealSessionId)
+      .get();
+    var messModel  =  MessModel(messId: "1751809113692",messName: "Higher Society", messAddress: "messAddress", menagerId: "1751626583875", menagerName: "md romjan ali", menagerPhone: "menagerPhone", menagerEmail: "menagerEmail", actMenagerId: "actMenagerId", actMenagerName: "actMenagerName", mealSessionId: "mealSessionId", messMemberList: []);
+    await firebaseFirestore.
+      collection(Constants.mess)
+      // .doc(getMessModel!.messId)
+      .doc("1751809113692")
+      .set(
+        // messModel.toMap()
+        {
+
+        Constants.messMemberList: ((x.data() as Map<String,dynamic>)[Constants.messMemberList]),
+        },
+        SetOptions(merge: true),
+      );
+  }
+
   // remove from Mess- Id To Member Profile / leave
   Future<void> leaveFromMess({required Function(String) onFail, Function()? onSuccess,required String memberUid, required String messId})async{
      final batch = firebaseFirestore.batch();
@@ -345,13 +375,13 @@ class MessProvider extends ChangeNotifier {
 
 
       await batch.commit();
+      await Future.delayed(Duration(seconds: 1));
       _messModel= null;
-      notifyListeners();
       onSuccess?.call();
-
     } catch(e){
       onFail(e.toString());
     }
+    setIsloading(false);
   }
 
   // delete  Mess doc from mess collection
@@ -369,7 +399,7 @@ class MessProvider extends ChangeNotifier {
         .count()
         .get();
           
-      int i = aQuerySnapshot.count!;
+      int i = aQuerySnapshot.count??0;
 
       while(i>0){
         try {
@@ -377,7 +407,7 @@ class MessProvider extends ChangeNotifier {
             .collection(Constants.fund)
             .doc(messId)
             .collection(Constants.listOfFundTnx)
-            .limit(800)
+            .limit(limit)
             .get();
 
           await Future.wait(qSnapshot.docs.map((x) => x.reference.delete()));
@@ -401,7 +431,7 @@ class MessProvider extends ChangeNotifier {
         .count()
         .get();
           
-      i = aQuerySnapshonMealSession.count!;
+      i = aQuerySnapshonMealSession.count??0;
 
       while(i>0){
         try {
@@ -409,11 +439,11 @@ class MessProvider extends ChangeNotifier {
             .collection(Constants.mess)
             .doc(messId)
             .collection(Constants.mealSessionList)
-            .limit(800)
+            .limit(limit)
             .get();
 
           await Future.wait(aQuerySnapshonMealSession.docs.map((x) => x.reference.delete()));
-          await Future.delayed(Duration(milliseconds: 1100));
+          await Future.delayed(Duration(milliseconds: 1100));// to ignore firebase time limit.
           i-=aQuerySnapshonMealSession.docs.length;
           if(aQuerySnapshonMealSession.docs.isEmpty) break;
         } catch (e) {
@@ -433,8 +463,7 @@ class MessProvider extends ChangeNotifier {
         .count()
         .get();
 
-        i=0;  
-        i = aQuerySnapshot2.count!;
+        i = aQuerySnapshot2.count??0;
 
       while(i>0){
         try {
@@ -442,11 +471,11 @@ class MessProvider extends ChangeNotifier {
             .collection(Constants.notice)
             .doc(messId)
             .collection(Constants.listOfNotice)
-            .limit(800)
+            .limit(limit)
             .get();
 
           await Future.wait(qSnapshot.docs.map((x) => x.reference.delete()));
-          await Future.delayed(Duration(milliseconds: 1100));
+          await Future.delayed(Duration(milliseconds: 1050));
           i-=qSnapshot.docs.length;
           if(qSnapshot.docs.isEmpty) break;
         } catch (e) {
@@ -465,8 +494,7 @@ class MessProvider extends ChangeNotifier {
         .count()
         .get();
 
-        i=0;  
-        i = aQuerySnapshot3.count!;
+        i = aQuerySnapshot3.count??0;
 
       while(i>0){
         try {
@@ -474,7 +502,7 @@ class MessProvider extends ChangeNotifier {
             .collection(Constants.mess)
             .doc(messId)
             .collection(Constants.rules)
-            .limit(800)
+            .limit(limit)
             .get();
 
           await Future.wait(qSnapshot.docs.map((x) => x.reference.delete()));
@@ -549,7 +577,6 @@ class MessProvider extends ChangeNotifier {
       
     if(!(isDisposed==null || !isDisposed())) return;
       
-
     }catch (e){
       if(!(isDisposed==null || !isDisposed())) return;
         onFail("No Data Found.\n${e.toString()}");
@@ -569,7 +596,8 @@ class MessProvider extends ChangeNotifier {
     
     await getMessData(onFail: onFail, messId: messId);
     onSuccess?.call();
-    return getMessModel!.messMemberList;
+    
+    return getMessModel?.messMemberList??[];
   }
 
   // change mess ownership 
@@ -665,7 +693,7 @@ class MessProvider extends ChangeNotifier {
 
 
                                                 
-        // update current mess id
+        // update current mess id, meal session id
         batch.update(
           firebaseFirestore
           .collection(Constants.users)
@@ -763,14 +791,18 @@ class MessProvider extends ChangeNotifier {
 
   // get mess invaitations list
   Future<List<JoiningModel?>?> getInvaitationsList({required String uId,required Function(String) onFail})async{
-    List<JoiningModel?>? list;
+    List<JoiningModel>? list;
     try {
-      QuerySnapshot snapshot = await firebaseFirestore.collection(Constants.invaitations).doc(uId).collection(Constants.myInvaitationList).get();
+      QuerySnapshot snapshot = await 
+        firebaseFirestore
+        .collection(Constants.invaitations)
+        .doc(uId)
+        .collection(Constants.myInvaitationList)
+        .limit(limit)
+        .get();
       
       list = snapshot.docs.map((doc){
-        if(doc.exists){
-          return JoiningModel.fromMap(doc.data() as Map<String, dynamic>);
-        }
+        return JoiningModel.fromMap(doc.data() as Map<String, dynamic>);
       }).toList();
 
       // if(snapshot.exist){
@@ -782,32 +814,7 @@ class MessProvider extends ChangeNotifier {
     } catch (e) {
       onFail(e.toString());
     }
-    return list;
-  }
-
-  Future<bool> checkAlreadyInvaited({required String uId, required String messId})async{
-    try {
-      QuerySnapshot snapshot = await firebaseFirestore.collection(Constants.invaitations).doc(uId).collection(Constants.myInvaitationList).get();
-      
-      snapshot.docs.map((doc){
-        if(doc.exists && doc.data()!=null){
-          JoiningModel joiningModel = JoiningModel.fromMap(doc.data() as Map<String, dynamic>);
-          if(joiningModel.messId == messId && joiningModel.status == JoiningStatus.panding){
-            return true;
-          }
-        }
-      }).toList();
-
-      // if(snapshot.exist){
-      //   // final map = snapshot.data() as Map<String,dynamic>;
-      //   // final objlist = map[Constants.myInvaitationList] as List<dynamic>;
-      //   // list = objlist.map((x)=>JoiningModel.fromMap(x as Map<String,dynamic>)).toList();
-      //   list = (((snapshot.data() as Map<String,dynamic>)[Constants.myInvaitationList]) as List<dynamic>).map((x)=> JoiningModel.fromMap(x as Map<String, dynamic>)).toList();
-      // }
-    }catch(e){
-      print("failed check already invited");
-    }
-    return false;
+    return list?.reversed.toList();
   }
 
   // send mess invaitation card
@@ -815,8 +822,7 @@ class MessProvider extends ChangeNotifier {
     try {
       // check already invited ?
 
-      bool flag =  await checkAlreadyInvaited(messId: joiningModel.messId, uId:memberUid );
-      if(!flag){
+      if(true){
         await firebaseFirestore 
         .collection(Constants.invaitations)
         .doc(memberUid)
@@ -825,24 +831,38 @@ class MessProvider extends ChangeNotifier {
         .set(joiningModel.toMap());
         onSuccess?.call();
       }
-      else{
-        onFail("Already Invited");
-      }
     } catch (e) {
-      debugPrint(e.toString());
+      onFail(e.toString());
     }
   }
 
 
   // change status member
-  Future<void> changeMemberStatus()async{
+  Future<void> changeMemberStatus({required Map<String,dynamic> preMemberData,required Map<String,dynamic> newMemberData,})async{
     if(_isOnline == false){
       debugPrint("cancel for offline ");
       return;
     } 
     try {
+      final batch = firebaseFirestore.batch();
       // update changed/new member list. where already changed the member status
-      await firebaseFirestore.collection(Constants.mess).doc(getMessModel!.messId).update({Constants.messMemberList: getMessModel!.messMemberList});
+      batch.update(
+        firebaseFirestore
+        .collection(Constants.mess)
+        .doc(getMessModel!.messId),
+      
+        {Constants.messMemberList: FieldValue.arrayRemove([preMemberData])}
+      );
+      batch.update(
+        firebaseFirestore
+        .collection(Constants.mess)
+        .doc(getMessModel!.messId),
+      
+        {Constants.messMemberList: FieldValue.arrayUnion([newMemberData])}
+      );
+    
+      await batch.commit();
+      
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -885,6 +905,7 @@ class MessProvider extends ChangeNotifier {
   // set Mess Rules
   Future<void> addAMessRule({required String messId,required RuleModel ruleModel, required Function(String) onFail, Function()? onSuccess})async{
     debugPrint("set a Mess Rule called");
+    setIsloading(true);
     try {
       await firebaseFirestore
         .collection(Constants.mess)
@@ -900,11 +921,13 @@ class MessProvider extends ChangeNotifier {
       onFail(e.toString());
       debugPrint(e.toString());
     }
+    setIsloading(false);
   }
 
   // set Mess Rules
   Future<void> updateAMessRule({required String messId,required RuleModel ruleModel, required Function(String) onFail, Function()? onSuccess})async{
     debugPrint("set a Mess Rule called");
+    setIsloading(true);
     try {
       await firebaseFirestore
         .collection(Constants.mess)
@@ -926,6 +949,7 @@ class MessProvider extends ChangeNotifier {
       onFail(e.toString());
       debugPrint(e.toString());
     }
+    setIsloading(false);
   }
 
   // delete Mess Rules
@@ -953,7 +977,7 @@ class MessProvider extends ChangeNotifier {
     try {
       QuerySnapshot qSnapshot  = await firebaseFirestore
         .collection(Constants.mess)
-        .doc(getMessModel!.messId)
+        .doc(messId)
         .collection(Constants.rules)
         .get();
 
@@ -965,7 +989,7 @@ class MessProvider extends ChangeNotifier {
       onFail(e.toString());
       debugPrint(e.toString());
     }
-    return list;
+    return list?.reversed.toList();
   }
 
   Future<void> closeMessHisab({required String messId,required Function(String) onFail, Function()? onSuccess,})async{

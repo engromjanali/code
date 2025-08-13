@@ -1,16 +1,32 @@
-# note
+# about 
+the project preview here 
+we can add the any note here as text formate 
+and we can edit leter 
+remove also.
 
-A new Flutter project.
+the all data will be store in local device.
+the all user data will be avale until the app was not uninstall or clear cashes.
 
-## Getting Started
+for empty field the data won't added and show a snackber with empty field message.
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+# home screen : 
+![home page](ss/home_screen.png)
+
+
+
+# add Note screen : 
+![add screen](ss/add_note.png)
+
+
+
+# update note :
+![update screen](ss/update_note.png)
+
+
+
+# delete note :
+![remove screen](ss/delete_note.png)

@@ -48,7 +48,19 @@ class BazerProvider extends ChangeNotifier{
 
 
   void reset(){
-    _bazerModel = null;
+    bazerListener= null;
+
+    _isLoading = false;
+    _bazerModel= null;
+    _cost = 0;
+
+    limit = 50;
+    currentDocs = [];
+    _firstDoc= null;
+    _lastDoc= null;
+
+    _hasMoreForward = true;
+    _hasMoreBackward = false;
   }
 
 
@@ -182,10 +194,11 @@ class BazerProvider extends ChangeNotifier{
         currentDocs = snapshot.docs.map((x)=> BazerModel.fromMap(x.data())).toList();
         _firstDoc = snapshot.docs.first;
         _lastDoc = snapshot.docs.last;
-        if(snapshot.docs.length==limit){
-          _hasMoreForward = true;
-        }
+        _hasMoreForward = snapshot.docs.length==limit;
         _hasMoreBackward = false;
+    }
+    else{
+      _hasMoreForward = false;
     }
   } catch (e) {
   }
@@ -370,6 +383,7 @@ class BazerProvider extends ChangeNotifier{
   Future<void> addABazerTransaction({required BazerModel bazerModel,required String messId,required String mealSessionId,required Function(String) onFail, Function()? onSuccess,})async{
     final batch = firebaseFirestore.batch();
     // fatch cost,
+    setIsLoading(value: true);
         try {
             batch.set(
             firebaseFirestore
@@ -401,6 +415,7 @@ class BazerProvider extends ChangeNotifier{
         } catch (e) {
           onFail(e.toString());
         }  
+    setIsLoading(value: false);
   }
 
   
@@ -409,6 +424,7 @@ class BazerProvider extends ChangeNotifier{
   Future<void> updateABazerTransaction({required BazerModel bazerModel,required String messId,required String mealSessionId,required double extraAdd,required Function(String) onFail, Function()? onSuccess,})async{
     final batch = firebaseFirestore.batch();
     // fatch cost,
+    setIsLoading(value: true);
         try{
           batch.set(
             firebaseFirestore
@@ -449,8 +465,7 @@ class BazerProvider extends ChangeNotifier{
           onFail(e.toString());
           print(e.toString());
         }  
-      
-    
+    setIsLoading(value: false);
   }
 
   

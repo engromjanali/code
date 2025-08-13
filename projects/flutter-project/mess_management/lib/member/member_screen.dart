@@ -162,8 +162,8 @@ class _MemberScreenState extends State<MemberScreen> {
                   child: ListTile(
                     contentPadding: EdgeInsets.only(left: 10),
                     leading: CircleAvatar(
-                      child: Text(index.toString()),
                       backgroundColor: memberType==Constants.member? Colors.amber :Colors.red,
+                      child: Text((index+1).toString()),
                     ),
                     title: Text(memberData[Constants.fname],style : getTextStyleForTitleM()),
                     subtitle: Text("${memberData[Constants.uId]}   ($memberType)"),
@@ -230,10 +230,12 @@ class _MemberScreenState extends State<MemberScreen> {
                                   showSnackber(context: context, content: "Required Administrator Power");
                                   return;
                                 }
-                                bool? a = await showConfirmDialog(context: context, title: "Do You Want to Transfer The Ownership?");
+                                bool? a = await showConfirmDialog(context: context, title: "Kick", subTitle: "Are You Sure?");
                                 if(a??false){
                                   // remove from mess
                                   await messProvider.kickMemberFromMess(member: memberData);
+                                  setState(() {
+                                  });
                                 }
                               },
                               child: Row(
@@ -258,15 +260,16 @@ class _MemberScreenState extends State<MemberScreen> {
                                   return;
                                 }
                                 // change member status
-                                memberData[Constants.status] = (memberData[Constants.status] == Constants.disable)? Constants.enable:Constants.disable ;
-                                final list = messProvider.getMessModel!.messMemberList;
-                                list[list.indexWhere((test)=>test[Constants.uId]==memberData[Constants.uId])] = memberData;
-                                messProvider.setMessModel(messMemberList: list);
-                                await messProvider.changeMemberStatus();
-                                
+                                Map<String,dynamic> newMemberData = Map.from(memberData);
+                                newMemberData[Constants.status] = (memberData[Constants.status] == Constants.disable)? Constants.enable:Constants.disable ;
+                                debugPrint(memberData.toString());
+                                debugPrint(newMemberData.toString());
+                                await messProvider.changeMemberStatus(preMemberData:  memberData, newMemberData: newMemberData);
+                                setState(() {
+                                  memberData = newMemberData;
+                                });
                               },
                             )
-                            
                         ];
                       },
                     ),

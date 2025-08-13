@@ -59,9 +59,9 @@ class _AddMemberScreenState extends State<AddMemberScreen>{
                           },
                             controller: searchController,
                             keyboardType: TextInputType.number,
-                            onTapOutside: (event) {// close keyboard
-                              FocusScope.of(context).unfocus();
-                            },
+                            // onTapOutside: (event) {// close keyboard
+                              // FocusScope.of(context).unfocus();
+                            // },
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly, // Only allows digits
                             ],
@@ -224,7 +224,7 @@ class _AddMemberScreenState extends State<AddMemberScreen>{
                             invaitationId: DateTime.now().millisecondsSinceEpoch.toString(), 
                             messName: messProvider.getMessModel!.messName, 
                             messId: messProvider.getMessModel!.messId, 
-                            status: JoiningStatus.panding, 
+                            status: JoiningStatus.pending, 
                             description: "Hello ${userModel!.fname}! \nWe’re inviting you to become a member of our mess. We work together to manage meals, expenses, and a smooth daily routine. Hope you’ll join us!", 
                             messAddress: messProvider.getMessModel!.messAddress, 
                           ),

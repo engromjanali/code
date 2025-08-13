@@ -74,6 +74,7 @@ class _MessSummaryState extends State<MessSummary>{
                                 children: [
                                   TextSpan(
                                     text: "Mess Name: ",
+                                    
                                     style: getTextStyleForSubTitleL().copyWith(fontWeight: FontWeight.bold),
                                   ),
                                   TextSpan(
@@ -458,6 +459,8 @@ class _MessSummaryState extends State<MessSummary>{
                           showSnackber(context: context, content: "failed");
                         },
                         onSuccess: () {
+                          setState(() {
+                          });
                           showSnackber(context: context, content: "successed");
                           authProvider.getUserProfileData(onFail: (_){});
                         },

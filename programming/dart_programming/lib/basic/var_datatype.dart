@@ -9,9 +9,13 @@ void main(){
   data = "romjan";
 
   var data2 = "asdf"; // here the data type is string not changeable. because we initiate with data. next time we can use it as this data_type of variable.
-  var data3 = 234.23;
+  var data3 = 234;
+  
   
   print(data);
   print(data2);
   print(data3);
+
+
+  
 }

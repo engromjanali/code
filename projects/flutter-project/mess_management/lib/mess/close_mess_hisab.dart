@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:mess_management/helper/helper_method.dart';
 import 'package:mess_management/helper/ui_helper.dart';
 import 'package:mess_management/providers/authantication_provider.dart';
-import 'package:mess_management/providers/colse_mess_hisab_provider.dart';
 import 'package:mess_management/providers/mess_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -55,52 +54,45 @@ class _MessCloseScreenState extends State<MessCloseScreen> {
     print(MediaQuery.of(context).padding);
       return Scaffold(
         backgroundColor: Colors.green.shade100,
-        appBar: AppBar(
-          title: Text("Close Meal Hisab"),
-          backgroundColor: Colors.grey,
-        ),
-        body: SafeArea(
-          child: Container(
-            // color: Colors.green.shade100,
-            child: Center(
-              // child: messProvider.isLoading? showCircularProgressIndicator(): 
-            child:  SingleChildScrollView(
-              child: Column(
-                children: [
-                  // Text("sdfsldgjlksjdglasdjgkl"),
-                  // Text("sdfsldgjlksjdglasdjgkl"),
-                  // Text("sdfsldgjlksjdglasdjgkl"),
-                  // Text("sdfsldgjlksjdglasdjgkl"),
-                  // Text("sdfsldgjlksjdglasdjgkl"),
-                  // Text("sdfsldgjlksjdglasdjgkl"),
-                  // Text("sdfsldgjlksjdglasdjgkl"),
-                  // Text("sdfsldgjlksjdglasdjgkl"),
-                  ElevatedButton(
-                      onPressed: ()async{
-                        if(amIAdmin(messProvider: messProvider, authProvider: authProvider) || amIactmenager(messProvider: messProvider, authProvider: authProvider)){
-                          bool confirm = await  showConfirmDialog(context: context,title: "Close Meal Session (Must Read)", subTitle: "Form now you are. going to create a new meal session and close this session.\n\nNote: You will loss \"edit\" access for this data after close this Meal Session.");
-                          if(confirm){
-                            messProvider.closeMessHisab(
-                              messId: authProvider.getUserModel!.currentMessId,
-                              onFail: (message){
-                                showSnackber(context: context, content: "Failed\n$message");
-                              },
-                              onSuccess: (){
-                                showSnackber(context: context, content: "Successed");
-                              }
-                            );
-                          }
-                        }
-                        else{
-                          showSnackber(context: context, content: "required Administrator power");
-                        }
-                      }, 
-                      child: Text("close"),
-                    ),
-                ],
+        // appBar: AppBar(
+        //   title: Text("Close Meal Hisab"),
+        //   backgroundColor: Colors.grey,
+        // ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height:Platform.isIOS? 40:10,
               ),
-            )
-            ),
+              SizedBox(
+                height: 400,
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: ElevatedButton(
+                    onPressed: ()async{
+                      if(amIAdmin(messProvider: messProvider, authProvider: authProvider) || amIactmenager(messProvider: messProvider, authProvider: authProvider)){
+                        bool confirm = await  showConfirmDialog(context: context,title: "Close Meal Session (Must Read)", subTitle: "Form now you are. going to create a new meal session and close this session.\n\nNote: You will loss \"edit\" access for this data after close this Meal Session.");
+                        if(confirm){
+                          messProvider.closeMessHisab(
+                            messId: authProvider.getUserModel!.currentMessId,
+                            onFail: (message){
+                              showSnackber(context: context, content: "Failed\n$message");
+                            },
+                            onSuccess: (){
+                              showSnackber(context: context, content: "Successed");
+                            }
+                          );
+                        }
+                      }
+                      else{
+                        showSnackber(context: context, content: "required Administrator power");
+                      }
+                    }, 
+                    child: Text("close"),
+                  ),
+              ),
+            ],
           ),
         ),
       );

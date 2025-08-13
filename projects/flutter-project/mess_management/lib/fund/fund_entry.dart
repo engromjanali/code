@@ -1,4 +1,6 @@
 
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +43,7 @@ class _AddFundState extends State<AddFund> {
     titleController.text = widget.preFundModel!.title;
     descriptionController.text = widget.preFundModel!.description;
     amountController.text = widget.preFundModel!.amount.toString();
+    isAdd = widget.preFundModel?.type == Constants.add;
   }
 
   @override
@@ -67,204 +70,235 @@ class _AddFundState extends State<AddFund> {
   @override
   Widget build(BuildContext context) {
     final fundProvider = context.watch<FundProvider>();
-    final authProvider = context.watch<AuthenticationProvider>();
-    final messProvider = context.watch<MessProvider>();
+    final authProvider = context.read<AuthenticationProvider>();
+    final messProvider = context.read<MessProvider>();
 
-    return Scaffold(// required scaffold 
-      appBar: isUpdate? AppBar(
-        title: Text("Edit Fund Tnx"),
-        backgroundColor: Colors.grey,
-      )
-      : null,
-      body: Container(
-        height: double.infinity,
-        color: Colors.green.shade50,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            children: [
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Cost"),
-                  Switch(
-                    
-                    value: isAdd, 
-                    onChanged: (val){
-                      if(!isUpdate){
-                        setState(() {
-                          isAdd = val;
-                        });
-                      }
-                      else{
-                        showSnackber(context: context, content: "For Update \"Entry Type\" Can't Be Changed");
-                      }
-                    },
-                  ),
-                  Text("Add"),
-                ],
-              ),
-
-             
-        
-              Form(
-                key: formKey,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        controller: titleController,
-                        onTapOutside: (event) => FocusScope.of(context).unfocus(),
-                        textInputAction: TextInputAction.next,
-                        autofocus: true,
-                        focusNode: focusTitle,
-                        onFieldSubmitted: (value){
-                          FocusScope.of(context).requestFocus(focusDiscreption);
-                        },
-                        validator: (value) {
-                          return titleValidator(value.toString());
-                        },
-
-                        decoration: FromFieldDecoration(
-                          hintText: "Write here...",
-                          label: "Title",
-                        )
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        controller: descriptionController,
-                        onTapOutside: (event) => FocusScope.of(context).unfocus(),
-                        maxLines: 5,
-                        textInputAction: TextInputAction.newline,
-                        autofocus: false,
-                        focusNode: focusDiscreption,
-                        onFieldSubmitted: (value){
-                          FocusScope.of(context).requestFocus(focusAmount);
-                        },
-                        // validator: (value) {
-                        //   if(value.toString().trim()==""){
-                        //     return "";
-                        //   }
-                        //   return null;
-                        // },
-
-                        decoration: FromFieldDecoration(
-                          hintText: "Write About The Deposit",
-                          label: "Discreption (Optional)",
-                        )
-                      ),
-                    ),
-                
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        controller: amountController,
-                        onTapOutside: (event) {
-                          FocusScope.of(context).unfocus();
-                        },
-                        maxLines: 1,
-                        textAlign: TextAlign.center,
-                        textInputAction: TextInputAction.done,
-                        keyboardType: TextInputType.number,
-                        focusNode: focusAmount,
-                        onFieldSubmitted: (value){
-                          FocusScope.of(context).unfocus();
-                        },
-                        validator: (value) {
-                          return validatePrice(value.toString());
-                        },
-                        decoration: FromFieldDecoration(
-                          hintText: "How Much?",
-                          label: "Amount",
-                        )
-                      ),
-                    ),
-                  ],
-                )
-              ),   
-
-              SizedBox(
-                height: 50,
-              ),
-
-              getButton(
-                label: isUpdate?"Update":"Submit", 
-                ontap: ()async{
-                if(!(amIAdmin(messProvider: messProvider, authProvider: authProvider)||amIactmenager(messProvider: messProvider, authProvider: authProvider))){
-                  showSnackber(context: context, content: "required Administrator power");
-                  return;
-                }
-
-                  bool valided  = (formKey.currentState!.validate());
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      behavior: HitTestBehavior.translucent,
+      child: Scaffold(// required scaffold 
+        resizeToAvoidBottomInset: true,
+        appBar: isUpdate? AppBar(
+          title: Text("Edit Fund Tnx"),
+          backgroundColor: Colors.grey,
+        )
+        : null,
+        body: Container(
+          height: double.infinity,
+          color: Colors.green.shade50,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                SizedBox(
+                  height:Platform.isIOS? 40:10,
+                ),
+                SwitchListTile(
                   
-                  if(valided){
-                    if(isUpdate){
-                      await fundProvider.updateAFundTransaction(
-                        fundModel : FundModel(
-                          tnxId: widget.preFundModel!.tnxId, 
-                          title: titleController.text.toString(), 
-                          description: descriptionController.text.toString(), 
-                          amount: double.parse(amountController.text.toString()), 
-                          type: widget.preFundModel!.type, 
-                        ), 
-                        extraAmount: double.parse(amountController.text.toString()) - widget.preFundModel!.amount ,
-                        messId: authProvider.getUserModel!.currentMessId, 
-                        onFail: (message ) { 
-                          showSnackber(context: context, content: "Updaate Failed! \n$message");
-                        },
-                        onSuccess: (){ 
-                          formKey.currentState!.reset();
-                          showSnackber(context: context, content: "Update Success!");
-                        }, 
-                      );
-                      // we should clear pre data other wise pre grabage data can make wrong submesion
-                      isUpdate = false;
-                      titleController.clear();
-                      amountController.clear();
-                      descriptionController.clear();
-
+                  title: Text("Tnx Type"),
+                  subtitle: isAdd? Text("Add") : Text("Cost"),
+                  value: isAdd,
+                  onChanged: (val){
+                    if(!isUpdate){
                       setState(() {
-                            
+                        isAdd = val;
                       });
                     }
                     else{
-                      await fundProvider.addAFundTransaction(
-                        fundModel : FundModel(
-                          tnxId: DateTime.now().millisecondsSinceEpoch.toString(), 
-                          title: titleController.text.toString(), 
-                          description: descriptionController.text.toString(), 
-                          amount: double.parse(amountController.text.toString()), 
-                          type: isAdd? Constants.add : Constants.sub, 
-                        ), 
-                        messId: authProvider.getUserModel!.currentMessId, 
-                        onFail: (message ) { 
-                          showSnackber(context: context, content: "Entry Failed! \n$message");
-                        },
-                        onSuccess: (){ 
-                          formKey.currentState!.reset();
-                          showSnackber(context: context, content: "Entry Success!");
-                        }, 
-                      );
-                      isUpdate = false;
-                      titleController.clear();
-                      amountController.clear();
-                      descriptionController.clear();
-
-                      setState(() {
-                            
-                      });
+                      showSnackber(context: context, content: "For Update \"Entry Type\" Can't Be Changed");
                     }
+                  },
+                  secondary: Icon(Icons.playlist_add_check_circle), //Icon(Icons.dark_mode),
+                  activeColor: Colors.black,
+                  activeTrackColor: Colors.blue,
+                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     Text("Cost"),
+                //     Switch(
+                      
+                //       value: isAdd, 
+                //       onChanged: (val){
+                //         if(!isUpdate){
+                //           setState(() {
+                //             isAdd = val;
+                //           });
+                //         }
+                //         else{
+                //           showSnackber(context: context, content: "For Update \"Entry Type\" Can't Be Changed");
+                //         }
+                //       },
+                //     ),
+                //     Text("Add"),
+                //   ],
+                // ),
+      
+               
+          
+                Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: titleController,
+                          // onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                          textInputAction: TextInputAction.next,
+                          // autofocus: true,
+                          focusNode: focusTitle,
+                          onFieldSubmitted: (value){
+                            FocusScope.of(context).requestFocus(focusDiscreption);
+                          },
+                          validator: (value) {
+                            return titleValidator(value.toString());
+                          },
+      
+                          decoration: FromFieldDecoration(
+                            hintText: "Write here...",
+                            label: "Title",
+                          )
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: descriptionController,
+                          // onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                          maxLines: 5,
+                          textInputAction: TextInputAction.newline,
+                          autofocus: false,
+                          focusNode: focusDiscreption,
+                          onFieldSubmitted: (value){
+                            FocusScope.of(context).requestFocus(focusAmount);
+                          },
+                          // validator: (value) {
+                          //   if(value.toString().trim()==""){
+                          //     return "";
+                          //   }
+                          //   return null;
+                          // },
+      
+                          decoration: FromFieldDecoration(
+                            hintText: "Write About The Deposit",
+                            label: "Discreption (Optional)",
+                          )
+                        ),
+                      ),
+                  
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: amountController,
+                          // onTapOutside: (event) {
+                            // FocusScope.of(context).unfocus();
+                          // },
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                          textInputAction: TextInputAction.done,
+                          keyboardType: TextInputType.number,
+                          focusNode: focusAmount,
+                          onFieldSubmitted: (value){
+                            FocusScope.of(context).unfocus();
+                          },
+                          validator: (value) {
+                            return validatePrice(value.toString());
+                          },
+                          decoration: FromFieldDecoration(
+                            hintText: "How Much?",
+                            label: "Amount",
+                          )
+                        ),
+                      ),
+                    ],
+                  )
+                ),   
+      
+                SizedBox(
+                  height: 50,
+                ),
+      
+                fundProvider.isLoading? showCircularProgressIndicator()
+                : 
+                getButton(
+                  label: isUpdate?"Update":"Submit", 
+                  ontap: ()async{
+                  if(!(amIAdmin(messProvider: messProvider, authProvider: authProvider)||amIactmenager(messProvider: messProvider, authProvider: authProvider))){
+                    showSnackber(context: context, content: "required Administrator power");
+                    return;
                   }
-                  else{
-                    showSnackber(context: context, content: "Fill All Required Field");
-                  }
-                },
-              ),
-            ],
+      
+                    bool valided  = (formKey.currentState!.validate());
+                    
+                    if(valided){
+                      if(isUpdate){
+                        await fundProvider.updateAFundTransaction(
+                          fundModel : FundModel(
+                            tnxId: widget.preFundModel!.tnxId, 
+                            title: titleController.text.toString(), 
+                            description: descriptionController.text.toString(), 
+                            amount: double.parse(amountController.text.toString()), 
+                            type: widget.preFundModel!.type, 
+                          ), 
+                          extraAmount: double.parse(amountController.text.toString()) - widget.preFundModel!.amount ,
+                          messId: authProvider.getUserModel!.currentMessId, 
+                          onFail: (message ) { 
+                            showSnackber(context: context, content: "Updaate Failed! \n$message");
+                          },
+                          onSuccess: (){ 
+                            formKey.currentState!.reset();
+                            showSnackber(context: context, content: "Update Success!");
+                            Navigator.of(context).pop();
+                          }, 
+                        );
+                        // we should clear pre data other wise pre grabage data can make wrong submesion
+                        isUpdate = false;
+                        titleController.clear();
+                        amountController.clear();
+                        descriptionController.clear();
+      
+                        setState(() {
+                              
+                        });
+                      }
+                      else{
+                        await fundProvider.addAFundTransaction(
+                          fundModel : FundModel(
+                            tnxId: DateTime.now().millisecondsSinceEpoch.toString(), 
+                            title: titleController.text.toString(), 
+                            description: descriptionController.text.toString(), 
+                            amount: double.parse(amountController.text.toString()), 
+                            type: isAdd? Constants.add : Constants.sub, 
+                          ), 
+                          messId: authProvider.getUserModel!.currentMessId, 
+                          onFail: (message ) { 
+                            showSnackber(context: context, content: "Entry Failed! \n$message");
+                          },
+                          onSuccess: (){ 
+                            formKey.currentState!.reset();
+                            showSnackber(context: context, content: "Entry Success!");
+                          }, 
+                        );
+                        isUpdate = false;
+                        titleController.clear();
+                        amountController.clear();
+                        descriptionController.clear();
+      
+                        setState(() {
+                              
+                        });
+                      }
+                    }
+                    else{
+                      showSnackber(context: context, content: "Fill All Required Field");
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -60,16 +60,19 @@ class _AddNoticeState extends State<AddNotice> {
     MessProvider messProvider = context.read<MessProvider>();
 
     
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Add Notice & Announcement"),
-        backgroundColor: Colors.grey,
-      ),
-      body: Container(
-        height: double.infinity,
-        color: Colors.green.shade50,
-        child: SingleChildScrollView(
+    return GestureDetector(
+      onTap: (){FocusScope.of(context).unfocus();},
+      behavior: HitTestBehavior.translucent,
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: Colors.green.shade50,
+        appBar: AppBar(
+          title: Text("Add Notice & Announcement"),
+          backgroundColor: Colors.grey,
+        ),
+        body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
           child: Column(
             children: [
               Form(
@@ -80,9 +83,9 @@ class _AddNoticeState extends State<AddNotice> {
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         controller: titleController,
-                        onTapOutside: (event) {// close keyboard
-                          FocusScope.of(context).unfocus();
-                        },
+                        // onTapOutside: (event) {// close keyboard
+                        //   FocusScope.of(context).unfocus();
+                        // },
                         
                         textInputAction: TextInputAction.next,
                         autofocus: true,
@@ -102,9 +105,9 @@ class _AddNoticeState extends State<AddNotice> {
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         controller: descController,
-                        onTapOutside: (event) {// close keyboard
-                          FocusScope.of(context).unfocus();
-                        },
+                        // onTapOutside: (event) {// close keyboard
+                        //   FocusScope.of(context).unfocus();
+                        // },
                         maxLines: 10,
                         textInputAction: TextInputAction.newline,
                         validator: (value) {
@@ -124,7 +127,7 @@ class _AddNoticeState extends State<AddNotice> {
               SizedBox(
                 height: 50,
               ),
-
+        
               noticeProvider.isLoading? 
               SizedBox.square(
                 child: CircularProgressIndicator(
@@ -132,6 +135,8 @@ class _AddNoticeState extends State<AddNotice> {
                 ),
               )
               :
+              noticeProvider.isLoading? showCircularProgressIndicator()
+              : 
               getButton(
                 label: isUpdate ? "Update":"Submit", 
                 ontap: ()async{
@@ -166,8 +171,8 @@ class _AddNoticeState extends State<AddNotice> {
                         await noticeProvider.addANotice(
                           noticeModel: NoticeModel(
                             noticeId: DateTime.now().millisecondsSinceEpoch.toString(), 
-                            title: titleController.text.toString(), 
-                            description: descController.text.toString()
+                            title: titleController.text.toString().trim(), 
+                            description: descController.text.toString().trim(),
                           ), 
                           currentMessMemberUidList: messProvider.
                             getMessModel!.
@@ -194,7 +199,7 @@ class _AddNoticeState extends State<AddNotice> {
                 },
               ),
               SizedBox(
-                height: 50,
+                height: 300,
               ),
               
             ],

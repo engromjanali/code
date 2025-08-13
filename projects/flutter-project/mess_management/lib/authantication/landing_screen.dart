@@ -1,10 +1,12 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:mess_management/constants.dart';
 import 'package:mess_management/helper/ui_helper.dart';
 import 'package:mess_management/providers/authantication_provider.dart';
 import 'package:mess_management/providers/mess_provider.dart';
 import 'package:mess_management/services/asset_manager.dart';
+import 'package:mess_management/services/notification_services.dart';
 import 'package:provider/provider.dart';
 
 class LandingScreen extends StatefulWidget {
@@ -16,11 +18,25 @@ class LandingScreen extends StatefulWidget {
 
 class _LandingScreenState extends State<LandingScreen> {
 
+  NotificationServices notificationServices = NotificationServices();
+
   @override
   void initState() {
     // TODO: implement initState
     checkAuthenticationState();
     super.initState();
+    notificationServices.requestNotificationPermission();
+    notificationServices.getDeviceToken((errorMessage){
+      // SchedulerBinding.instance.addPostFrameCallback((_){
+      //   if(mounted)
+      //   showSnackber(context: context, content: errorMessage);
+      // });
+    
+    }).then(
+      (token){
+        debugPrint("DeviceToken: $token");
+      }
+    );
   }
 
   void checkAuthenticationState()async{

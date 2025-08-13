@@ -15,7 +15,7 @@ class FundProvider extends ChangeNotifier{
   FundModel? _fundModel;
   double _blance = 0;
 
-  int limit = 100;
+  int limit = 50;
   List<FundModel> currentDocs = [];
   DocumentSnapshot? _firstDoc;
   DocumentSnapshot? _lastDoc;
@@ -47,7 +47,19 @@ class FundProvider extends ChangeNotifier{
   bool get getHasMoreBackword => _hasMoreBackward;
 
   void reset(){
+    fundListener = null;
+    fundListener2 = null;
+    _isLoading = false;
     _fundModel = null;
+    _blance = 0;
+
+    // limit = 50;
+    currentDocs = [];
+    _firstDoc = null;
+    _lastDoc = null;
+
+    _hasMoreForward = true;
+    _hasMoreBackward = false;  
   }
 
   @override
@@ -178,6 +190,9 @@ class FundProvider extends ChangeNotifier{
         _lastDoc = snapshot.docs.last;
         _hasMoreForward = snapshot.docs.length==limit;
         _hasMoreBackward = false;
+    }
+    else{
+      _hasMoreForward = false;
     }
   } catch (e) {
   }
@@ -357,6 +372,7 @@ class FundProvider extends ChangeNotifier{
   // add a fund transaction to database 
   Future<void> addAFundTransaction({required FundModel fundModel,required String messId,required Function(String) onFail, Function()? onSuccess,})async{
     debugPrint("add fund called");
+    setIsLoading(value: true);
     final batch = firebaseFirestore.batch();
 
         try {
@@ -396,12 +412,13 @@ class FundProvider extends ChangeNotifier{
         } catch (e) {
           onFail(e.toString());
         } 
+        setIsLoading(value: false);
   }
 
   // update a fund transaction to database 
   Future<void> updateAFundTransaction({required FundModel fundModel,required String messId,required double extraAmount, required Function(String) onFail, Function()? onSuccess,})async{
     final batch = firebaseFirestore.batch();
-
+    setIsLoading(value: true);
     try {
 
       batch.set(
@@ -437,6 +454,7 @@ class FundProvider extends ChangeNotifier{
     } catch (e) {
       onFail(e.toString());
     } 
+    setIsLoading(value: false);
   }
     
   
@@ -446,6 +464,7 @@ class FundProvider extends ChangeNotifier{
   // delete a fund transaction
   Future<void> deleteAFundTransaction({required String messId, required String tnxId,required double extraAmount, required Function(String) onFail, Function()? onSuccess,})async{
     final batch = firebaseFirestore.batch();
+    setIsLoading(value: true);
     try {
       batch.delete(
         firebaseFirestore.collection(Constants.fund).doc(messId).collection(Constants.listOfFundTnx).doc(tnxId),
@@ -461,6 +480,7 @@ class FundProvider extends ChangeNotifier{
     } catch (e) {
       onFail(e.toString());
     }
+    setIsLoading(value: false);
   }
 
   // delete a fund transaction
@@ -473,7 +493,7 @@ class FundProvider extends ChangeNotifier{
         tnxId: DateTime.now().millisecondsSinceEpoch.toString(), 
         amount: getBlance, 
         title: "Previous Transaction Has Cleared!", 
-        description: "All previous N (N<=900) transactions have been cleared. You will no longer be able to view them. From now on, only new transactions will be available.\n\nNote: The deposited amount reflects the Current remaining balance of the fund.", 
+        description: "All previous N (number of transactions) transactions have been cleared. You will no longer be able to view them. From now on, only new transactions will be available.\n\nNote: The deposited amount reflects the Current remaining balance of the fund.", 
         type: Constants.add,
       );
           
@@ -485,7 +505,7 @@ class FundProvider extends ChangeNotifier{
         .count()
         .get();
           
-      int i = aQuerySnapshot.count!;
+      int i = aQuerySnapshot.count??0;
 
       while(i>0){
         try {
@@ -493,7 +513,7 @@ class FundProvider extends ChangeNotifier{
             .collection(Constants.fund)
             .doc(messId)
             .collection(Constants.listOfFundTnx)
-            .limit(800)
+            .limit(limit)
             .get();
 
           await Future.wait(qSnapshot.docs.map((x) => x.reference.delete()));

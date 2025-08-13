@@ -1,6 +1,9 @@
 
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mess_management/constants.dart';
 import 'package:mess_management/helper/helper_method.dart';
@@ -71,6 +74,7 @@ class _AddDepositState extends State<AddDeposit> {
     selectedItem  = widget.preMemberData![Constants.fname].toString()+"\n"+widget.preMemberData![Constants.uId].toString();
     descriptionController.text = widget.preDepositModel!.description;
     amountController.text = widget.preDepositModel!.amount.toString();
+    isAdd = widget.preDepositModel?.type == Constants.deposit;
   }
 
   @override
@@ -95,44 +99,47 @@ class _AddDepositState extends State<AddDeposit> {
   @override
   Widget build(BuildContext context) {
     final depositProvider = context.watch<DepositProvider>();
-    final messProvider = context.watch<MessProvider>();
-    final authProvider = context.watch<AuthenticationProvider>();
+    final messProvider = context.read<MessProvider>();
+    final authProvider = context.read<AuthenticationProvider>();
 
-    return Scaffold(
-      appBar: isUpdate? AppBar(
-        title: Text("Edit Deposit", style: getTextStyleForTitleXL(),),
-        backgroundColor: Colors.grey,
-      ):null,
-      body: Container(
-        height: double.infinity,
-        color: Colors.green.shade50,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      behavior: HitTestBehavior.translucent,
+      child: Scaffold(
+        backgroundColor: Colors.green.shade50,
+        resizeToAvoidBottomInset: true,
+        appBar: isUpdate? AppBar(
+          title: Text("Edit Deposit", style: getTextStyleForTitleXL(),),
+          backgroundColor: Colors.grey,
+        ):null,
+        body: SingleChildScrollView(
           child: Column(
             children: [
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Refund"),
-                  Switch(
-                    
-                    value: isAdd, 
-                    onChanged: (val){
-                      if(!isUpdate){
-                        setState(() {
-                          isAdd = val;
-                        });
-                      }
-                      else{
-                        showSnackber(context: context, content: "For Update \"Entry Type\" Can't Be Changed");
-                      }
-                    },
-                  ),
-                  Text("Add"),
-                ],
+              SizedBox(
+                height:Platform.isIOS? 40:10,
               ),
 
+              SwitchListTile(          
+                title: Text("Tnx Type"),
+                subtitle: isAdd? Text("Deposit") : Text("Refund"),
+                value: isAdd,
+                onChanged: (val){
+                  if(!isUpdate){
+                    setState(() {
+                      isAdd = val;
+                    });
+                  }
+                  else{
+                    showSnackber(context: context, content: "For Update \"Entry Type\" Can't Be Changed");
+                  }
+                },
+                secondary: Icon(Icons.playlist_add_check_circle), //Icon(Icons.dark_mode),
+                activeColor: Colors.black,
+                activeTrackColor: Colors.blue,
+              ),
+                
               Container(
                 margin: EdgeInsets.all(10),
                 // child: FutureBuilder(
@@ -192,7 +199,7 @@ class _AddDepositState extends State<AddDeposit> {
                   },
                 ),
               ),
-        
+                  
               Form(
                 key: formKey,
                 child: Column(
@@ -201,10 +208,10 @@ class _AddDepositState extends State<AddDeposit> {
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         controller: descriptionController,
-                        onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                        // onTapOutside: (event) => FocusScope.of(context).unfocus(),
                         maxLines: 5,
                         textInputAction: TextInputAction.newline,
-                        autofocus: true,
+                        // autofocus: true,
                         focusNode: focusDiscreption,
                         onFieldSubmitted: (value){
                           FocusScope.of(context).requestFocus(focusAmount);
@@ -215,7 +222,7 @@ class _AddDepositState extends State<AddDeposit> {
                         //   }
                         //   return null;
                         // },
-
+              
                         decoration: FromFieldDecoration(
                           hintText: "Write About The Deposit",
                           label: "Discreption (Optional)",
@@ -227,10 +234,10 @@ class _AddDepositState extends State<AddDeposit> {
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         controller: amountController,
-                        onTapOutside: (event) {
-                          FocusScope.of(context).unfocus();
-                        },
-                        autofocus: true,
+                        // onTapOutside: (event) {
+                        //   FocusScope.of(context).unfocus();
+                        // },
+                        // autofocus: true,
                         maxLines: 1,
                         textAlign: TextAlign.center,
                         textInputAction: TextInputAction.done,
@@ -251,11 +258,13 @@ class _AddDepositState extends State<AddDeposit> {
                   ],
                 )
               ),   
-
+              
               SizedBox(
                 height: 50,
               ),
-
+              
+              depositProvider.isLoading? showCircularProgressIndicator()
+              : 
               getButton(
                 label: isUpdate?"Update":"Submit", 
                 ontap: ()async{
@@ -263,7 +272,7 @@ class _AddDepositState extends State<AddDeposit> {
                     showSnackber(context: context, content: "Required Administrator Power");
                     return;
                   }
-
+              
                   bool valided  = (formKey.currentState!.validate() && selectedItem != Constants.selectedMember );
                   
                   if(valided){
@@ -285,6 +294,7 @@ class _AddDepositState extends State<AddDeposit> {
                         onSuccess: (){ 
                           formKey.currentState!.reset();
                           showSnackber(context: context, content: "Update Success!");
+                          Navigator.pop(context);
                         }
                       );
                       // we should clear pre data other wise pre grabage data can make wrong submesion
@@ -293,7 +303,7 @@ class _AddDepositState extends State<AddDeposit> {
                       descriptionController.clear();
                       selectedItem  = Constants.selectedMember; // importent because dropdown key was rest but variable still hold pre value
                       dropdownKey.currentState!.clear();
-
+              
                       setState(() {
                             
                       });
@@ -322,7 +332,7 @@ class _AddDepositState extends State<AddDeposit> {
                       descriptionController.clear();
                       selectedItem  =  Constants.selectedMember;
                       dropdownKey.currentState!.clear();
-
+              
                       setState(() {
                             
                       });
