@@ -266,21 +266,24 @@ class _GroupMealListState extends State<GroupMealList> {
                                                   IconButton(
                                                     padding: EdgeInsets.all(0),
                                                     onPressed: ()async{
-                                                      await mealProvider.deleteAMeal(
-                                                        date: "${x<10?"0$x":x}-${monthName[monthName.keys.first]![2]<10?"0${monthName[monthName.keys.first]![2]}":monthName[monthName.keys.first]![2]}-$year", 
-                                                        onFail: (message){
-                                                          showSnackber(context: context, content: "Deletein Failed!\n$message");
-                                                        }, 
-                                                        onSuccess: () {
-                                                          showSnackber(context: context, content: "Deletein Successed.");
-                                                          setLocalState((){
+                                                      bool res = await showConfirmDialog(context: context, title: "Do you want to Delete?");
+                                                      if(res){
+                                                        await mealProvider.deleteAMeal(
+                                                          date: "${x<10?"0$x":x}-${monthName[monthName.keys.first]![2]<10?"0${monthName[monthName.keys.first]![2]}":monthName[monthName.keys.first]![2]}-$year", 
+                                                          onFail: (message){
+                                                            showSnackber(context: context, content: "Deletein Failed!\n$message");
+                                                          }, 
+                                                          onSuccess: () {
+                                                            showSnackber(context: context, content: "Deletein Successed.");
+                                                            setLocalState((){
 
-                                                          });
-                                                        },
-                                                        messId: authProvider.getUserModel!.currentMessId, 
-                                                        mealSessionId: authProvider.getUserModel!.mealSessionId, 
-                                                        extraMeal: (- snapshot.data!.totalMeal),
-                                                      );
+                                                            });
+                                                          },
+                                                          messId: authProvider.getUserModel!.currentMessId, 
+                                                          mealSessionId: authProvider.getUserModel!.mealSessionId, 
+                                                          extraMeal: (- snapshot.data!.totalMeal),
+                                                        );
+                                                      }
                                                     }, 
                                                     color: Colors.red.shade400,
                                                     icon:Icon(Icons.delete),

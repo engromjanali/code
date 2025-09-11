@@ -1,3 +1,5 @@
+import 'static_instance_provide.dart';
+
 class Person {
   String? name;
   String? fatherName;
@@ -17,6 +19,7 @@ class Person {
 }
 
 void main(){
+
   Person p1 = Person();
   p1.name = "romjan ali";
   p1.fatherName = "karim";
@@ -26,4 +29,11 @@ void main(){
 
   p1.display();
   p2.display();
+
+  ServiceProvider s = ServiceProvider.getInstance();
+  ServiceProvider s1 = ServiceProvider.instance;
+  s.setUrl(url: "sdf");
+  print(s.getUrl());
+  print(s1.getUrl());
 }
+

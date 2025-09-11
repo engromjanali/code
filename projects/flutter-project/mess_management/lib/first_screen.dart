@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:mess_management/constants.dart';
 import 'package:mess_management/helper/helper_method.dart';
@@ -10,6 +14,8 @@ import 'package:mess_management/model/notice_model.dart';
 import 'package:mess_management/providers/authantication_provider.dart';
 import 'package:mess_management/providers/firstScreen_provider.dart';
 import 'package:mess_management/providers/mess_provider.dart';
+import 'package:mess_management/services/fmc_server_key.dart';
+import 'package:mess_management/services/notification_services.dart';
 import 'package:provider/provider.dart';
 
 class FirstScreen extends StatefulWidget {
@@ -33,7 +39,7 @@ class FirstScreen extends StatefulWidget {
 
 
 class _FirstScreenState extends State<FirstScreen> {
-
+  NotificationServices notificationServices = NotificationServices.getInstance;
   bool seeMore = false;
 
 
@@ -42,6 +48,30 @@ class _FirstScreenState extends State<FirstScreen> {
     // TODO: implement initState
     super.initState();
     loadData();
+
+    AuthenticationProvider authProvider = context.read<AuthenticationProvider>();
+    
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      // take permision to show notification
+      notificationServices.requestNotificationPermission();
+
+      // check device token/fcm token change or not if changed update it.
+      notificationServices.checkDeviceTockenHasChanged(authProvider);
+      
+      // store server key in Notification_Services Page/class
+      FmcServerKey().getServerTockenFCM().then((token){
+        notificationServices.fcmServerKey = token;
+        debugPrint("serverTokenStored : $token");
+      });
+
+      // if until i did not save user Device token upgrate/Save the device token.
+      if(authProvider.getUserModel!.deviceId==null){
+        notificationServices.getDeviceToken((_){},authProvider);
+      }
+
+      // notificationServices.sendMessage(deviceToken: authProvider.getUserModel!.deviceId??"",title:  "Test title-", body: "test Body", data: {"a":"A"});
+      
+    });
   }
 
   void loadData()async{
@@ -105,11 +135,21 @@ class _FirstScreenState extends State<FirstScreen> {
                 physics:AlwaysScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    FadeInUp(duration: Duration(milliseconds:100),
-                      child: Text("Welcome Back", style:TextStyle(fontSize: 20,fontWeight: FontWeight.bold, color: Colors.red.shade800),),
+                    Align(
+                      alignment: AlignmentGeometry.center,
+                      child: FadeInUp(duration: Duration(milliseconds:100),
+                      
+                        child: Text("Welcome Back", style:TextStyle(fontSize: 20,fontWeight: FontWeight.bold, color: Colors.red.shade800),),
+                      ),
                     ),
               
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      child: Text("Mess Section:", style: getTextStyleForTitleM().copyWith(fontWeight: FontWeight.bold),),
+                    ),
+                    
                     GridView.count(
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -119,8 +159,8 @@ class _FirstScreenState extends State<FirstScreen> {
                       crossAxisSpacing: 0,
                       children: [
                         // menager see
-                        if(amIAdmin(messProvider: messProvider, authProvider: authProvider) || amIactmenager(messProvider: messProvider, authProvider: authProvider))
-                        ...[
+
+                            // total blance (deposit - bazer + fund)
                             SizedBox(
                               height: 150,
                               child: Card(
@@ -132,11 +172,11 @@ class _FirstScreenState extends State<FirstScreen> {
                                     children: [
                                       FaIcon(FontAwesomeIcons.bangladeshiTakaSign , size: 15,),
                                       FittedBox( 
-                                        child: Text(getFormatedPrice(value: firstScreenProvider.getBlance), style: getTextStyleForTitleM()),
+                                        child: Text(getFormatedPrice(value: firstScreenProvider.gettotalBlance), style: getTextStyleForTitleM()),
                                                 
                                       ),
                                       AutoSizeText(
-                                        "Blance",
+                                        "Total Blance",
                                         maxLines: 2,
                                         textAlign: TextAlign.center,
                                         style: getTextStyleForSubTitleM().copyWith(fontWeight: FontWeight.bold),
@@ -148,6 +188,65 @@ class _FirstScreenState extends State<FirstScreen> {
                                 ),
                               ),
                             ),
+
+                            // meal blance (deposit - bazer)
+                            SizedBox(
+                              height: 150,
+                              child: Card(
+                                color: Colors.white70,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      FaIcon(FontAwesomeIcons.bangladeshiTakaSign , size: 15,),
+                                      FittedBox( 
+                                        child: Text(getFormatedPrice(value: firstScreenProvider.getmealBlance), style: getTextStyleForTitleM()),
+                                                
+                                      ),
+                                      AutoSizeText(
+                                        "Meal Blance",
+                                        maxLines: 2,
+                                        textAlign: TextAlign.center,
+                                        style: getTextStyleForSubTitleM().copyWith(fontWeight: FontWeight.bold),
+                                        overflow: TextOverflow.ellipsis,
+                                        minFontSize: 10,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                        SizedBox(
+                          height: 150,
+                          child: Card(
+                            color: Colors.white70,
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  FaIcon(FontAwesomeIcons.starHalfStroke ,size: 15,),
+                                  FittedBox( 
+                                    child: Text(getFormatedPrice(value: firstScreenProvider.getRemainingFundBlance), style: getTextStyleForTitleM()),
+                                            
+                                  ),
+                                      AutoSizeText(
+                                        "Fund Blance",
+                                        maxLines: 2,
+                                        textAlign: TextAlign.center,
+                                        style: getTextStyleForSubTitleM().copyWith(fontWeight: FontWeight.bold),
+                                        overflow: TextOverflow.ellipsis,
+                                        minFontSize: 10,
+                                      ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+
+
                             SizedBox(
                             height: 150,
                             child: Card(
@@ -163,7 +262,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                               
                                     ),
                                     AutoSizeText(
-                                      "Total Deposit Of Mess",
+                                      "Total Deposit",
                                       maxLines: 2,
                                       textAlign: TextAlign.center,
                                       style: getTextStyleForSubTitleM().copyWith(fontWeight: FontWeight.bold),
@@ -176,43 +275,8 @@ class _FirstScreenState extends State<FirstScreen> {
                               ),
                             ),
                           ),
-                        ],
-              
-                        SizedBox(
-                          height: 150,
-                          child: GestureDetector(
-                            child: Card(
-                              color: Colors.white70,
-                              child: Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      FaIcon(FontAwesomeIcons.bangladeshiTakaSign ,size: 15,),
-                                      FittedBox( 
-                                        child: Text(getFormatedPrice(value: firstScreenProvider.getMealRate), style: getTextStyleForTitleM()),
-                                          
-                                      ),
-                                      AutoSizeText(
-                                        "Meal Rate",
-                                        maxLines: 2,
-                                        textAlign: TextAlign.center,
-                                        style: getTextStyleForSubTitleM().copyWith(fontWeight: FontWeight.bold),
-                                        overflow: TextOverflow.ellipsis,
-                                        minFontSize: 10,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            onTap: () {
-                              
-                            },
-                          ),
-                        ),
+
+
               
                         SizedBox(
                           height: 150,
@@ -223,7 +287,124 @@ class _FirstScreenState extends State<FirstScreen> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Icon(Icons.no_meals_ouline),
+                                  FaIcon(FontAwesomeIcons.bangladeshiTakaSign ,size: 15,),
+                                  FittedBox( 
+                                    child: Text(getFormatedPrice(value: firstScreenProvider.getTotalBazerCost), style: getTextStyleForTitleM()),
+                                            
+                                  ),
+                                  
+                                      AutoSizeText(
+                                        "Bazer Cost",
+                                        maxLines: 2,
+                                        textAlign: TextAlign.center,
+                                        style: getTextStyleForSubTitleM().copyWith(fontWeight: FontWeight.bold),
+                                        overflow: TextOverflow.ellipsis,
+                                        minFontSize: 10,
+                                      ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+
+
+                        SizedBox(
+                          height: 150,
+                          child: GestureDetector(
+                            child: Card(
+                              color: Colors.white70,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Icon(Icons.set_meal_rounded, size: 15,),
+                                    FittedBox( 
+                                      child: Text(getFormatedPrice(value: firstScreenProvider.getTotalMealOfMess), style: getTextStyleForTitleM()),
+                                        
+                                    ),
+                                      AutoSizeText(
+                                        "Total Meal of Mess",
+                                        maxLines: 2,
+                                        textAlign: TextAlign.center,
+                                        style: getTextStyleForSubTitleM().copyWith(fontWeight: FontWeight.bold),
+                                        overflow: TextOverflow.ellipsis,
+                                        minFontSize: 10,
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            onTap: () {
+                              
+                            },
+                          ),
+                        ),
+
+
+                                  SizedBox(
+                          height: 150,
+                          child: GestureDetector(
+                            child: Card(
+                              color: Colors.white70,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    FaIcon(FontAwesomeIcons.bangladeshiTakaSign ,size: 15,),
+                                    FittedBox( 
+                                      child: Text(getFormatedPrice(value: firstScreenProvider.getMealRate), style: getTextStyleForTitleM()),
+                                        
+                                    ),
+                                    AutoSizeText(
+                                          "Meal Rate",
+                                          maxLines: 2,
+                                          textAlign: TextAlign.center,
+                                          style: getTextStyleForSubTitleM().copyWith(fontWeight: FontWeight.bold),
+                                          overflow: TextOverflow.ellipsis,
+                                          minFontSize: 10,
+                                        ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            onTap: () {
+                              
+                            },
+                          ),
+                        ),
+
+                      ]
+                    ),
+
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      child: Text("My Section", style: getTextStyleForTitleM().copyWith(fontWeight: FontWeight.bold),),
+                    ),
+                    GridView.count(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      crossAxisCount: 4,
+                      childAspectRatio: .9,
+                      mainAxisSpacing: 0,
+                      crossAxisSpacing: 0,
+                      children: [
+
+                
+
+              
+                        SizedBox(
+                          height: 150,
+                          child: Card(
+                            color: Colors.white70,
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Icon(Icons.no_meals_ouline, size: 15,),
                                   FittedBox( 
                                     child: Text(getFormatedPrice(value: firstScreenProvider.getMyTotalMeal), style: getTextStyleForTitleM()),
                                             
@@ -302,102 +483,19 @@ class _FirstScreenState extends State<FirstScreen> {
                         ),
               
               
-                        SizedBox(
-                          height: 150,
-                          child: GestureDetector(
-                            child: Card(
-                              color: Colors.white70,
-                              child: Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Icon(Icons.set_meal_rounded),
-                                    FittedBox( 
-                                      child: Text(getFormatedPrice(value: firstScreenProvider.getTotalMealOfMess), style: getTextStyleForTitleM()),
-                                        
-                                    ),
-                                      AutoSizeText(
-                                        "Total Meal of Mess",
-                                        maxLines: 2,
-                                        textAlign: TextAlign.center,
-                                        style: getTextStyleForSubTitleM().copyWith(fontWeight: FontWeight.bold),
-                                        overflow: TextOverflow.ellipsis,
-                                        minFontSize: 10,
-                                      ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            onTap: () {
-                              
-                            },
-                          ),
-                        ),
-              
-                        SizedBox(
-                          height: 150,
-                          child: Card(
-                            color: Colors.white70,
-                            child: Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  FaIcon(FontAwesomeIcons.bangladeshiTakaSign ,size: 15,),
-                                  FittedBox( 
-                                    child: Text(getFormatedPrice(value: firstScreenProvider.getTotalBazerCost), style: getTextStyleForTitleM()),
-                                            
-                                  ),
-                                  
-                                      AutoSizeText(
-                                        "Bazer Cost",
-                                        maxLines: 2,
-                                        textAlign: TextAlign.center,
-                                        style: getTextStyleForSubTitleM().copyWith(fontWeight: FontWeight.bold),
-                                        overflow: TextOverflow.ellipsis,
-                                        minFontSize: 10,
-                                      ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 150,
-                          child: Card(
-                            color: Colors.white70,
-                            child: Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  FaIcon(FontAwesomeIcons.starHalfStroke ,size: 15,),
-                                  FittedBox( 
-                                    child: Text(getFormatedPrice(value: firstScreenProvider.getRemainingFundBlance), style: getTextStyleForTitleM()),
-                                            
-                                  ),
-                                      AutoSizeText(
-                                        "Fund Blance",
-                                        maxLines: 2,
-                                        textAlign: TextAlign.center,
-                                        style: getTextStyleForSubTitleM().copyWith(fontWeight: FontWeight.bold),
-                                        overflow: TextOverflow.ellipsis,
-                                        minFontSize: 10,
-                                      ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
+
               
                         
                       ],
                     ),
 
+
+
+
                     StatefulBuilder(
                       builder: (context, setLocalState) {
-                        return SizedBox(
+                        return !(amIAdmin(messProvider: messProvider, authProvider: authProvider) || amIactmenager(messProvider: messProvider, authProvider: authProvider)) ? SizedBox.shrink()
+                        : SizedBox(
                           height: seeMore?500: 200,
                           child: Container(
                             margin: EdgeInsets.only(bottom: 20, top: 10),

@@ -1,12 +1,15 @@
 import 'package:ai_application/botton_sheet.dart';
 import 'package:ai_application/helper_method.dart';
 import 'package:ai_application/history_screen.dart';
+import 'package:ai_application/providers/user_provider.dart';
 import 'package:ai_application/ui_helper_method.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HelloScreen extends StatelessWidget {
   const HelloScreen({super.key});
+
+
 
   @override
   Widget build(BuildContext context) {

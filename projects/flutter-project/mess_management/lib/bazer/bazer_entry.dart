@@ -1,14 +1,12 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:mess_management/model/bazer_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mess_management/constants.dart';
 import 'package:mess_management/helper/helper_method.dart';
 import 'package:mess_management/helper/ui_helper.dart';
-import 'package:mess_management/model/bazer_model.dart';
 import 'package:mess_management/providers/authantication_provider.dart';
 import 'package:mess_management/providers/bazer_provider.dart';
 import 'package:mess_management/providers/mess_provider.dart';
@@ -23,6 +21,7 @@ class BazerEntryScreen extends StatefulWidget {
 }
 
 class _BazerEntryScreenState extends State<BazerEntryScreen> {
+  double totalAmount=0;
   bool isUpdate = false;
   TimeOfDay? time;
   DateTime? date;
@@ -56,7 +55,7 @@ class _BazerEntryScreenState extends State<BazerEntryScreen> {
     };
 
     setState(() {
-      
+      setTotalPrice();
     });
   }
 
@@ -241,8 +240,16 @@ class _BazerEntryScreenState extends State<BazerEntryScreen> {
               ),
             ),
         
+            Card(
+              // color: Colors.,
+              child: ListTile(
+                minTileHeight: 40,
+                title: Text("Total Cost \$ $totalAmount TK", style: TextStyle(fontSize: 20),),
+              ),
+            ),
+
             SizedBox(
-              height: 500,
+              height: 400,
               child: Stack(
                 children: [
                   Container(
@@ -362,6 +369,7 @@ class _BazerEntryScreenState extends State<BazerEntryScreen> {
                                         ontap: () {  
                                           setState(() {
                                             bazerList.removeAt(index);
+                                            setTotalPrice();
                                           });
                                         }
                                       ),
@@ -475,11 +483,8 @@ class _BazerEntryScreenState extends State<BazerEntryScreen> {
                   }
                   else{
                     // all valid
-                    double totalAmount=0;
                     try {
-                      bazerList.map((x){
-                        totalAmount += double.parse(x[Constants.price]);
-                      }).toList();
+                      setTotalPrice();
                     } catch (e) {
                       print(e);
                       return;
@@ -519,6 +524,7 @@ class _BazerEntryScreenState extends State<BazerEntryScreen> {
                         time =null;
                         dateController.clear();
                         timeController.clear();
+                        
                         showSnackber(context: context, content: "Updated!");
                       }, 
                       extraAdd: (bazerModel.amount - widget.preBazerModel!.amount) ,
@@ -540,6 +546,7 @@ class _BazerEntryScreenState extends State<BazerEntryScreen> {
                     // success 
                     setState(() {
                       bazerList.clear();
+                      setTotalPrice();
                     });
                   }
                 }
@@ -644,7 +651,6 @@ class _BazerEntryScreenState extends State<BazerEntryScreen> {
                 Navigator.pop(context, {Constants.product : product, Constants.price: price});
               }
             }, 
-            
             child:isUpdate? Text("Update") : Text("Add"),
 
           ),
@@ -668,9 +674,20 @@ class _BazerEntryScreenState extends State<BazerEntryScreen> {
           }
         );
         setState(() {
-        
+          setTotalPrice();
         });
       
+    }
+  }
+
+  setTotalPrice(){
+    try {
+      totalAmount = 0;
+      bazerList.map((x){
+        totalAmount += double.parse(x[Constants.price]);
+      }).toList();
+    } catch (e) {
+      throw e;
     }
   }
 }

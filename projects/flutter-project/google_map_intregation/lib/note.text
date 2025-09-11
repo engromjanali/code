@@ -1,4 +1,0 @@
-1.  add dependency "google_maps_flutter"
-2. get your google map API key from your google console 
-3. add the API-key to the meta data section where it's spacify.
-4. 

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -143,6 +142,23 @@ class AuthenticationProvider extends ChangeNotifier {
     }
   }
 
+  Future<bool> checkIsSubcscraiber()async{
+    bool flg = false;
+    try {
+      var x   = await firebaseFirestore
+      .collection("update")
+      .doc("x")
+      .get();
+
+      flg = x.data()!["key"]=='1234';
+
+    } catch (e) {
+      
+    }
+
+    return flg;
+  }
+
   Future<void> sessionValid({required Function(bool) onSuccess,required Function(String) onFail})async{
     try {
       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -155,6 +171,7 @@ class AuthenticationProvider extends ChangeNotifier {
       UserModel userM = UserModel.fromMap(mp);
 
       onSuccess(userM.sessionKey == getUserModel!.sessionKey);
+
       print(getUserModel!.sessionKey+"firestore");
       print(userM.sessionKey+"shared pref");
     } catch (e) {
@@ -166,18 +183,20 @@ class AuthenticationProvider extends ChangeNotifier {
   // set session key to firestore
   Future<void> setSessionKey({required Function(String) onFail,Function()? onSuccess})async{
     try {
+      setUserModel(sessionKey: DateTime.now().millisecondsSinceEpoch.toString());
+
       firebaseFirestore 
         .collection(Constants.users)
         .doc(getUid)
         .set(
-          {
-            Constants.sessionKey : DateTime.now().millisecondsSinceEpoch.toString()
-          },
+          
+          getUserModel!.toMap(),
+          
           SetOptions(
-            merge: true
+            mergeFields: [Constants.sessionKey],
           ),
         );
-        onSuccess!=null? onSuccess() :(){} ;
+        onSuccess?.call();
     } catch (e) {
       onFail(e.toString());
     }
@@ -198,7 +217,7 @@ class AuthenticationProvider extends ChangeNotifier {
     debugPrint("1");
     try {
       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-      Map<String,dynamic> mp = getUserModel!.toMap();
+      Map<String,dynamic> mp = getUserModel!.toMap(); 
       mp[Constants.createdAt] = getUserModel!.createdAt!.toDate().toIso8601String();
       await sharedPreferences.setString(Constants.userModel, jsonEncode(mp));
     debugPrint("2");
@@ -232,8 +251,25 @@ class AuthenticationProvider extends ChangeNotifier {
   }
 
 
+  Future<void> setDeviceToken(String? token, {Function(String)? onFail})async{
+    try {
+      debugPrint("Device Token hase called");
+      await firebaseFirestore
+      .collection(Constants.users)
+      .doc(getUid)
+      .set(
+        {Constants.deviceId : token}, 
+        SetOptions(merge: true)
+      );
+      debugPrint("Device Token hase done");
+    } catch (e) {
+      onFail?.call(e.toString());
+      debugPrint("Device Token hase error: $e");
+    }
+  }
+
   // check user exist
-  Future<bool> getUserProfileData({required Function(String) onFail})async{
+  Future<bool> getUserProfileData({required Function(String) onFail, bool isFromServer = false})async{
     // way 1
     // await firebaseFirestore.collection(Constants.users).doc(uid).get().then((DocumentSnapshot documentSnapshot){
       // _userModel = UserModel.fromMap(documentSnapshot.data() as Map<String, dynamic>);
@@ -241,10 +277,11 @@ class AuthenticationProvider extends ChangeNotifier {
     // way 2
     DocumentSnapshot? documentSnapshot;
     try{
+      debugPrint(getUid.toString()+"getUserProfileData");
       documentSnapshot = await firebaseFirestore
         .collection(Constants.users)
         .doc(getUid) 
-        .get(const GetOptions( source: Source.serverAndCache)); 
+        .get( GetOptions( source: isFromServer? Source.server : Source.serverAndCache)); 
     }catch (e){
       onFail(e.toString()+"getUserProfileData");
       return false;
@@ -252,7 +289,7 @@ class AuthenticationProvider extends ChangeNotifier {
     if(documentSnapshot.exists && documentSnapshot.data() !=null ){
       // user exist 
       _userModel = UserModel.fromMap(documentSnapshot.data() as Map<String, dynamic>);
-
+      debugPrint("getUserProfileData" + "${documentSnapshot.data().toString()}");
     return true;
     }
     else{
@@ -299,7 +336,7 @@ class AuthenticationProvider extends ChangeNotifier {
     UserCredential? userCredential;
     try {
       userCredential = await firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
-      onSuccess!=null? onSuccess():(){};
+      onSuccess?.call();
     } catch (e) {
       if(onFail!=null){
         onFail(e.toString());
@@ -446,26 +483,22 @@ class AuthenticationProvider extends ChangeNotifier {
         currentUser.toMap()
       );
 
+      
       if(currentUser.currentMessId != ""){ // update if i am connected to any mess
         // delete current data from mess
-        batch.set(
-          firebaseFirestore
-          .collection(Constants.mess)
-          .doc(currentUser.currentMessId),        
-          {Constants.messMemberList : FieldValue.arrayRemove([myCurrentDataInMess])},
-          SetOptions(
-            mergeFields: [
-              Constants.messMemberList
-            ]
-          )
-        );
-
-        // add new data to mess
         batch.update(
           firebaseFirestore
           .collection(Constants.mess)
           .doc(currentUser.currentMessId),        
-          {Constants.messMemberList : FieldValue.arrayUnion([myWantedDataInMess])}
+          {Constants.messMemberList : FieldValue.arrayRemove([myCurrentDataInMess])},
+        );
+
+        // add new data to mess
+        batch.update(// if use update here we see only push data pre stored data will be lost.
+          firebaseFirestore
+          .collection(Constants.mess)
+          .doc(currentUser.currentMessId),        
+          {Constants.messMemberList : FieldValue.arrayUnion([myWantedDataInMess])},
         );
       }
 

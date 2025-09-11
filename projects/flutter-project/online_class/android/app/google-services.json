@@ -1,0 +1,91 @@
+{
+  "project_info": {
+    "project_number": "764491896660",
+    "firebase_url": "https://flutter-chess-58f75-default-rtdb.firebaseio.com",
+    "project_id": "flutter-chess-58f75",
+    "storage_bucket": "flutter-chess-58f75.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:764491896660:android:f629a2b1ec0acb17c71ac1",
+        "android_client_info": {
+          "package_name": "com.example.chess_game"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "764491896660-ms6g1vd83ha5lihsb2gilaoaj8o6eo0f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chess_game",
+            "certificate_hash": "4c215d8246e91973f3624370ee8f99a005dbf063"
+          }
+        },
+        {
+          "client_id": "764491896660-5b01im90hcegs1u75prbletr2sqgha5u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGMjCIAhWbiyoki0-TunIo_l3OFlLVH2A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "764491896660-5b01im90hcegs1u75prbletr2sqgha5u.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "764491896660-38sc2dt3he05h6f1u2hfvn34ld48m3l2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.onlineClass"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:764491896660:android:7d3dfc3480590609c71ac1",
+        "android_client_info": {
+          "package_name": "com.example.online_class"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "764491896660-5b01im90hcegs1u75prbletr2sqgha5u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGMjCIAhWbiyoki0-TunIo_l3OFlLVH2A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "764491896660-5b01im90hcegs1u75prbletr2sqgha5u.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "764491896660-38sc2dt3he05h6f1u2hfvn34ld48m3l2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.onlineClass"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

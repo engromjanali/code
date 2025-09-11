@@ -194,7 +194,7 @@ class _MealEntryScreenState extends State<MealEntryScreen> {
                               showSnackber(context: context, content: "Date Was not Selected");
                               return;
                             }                         
-                            bool submit = await showConfirmDialog(context: context, title: "Do you want to ${isUpdate? "Update" :"submit"}?");
+                            bool submit = true; //await showConfirmDialog(context: context, title: "Do you want to ${isUpdate? "Update" :"submit"}?");
                             if(submit ?? false){
                               if(isUpdate){
                                 // up to dateabase

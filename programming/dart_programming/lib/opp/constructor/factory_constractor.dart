@@ -2,11 +2,14 @@ class ServiceProvider {
   static final ServiceProvider _instance = ServiceProvider._internal();
   String _url = "https://www.google.com/";
 
-  ServiceProvider();
+  // ServiceProvider();
   
-  factory ServiceProvider.z() {
-    // return _instance;
-    return ServiceProvider();
+  factory ServiceProvider.getInstance() {
+    // constractor can't return but fectory constractor can return.
+
+
+    return _instance;
+    // return ServiceProvider();
   }
 
 
@@ -23,8 +26,9 @@ class ServiceProvider {
 
 
 main(){
-  ServiceProvider s = ServiceProvider.z();  
-  ServiceProvider s1 = ServiceProvider.z();
+  ServiceProvider s = ServiceProvider._internal();  
+  // ServiceProvider s = ServiceProvider();  
+  ServiceProvider s1 = ServiceProvider.getInstance();
 
   s.setUrl(url: "sdfkslakdf");
   print(s.getUrl());
