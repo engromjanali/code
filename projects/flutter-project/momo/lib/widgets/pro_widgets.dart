@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:momo/optimize_listview.dart';
 import 'package:momo/test.dart';
 
 Widget proLabel(){
@@ -27,7 +28,7 @@ Widget proLabel(){
                     ),
                     GestureDetector(
                       onTap: () {
-                        Get.to(()=>SuitPage());
+                        Get.to(()=>OptimizedNestedSliverList());
                       },
                       child: Container(
                         padding: EdgeInsets.all(5),
