@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:momo/optimize_listview.dart';
-import 'package:momo/test.dart';
+import 'package:momo/prsentation/screens/purchese_screen.dart';
+import 'package:momo/prsentation/screens/get_this_pack.dart';
 
 Widget proLabel(){
   return // the pro label.
@@ -12,7 +12,7 @@ Widget proLabel(){
             right: 0,
             child: SafeArea(
               child: Padding(
-                padding: const EdgeInsets.only(top: 20,left: 10, right: 10 ),
+                padding: const EdgeInsets.only(top: 0,left: 10, right: 10 ),
                 child: Row(
                   
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -28,7 +28,7 @@ Widget proLabel(){
                     ),
                     GestureDetector(
                       onTap: () {
-                        Get.to(()=>OptimizedNestedSliverList());
+                        Get.to(()=>PurcheseScreen());
                       },
                       child: Container(
                         padding: EdgeInsets.all(5),

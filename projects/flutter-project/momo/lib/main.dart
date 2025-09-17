@@ -1,9 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:momo/home_page.dart';
+import 'package:momo/core/controller/c_home.dart';
+import 'package:momo/prsentation/screens/home_page.dart';
+import 'package:provider/provider.dart';
+
+GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() {
-  runApp(const MyApp());
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<CHome>(create: (_)=>CHome())
+      ],
+    child: MyApp()
+    ),
+  );
+  
 }
 
 class MyApp extends StatelessWidget {
@@ -13,11 +26,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      navigatorKey: navigatorKey,
       title: 'Flutter Demo',
-      theme: ThemeData(
+      // themeMode: ThemeMode.light,
+      // theme: ThemeData(
 
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
+      //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      // ),
       home: const HomePage(),
     );
   }

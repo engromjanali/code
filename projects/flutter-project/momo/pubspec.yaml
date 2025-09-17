@@ -38,6 +38,10 @@ dependencies:
   smooth_page_indicator: ^1.2.1
   auto_size_text: ^3.0.0
   get: ^4.7.2
+  provider: ^6.1.5+1
+
+  # for open url in brawser 
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:
