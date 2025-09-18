@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:momo/core/controller/c_home.dart';
+import 'package:momo/prsentation/screens/explore/controllers/explore_controller.dart';
 import 'package:momo/prsentation/screens/home_page.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +12,8 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider<CHome>(create: (_)=>CHome())
+        ChangeNotifierProvider<CHome>(create: (_)=>CHome()),
+        ChangeNotifierProvider<CExplore>(create: (_)=>CExplore()),
       ],
     child: MyApp()
     ),

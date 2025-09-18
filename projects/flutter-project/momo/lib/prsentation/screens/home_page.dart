@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:momo/core/controller/c_home.dart';
-import 'package:momo/prsentation/screens/explore_or_oneshot_screen.dart';
+import 'package:momo/core/util/constants/text_style.dart';
+import 'package:momo/prsentation/screens/explore/explore_screen.dart';
+import 'package:momo/prsentation/screens/one_shot/one_shot.dart';
 import 'package:momo/prsentation/screens/my_profile/my_profile.dart';
 import 'package:provider/provider.dart';
 
@@ -15,8 +17,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   List<Widget> pages = [
-    ExploreAndOneShotScreen(isExplore: true),
-    ExploreAndOneShotScreen(isExplore: false),
+    ExploreScreen(),
+    OneShot(),
     MyProfile(),
   ];
 

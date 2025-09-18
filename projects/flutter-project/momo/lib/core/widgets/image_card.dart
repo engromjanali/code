@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:momo/core/helper/assets/images.dart';
-import 'package:momo/prsentation/screens/get_this_pack.dart';
+import 'package:momo/core/widgets/get_this_pack.dart';
 
-Widget getImageCard(){
+Widget getImageCard({required String label, int ? numberOfPhoto}){
   return  GestureDetector(
     onTap: () {
-      Get.to(()=>SuitPage());
+      Get.to(()=>GetStartedScreen());
     },
     child: Padding(
       padding: const EdgeInsets.all(8.0),
@@ -40,8 +40,8 @@ Widget getImageCard(){
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         // Text("MOMO"),
-                        Text("Business", textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18, color: Colors.white)),
-                        Text("6 photos", textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16, color: Colors.white)),
+                        Text(label, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18, color: Colors.white)),
+                        if(numberOfPhoto!=null)Text(numberOfPhoto.toString(), textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16, color: Colors.white)),
                         SizedBox(height: 20,),
                     ]
                   ),
