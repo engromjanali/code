@@ -109,8 +109,7 @@ class _OnePhotosWithOutPromptState extends State<OnePhotosWithOutPrompt> {
                       children: [
                         Expanded(
                           child: getImageCard(
-                            showImage:  true,
-                            label: "Upload your photo to yourself in the spotlight",
+                            label: "Upload your photo to yourself in the spotlight", ontap: (isImage) {  }, imagePath: '',
                           ),
                         ),
                       ],

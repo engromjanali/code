@@ -3,11 +3,13 @@ import 'package:get/get.dart';
 import 'package:momo/core/helper/assets/images.dart';
 import 'package:momo/core/widgets/get_this_pack.dart';
 
-Widget getImageCard({required String label, int ? numberOfPhoto}){
+Widget getImageCard({
+  required String label, 
+  int ? numberOfPhoto,
+  required Function() ontap,
+  }){
   return  GestureDetector(
-    onTap: () {
-      Get.to(()=>GetStartedScreen());
-    },
+    onTap: ontap,
     child: Padding(
       padding: const EdgeInsets.all(8.0),
       child: ClipRRect(

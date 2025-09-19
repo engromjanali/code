@@ -5,11 +5,13 @@ import 'package:momo/core/util/constants/all_enums.dart';
 import 'package:momo/core/widgets/bottom_button.dart';
 import 'package:momo/core/widgets/custom_Image_type_selection_dialog.dart';
 import 'package:momo/data/model/explore/explore_item_model.dart';
+import 'package:momo/data/model/one_shot/oneshot_item_model.dart';
+import 'package:momo/data/model/one_shot/oneshot_model.dart';
 
 class GetStartedScreen extends StatefulWidget {
   final bool isExplore;
   final EItemModel? eItem;
-  final EItemModel? oneShotItem;
+  final OSItemModel? oneShotItem;
   const GetStartedScreen({
     super.key,
     this.isExplore = true,
@@ -203,9 +205,10 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                             ),
                             SizedBox(height: 8),
                             Text(
-                              widget.isExplore
-                                  ? widget.eItem!.details
-                                  : widget.oneShotItem!.details,
+                              // widget.isExplore
+                              //     ? 
+                                  widget.eItem!.details,
+                                  // : widget.oneShotItem!.details,
                               style: TextStyle(color: Colors.white70),
                             ),
                             SizedBox(height: 8),
@@ -222,9 +225,11 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                               padding: EdgeInsets.symmetric(vertical: 20),
                               physics: NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
-                              itemCount: widget.isExplore
-                                  ? widget.eItem!.spacificaton.length
-                                  : widget.oneShotItem!.spacificaton.length,
+                              itemCount: 
+                              // widget.isExplore
+                              //     ? 
+                                  widget.eItem!.spacificaton.length,
+                                  // : widget.oneShotItem!.spacificaton.length,
                               itemBuilder: (_, index) {
                                 return Row(
                                   spacing: 10,
@@ -233,11 +238,11 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                                     Icon(Icons.circle, color: Colors.grey, size: 10,),
                                     Expanded(
                                       child: Text(
-                                        widget.isExplore
-                                            ? widget.eItem!.spacificaton[index]
-                                            : widget
-                                                  .oneShotItem!
-                                                  .spacificaton[index],
+                                        // widget.isExplore?
+                                            widget.eItem!.spacificaton[index],
+                                            // : widget
+                                            //       .oneShotItem!
+                                            //       .spacificaton[index],
                                         style: TextStyle(color: Colors.white70),
                                       ),
                                     ),

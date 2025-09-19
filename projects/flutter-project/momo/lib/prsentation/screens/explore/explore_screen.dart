@@ -5,15 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:momo/core/helper/assets/images.dart';
+import 'package:momo/core/widgets/get_this_pack.dart';
+import 'package:momo/data/model/explore/explore_item_model.dart';
+import 'package:momo/data/model/explore/explore_model.dart';
 import 'package:momo/prsentation/screens/explore/controllers/explore_controller.dart';
 import 'package:momo/prsentation/screens/explore/widgets/current_item_indicator.dart';
 import 'package:momo/prsentation/screens/explore/widgets/top_slider.dart';
 import 'package:momo/prsentation/screens/model_name_screen.dart';
-import 'package:momo/prsentation/screens/one_photo_with_prompt.dart';
 import 'package:momo/prsentation/screens/one_photo_without_prompt.dart';
-import 'package:momo/prsentation/screens/two_photos_with_prompt.dart';
+import 'package:momo/prsentation/screens/photos_with_prompt.dart';
 import 'package:momo/core/widgets/see_all_page.dart';
-import 'package:momo/prsentation/screens/explore/widgets/explore_section.dart';
+import 'package:momo/prsentation/screens/explore/widgets/explore_list.dart';
 import 'package:momo/core/widgets/pro_label.dart';
 import 'package:momo/test.dart';
 import 'package:provider/provider.dart';
@@ -60,7 +62,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 TopSlider(
                   exploreList: cExplore.exploreList,
                   isExplore: true,
-                  onTap: () {},
+                  onTap: (explore) {
+                    // we have to navigate to this page with the hole explore and show sorted few image and offer the whole explore pack
+                    // but for this moment we are nagvigating with a item.
+                    Get.to(()=>GetStartedScreen(
+                      eItem: EItemModel.fromMap(explore.items[0]),
+                    ));
+                  },
                 ),
             
             

@@ -25,6 +25,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     CHome cHome = context.watch<CHome>();
+
     return Scaffold(
       extendBody: true,
       backgroundColor: Colors.black,

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:momo/core/controller/c_home.dart';
 import 'package:momo/prsentation/screens/explore/controllers/explore_controller.dart';
 import 'package:momo/prsentation/screens/home_page.dart';
+import 'package:momo/prsentation/screens/one_shot/controller/oneshot_controller.dart';
 import 'package:provider/provider.dart';
 
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -14,6 +15,7 @@ void main() {
       providers: [
         ChangeNotifierProvider<CHome>(create: (_)=>CHome()),
         ChangeNotifierProvider<CExplore>(create: (_)=>CExplore()),
+        ChangeNotifierProvider<COneShot>(create: (_)=>COneShot()),
       ],
     child: MyApp()
     ),

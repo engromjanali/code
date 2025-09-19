@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:momo/core/util/constants/url.dart';
-import 'package:momo/core/helper/launch_url.dart';
+import 'package:momo/core/helper/mothod/launch_url.dart';
 import 'package:momo/prsentation/screens/my_profile/setting/screens/faq_screen.dart';
 import 'package:momo/prsentation/screens/my_profile/setting/screens/privacy_and_policy.dart';
 import 'package:momo/prsentation/screens/my_profile/setting/screens/terms_of_user.dart';

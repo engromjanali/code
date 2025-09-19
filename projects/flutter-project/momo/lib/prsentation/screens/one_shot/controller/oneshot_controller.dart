@@ -10,7 +10,7 @@ class COneShot extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setExploreList(List<OneshotModel> oneShotList) {
+  void setOneshotList(List<OneshotModel> oneShotList) {
     _oneShotList = oneShotList;
 
     // for tasting perpose

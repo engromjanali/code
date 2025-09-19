@@ -5,23 +5,26 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:momo/core/helper/assets/images.dart';
 import 'package:momo/data/model/explore/explore_model.dart';
+import 'package:momo/data/model/one_shot/oneshot_item_model.dart';
+import 'package:momo/data/model/one_shot/oneshot_model.dart';
 import 'package:momo/prsentation/screens/explore/widgets/current_item_indicator.dart';
-import 'package:momo/prsentation/screens/one_photo_with_prompt.dart';
 import 'package:momo/test.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 
 class TopSlider extends StatefulWidget {
-  final List<ExploreModel> exploreList;
+  final List<ExploreModel>? exploreList;
+  final List<OSItemModel>? oneShotItemList;
   final bool isExplore;
-  final Function() onTap;
+  final Function(dynamic) onTap;
 
   const TopSlider({
     super.key,
-    required this.exploreList,
+    this.exploreList,
     required this.isExplore,
     required this.onTap,
+    this.oneShotItemList,
   });
 
   @override
@@ -41,7 +44,15 @@ class _TopSliderState extends State<TopSlider> {
       _timer = Timer.periodic(const Duration(seconds: 3), (_) {
         // setState(() {
 
-        _currentItem = widget.exploreList.length==0? 0 :(_currentItem + 1) % widget.exploreList.length;
+        _currentItem = widget.isExplore
+            ? (widget.exploreList!.isEmpty
+                  ? 0
+                  : (_currentItem + 1) %
+                        widget.exploreList!.length.clamp(1, 10))
+            : (widget.oneShotItemList!.isEmpty
+                  ? 0
+                  : (_currentItem + 1) %
+                        widget.oneShotItemList!.length.clamp(1, 10));
         // });
 
         pageController.animateToPage(
@@ -56,9 +67,6 @@ class _TopSliderState extends State<TopSlider> {
   @override
   void dispose() {
     // TODO: implement dispose
-    _timer?.cancel();
-    _timer?.cancel();
-    _timer?.cancel();
     _timer?.cancel();
     pageController.dispose();
     super.dispose();
@@ -78,8 +86,10 @@ class _TopSliderState extends State<TopSlider> {
               PageView.builder(
                 physics: const PageScrollPhysics(),
                 controller: pageController,
-                itemCount: widget.exploreList.length,
-              
+                itemCount: widget.isExplore
+                    ? widget.exploreList!.length
+                    : widget.oneShotItemList!.length,
+
                 onPageChanged: (value) {
                   setLocalState(() {
                     _currentItem = value;
@@ -102,14 +112,15 @@ class _TopSliderState extends State<TopSlider> {
                               fit: BoxFit.fill,
                             ),
                           ),
-              
+
                           // gradient filter
                           Container(
                             height: size.height / 2,
                             width: size.width,
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
-                                begin: Alignment.bottomCenter, // start at bottom
+                                begin:
+                                    Alignment.bottomCenter, // start at bottom
                                 end: Alignment.topCenter,
                                 // transform: GradientRotation(4),
                                 colors: [
@@ -120,7 +131,7 @@ class _TopSliderState extends State<TopSlider> {
                               ),
                             ),
                           ),
-              
+
                           widget.isExplore
                               ? Positioned.fill(
                                   child: Column(
@@ -131,7 +142,7 @@ class _TopSliderState extends State<TopSlider> {
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: AutoSizeText(
-                                          "Create 60 ${widget.exploreList[_currentItem].title} version of you",
+                                          "Create 60 ${widget.exploreList![_currentItem].title} version of you",
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontWeight: FontWeight.w700,
@@ -146,27 +157,29 @@ class _TopSliderState extends State<TopSlider> {
 
                                       // Elevated button
                                       ElevatedButton.icon(
-                                        onPressed: widget.onTap,
+                                        onPressed: () {
+                                          widget.onTap(widget.exploreList![_currentItem]);
+                                        },
                                         icon: Text(
-                                          "Try ${widget.exploreList[_currentItem].title}",
+                                          "Try ${widget.exploreList![_currentItem].title}",
                                           style: TextStyle(color: Colors.black),
                                         ),
                                         label: Icon(
                                           Icons.keyboard_arrow_right_outlined,
+                                          color: Colors.black,
                                         ),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.white.withAlpha(
-                                            150,
-                                          ),
+                                          backgroundColor: Colors.white
+                                              .withAlpha(150),
                                         ),
                                       ),
                                       SizedBox(height: 40),
                                     ],
                                   ),
                                 )
-                              : 
-                              // for One Shot (label, button, subtitle)
-                              Positioned.fill(
+                              :
+                                // for One Shot (label, button, subtitle)
+                                Positioned.fill(
                                   child: Column(
                                     children: [
                                       Spacer(),
@@ -183,10 +196,13 @@ class _TopSliderState extends State<TopSlider> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   AutoSizeText(
-                                                    "Create 60 Linkedin",
+                                                    widget
+                                                        .oneShotItemList![_currentItem]
+                                                        .title,
                                                     textAlign: TextAlign.start,
                                                     style: TextStyle(
-                                                      fontWeight: FontWeight.w700,
+                                                      fontWeight:
+                                                          FontWeight.w700,
                                                       fontSize: 30,
                                                       color: Colors.white,
                                                       overflow:
@@ -196,22 +212,24 @@ class _TopSliderState extends State<TopSlider> {
                                                     maxLines: 1,
                                                   ),
                                                   Text(
-                                                    "widget.itemList[_currentItem].subTitle??""",
+                                                    widget.oneShotItemList![_currentItem].subTitle,
                                                     textAlign: TextAlign.start,
                                                     style: TextStyle(
-                                                      fontWeight: FontWeight.w600,
+                                                      fontWeight:
+                                                          FontWeight.w600,
                                                       fontSize: 16,
                                                       color: Colors.white70,
                                                     ),
-                                                    overflow: TextOverflow.ellipsis,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     maxLines: 2,
                                                   ),
                                                 ],
                                               ),
                                             ),
                                             ElevatedButton.icon(
-                                              onPressed: () {
-                                                Get.to(() => OnePhotosWithPrompt());
+                                              onPressed: (){
+                                                widget.onTap(widget.oneShotItemList![_currentItem]);
                                               },
                                               iconAlignment: IconAlignment.end,
                                               label: Text(
@@ -233,24 +251,27 @@ class _TopSliderState extends State<TopSlider> {
                                     ],
                                   ),
                                 ),
-              
-              
                         ],
                       ),
                     ],
                   );
                 },
               ),
-                                // the linier indicator
-                                Positioned(
-                                  bottom: 0,
-                                  left: 0,
-                                  right: 0,
-                                  child: currentItemIndicator(
-                                    widget.exploreList.length.clamp(0, 10), // maximun 10, minimum how have
-                                    _currentItem,
-                                  ),
-                                ),
+              // the linier indicator
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: currentItemIndicator(
+                  widget.isExplore
+                      ? widget.exploreList!.length.clamp(0, 10)
+                      : widget.oneShotItemList!.length.clamp(
+                          0,
+                          10,
+                        ), // maximun 10, minimum how have
+                  _currentItem,
+                ),
+              ),
             ],
           );
         },

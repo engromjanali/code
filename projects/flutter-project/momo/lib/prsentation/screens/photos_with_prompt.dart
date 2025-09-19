@@ -1,20 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:momo/core/helper/assets/images.dart';
 import 'package:momo/core/util/constants/colors.dart';
 import 'package:momo/core/util/constants/text_style.dart';
+import 'package:momo/core/util/services/image_picker.dart';
 import 'package:momo/core/widgets/bottom_button.dart';
 import 'package:momo/core/widgets/get_raw_image_card.dart';
+import 'package:momo/data/model/one_shot/oneshot_item_model.dart';
 
-class TwoPhotosWithPrompt extends StatefulWidget {
-  const TwoPhotosWithPrompt({super.key});
+class PhotosWithPrompt extends StatefulWidget {
+  final OSItemModel osItem;
+  const PhotosWithPrompt({super.key, required this.osItem});
 
   @override
-  State<TwoPhotosWithPrompt> createState() => _TwoPhotosWithPromptState();
+  State<PhotosWithPrompt> createState() => _PhotosWithPromptState();
 }
 
-class _TwoPhotosWithPromptState extends State<TwoPhotosWithPrompt> {
+class _PhotosWithPromptState extends State<PhotosWithPrompt> {
+  List<String?> pickedImageList = [];
+
+  @override
+  void initState() {
+    pickedImageList.addAll(
+      widget.osItem.imageBehaildText.map((x) => null).toList(),
+    );
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,7 +140,7 @@ class _TwoPhotosWithPromptState extends State<TwoPhotosWithPrompt> {
                               decoration: InputDecoration(
                                 hintText: "Write Your Prompt Here...",
                                 hintStyle: getSubtitleStyle(),
-                            
+
                                 border: InputBorder.none,
                               ),
                               style: getSubtitleStyle(),
@@ -138,24 +153,48 @@ class _TwoPhotosWithPromptState extends State<TwoPhotosWithPrompt> {
                       ),
                     ),
                   ),
+
                   Expanded(
                     child: Row(
-                      children: [
-                        Expanded(
-                          child: getImageCard(
-                            showImage:  false,
-                            label: "Upload your photo to yourself in the spotlight",
-                          )
-                        ),
-                        Expanded(
-                          child: getImageCard(
-                            showImage:  true,
-                            label: "Upload your photo to yourself in the spotlight",
-                          )
-                        ),
-                      ],
+                      children: widget.osItem.imageBehaildText.map((
+                        behindText,
+                      ) {
+                        int index = widget.osItem.imageBehaildText.indexOf(
+                          behindText,
+                        );
+                        return StatefulBuilder(
+                          builder: (context, setLocalState) {
+                            return Expanded(
+                              child: getImageCard(
+                                imagePath: pickedImageList[index],
+                                ontap: (isImage) async {
+
+                                  if(isImage){
+                                    setLocalState((){
+                                      pickedImageList[index] = null;
+                                    });
+                                  }
+                                  else{ 
+                                      ImagePickerServices ipServices =
+                                          ImagePickerServices();
+                                      XFile? pickedImageFile = await ipServices
+                                          .pickSingleImage();
+                                      if (pickedImageFile != null) {
+                                        setLocalState((){
+                                          pickedImageList[index] = pickedImageFile.path;
+                                        });
+                                      }
+                                  }
+                                },
+                                label: behindText,
+                              ),
+                            );
+                          }
+                        );
+                      }).toList(),
                     ),
                   ),
+
                   getBottomRoundedButton(
                     label: "Continue * 10",
                     margin: EdgeInsets.only(bottom: 20, top: 10),
@@ -169,6 +208,4 @@ class _TwoPhotosWithPromptState extends State<TwoPhotosWithPrompt> {
       ),
     );
   }
-
-  
 }

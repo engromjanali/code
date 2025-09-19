@@ -6,15 +6,17 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:momo/core/helper/assets/images.dart';
 import 'package:momo/core/util/constants/all_enums.dart';
+import 'package:momo/data/model/one_shot/oneshot_item_model.dart';
+import 'package:momo/core/util/services/navigator_services.dart';
 import 'package:momo/prsentation/screens/explore/widgets/current_item_indicator.dart';
 import 'package:momo/prsentation/screens/explore/widgets/top_slider.dart';
 import 'package:momo/prsentation/screens/model_name_screen.dart';
-import 'package:momo/prsentation/screens/one_photo_with_prompt.dart';
 import 'package:momo/prsentation/screens/one_photo_without_prompt.dart';
 import 'package:momo/prsentation/screens/one_shot/controller/oneshot_controller.dart';
-import 'package:momo/prsentation/screens/two_photos_with_prompt.dart';
+import 'package:momo/prsentation/screens/one_shot/widgets/get_onehost_list.dart';
+import 'package:momo/prsentation/screens/photos_with_prompt.dart';
 import 'package:momo/core/widgets/see_all_page.dart';
-import 'package:momo/prsentation/screens/explore/widgets/explore_section.dart';
+import 'package:momo/prsentation/screens/explore/widgets/explore_list.dart';
 import 'package:momo/core/widgets/pro_label.dart';
 import 'package:momo/test.dart';
 import 'package:provider/provider.dart';
@@ -34,6 +36,10 @@ class _OneShotState extends State<OneShot> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final cOneShot = context.read<COneShot>();
+      cOneShot.setOneshotList([]);
+    });
   }
 
   @override
@@ -56,9 +62,13 @@ class _OneShotState extends State<OneShot> {
             child: Column(
               children: [
                 TopSlider(
-                  exploreList: cOneShot.oneShotList,
-                  isExplore: true,
-                  onTap: () {},
+                  oneShotItemList:cOneShot.oneShotList.isNotEmpty? cOneShot.oneShotList[0].items
+                      .map((item) => OSItemModel.fromMap(item))
+                      .toList() : [],
+                  isExplore: false,
+                  onTap: (osItem) {
+                    NServices().onseShotToApply(osItem: osItem);
+                  },
                 ),
 
                 // OneShot list
@@ -69,7 +79,7 @@ class _OneShotState extends State<OneShot> {
                   itemBuilder: (_, index) {
                     return getOneShotList(
                       context,
-                      explore: cOneShot.oneShotList[index],
+                      oneShot: cOneShot.oneShotList[index],
                     );
                   },
                 ),

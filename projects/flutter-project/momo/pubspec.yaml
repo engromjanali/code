@@ -43,6 +43,10 @@ dependencies:
   # for open url in brawser 
   url_launcher: ^6.3.2
 
+  #for image pick 
+  image_picker: ^1.2.0 
+  dio: ^5.9.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

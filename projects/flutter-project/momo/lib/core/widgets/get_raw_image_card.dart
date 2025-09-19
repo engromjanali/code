@@ -4,8 +4,10 @@ import 'package:momo/core/util/constants/colors.dart';
 import 'package:momo/core/util/constants/text_style.dart';
 
 Widget getImageCard({
-    required bool showImage,
+    required Function(bool) ontap, // true if iamge have otherwise false.
+    required String? imagePath,
     required String label,
+
     }) {
     return Container(
       margin: EdgeInsets.all(5),
@@ -15,14 +17,16 @@ Widget getImageCard({
 
         // image: DecorationImage(image: ,fit: BoxFit.fill,))
       ),
-      child: showImage
-          ? ClipRRect(
+      child: imagePath!=null
+          ? 
+          // show image 
+          ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Stack(
                 children: [
                   SizedBox.expand(
                     child: Image.asset(
-                      Images.myPhoto, 
+                      imagePath, 
                       fit: BoxFit.cover,
                       alignment : Alignment.topCenter,
                     ),
@@ -31,31 +35,40 @@ Widget getImageCard({
                     top: 5,
                     right: 5,
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: (){
+                        ontap(true);
+                      },
                       icon: Icon(Icons.cancel, color: Colors.white, size: 20),
                     ),
                   ),
                 ],
               ),
             )
-          : Container(
-              padding: EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.image_search_sharp,
-                    size: 40,
-                    color: subTitleColor,
-                  ),
-                  Text(
-                    label,
-                    style: getSubtitleStyle(),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+          : 
+          // otherwise show image field 
+          GestureDetector(
+            onTap: (){
+              ontap(false);
+            },
+            child: Container(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.image_search_sharp,
+                      size: 40,
+                      color: subTitleColor,
+                    ),
+                    Text(
+                      label,
+                      style: getSubtitleStyle(),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
               ),
-            ),
+          ),
     );
   }

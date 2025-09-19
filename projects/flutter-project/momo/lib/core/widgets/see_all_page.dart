@@ -5,10 +5,13 @@ import 'package:momo/data/model/explore/explore_item_model.dart';
 import 'package:momo/data/model/explore/explore_model.dart';
 import 'package:momo/core/widgets/get_this_pack.dart';
 import 'package:momo/core/widgets/image_card.dart';
+import 'package:momo/data/model/one_shot/oneshot_item_model.dart';
+import 'package:momo/data/model/one_shot/oneshot_model.dart';
+import 'package:momo/core/util/services/navigator_services.dart';
 
 class SeeAllPage extends StatefulWidget {
   final ExploreModel? explore;
-  final ExploreModel? oneShot;
+  final OneshotModel? oneShot;
   final bool isExplore;
   const SeeAllPage({
     super.key,
@@ -48,17 +51,30 @@ class _SeeAllPageState extends State<SeeAllPage> {
         children: [
           Expanded(
             child: GridView.builder(
-              itemCount:widget.explore!.items.length ,
+              itemCount:widget.isExplore? widget.explore!.items.length : widget.oneShot!.items.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 childAspectRatio: 1 / 1.3,
               ),
               itemBuilder: (context, index) {
                 return getImageCard(
+                  ontap: (){
+                    if(widget.isExplore){
+                      Get.to(()=>GetStartedScreen(
+                        isExplore: widget.isExplore,
+                        eItem: widget.isExplore? EItemModel.fromMap(widget.explore!.items[index]) : null,
+                        oneShotItem: !widget.isExplore? OSItemModel.fromMap(widget.oneShot!.items[index]) : null,
+                      ));
+                    }
+                    else{
+                      print("oneshot");
+                      NServices().onseShotToApply(osItem: OSItemModel.fromMap(widget.oneShot!.items[index]));
+                    }
+                  },
                   label: widget.isExplore
                       ? EItemModel.fromMap(widget.explore!.items[index]).title
-                      : EItemModel.fromMap(widget.oneShot!.items[index]).title,
-                  numberOfPhoto: EItemModel.fromMap(widget.explore!.items[index]).example.length,
+                      : OSItemModel.fromMap(widget.oneShot!.items[index]).title,
+                  numberOfPhoto:widget.isExplore? EItemModel.fromMap(widget.explore!.items[index]).example.length : null,
                 );
               },
             ),

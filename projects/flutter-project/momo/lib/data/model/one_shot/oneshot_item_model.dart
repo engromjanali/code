@@ -18,13 +18,14 @@ class OSItemModel {
   });
 
   factory OSItemModel.fromMap(Map<String, dynamic> map) {
+    print(map[Constants.inputImages]);
     return OSItemModel(
       title: map[Constants.title],
       subTitle: map[Constants.subTitle],
       example: map[Constants.example],
       prompt: map[Constants.prompt],
-      imageBehaildText: map[Constants.imageBehaildText],
-      inputImages: map[Constants.inputImages]??[],
+      imageBehaildText: List<String>.from(map[Constants.imageBehaildText]??[]),
+      inputImages:  List<String>.from(map[Constants.inputImages]??[]),
     );
   }
 
