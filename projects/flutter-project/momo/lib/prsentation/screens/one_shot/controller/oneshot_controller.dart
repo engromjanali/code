@@ -22,16 +22,15 @@ class COneShot extends ChangeNotifier {
             Constants.title: "title",
             Constants.subTitle: "subTitle",
             Constants.example: "xyz.jpg",
-            Constants.prompt: "make a image in sunlight",
+            Constants.prompt: null,
             Constants.imageBehaildText: [
               "set a image here",
-              "set a image here-2",
             ],
             Constants.inputImages: [],
           },
           {
-            Constants.title: "title",
-            Constants.subTitle: "subTitle",
+            Constants.title: "title1",
+            Constants.subTitle: "alsdfjsld. sdlfjas das f asdlgasd'sd sldglsg sdga'das;ldgklsdfg dkslfglsdfg;e9rm oeldkfgjerouitn 90349utw e",
             Constants.example: "xyz.jpg",
             Constants.prompt: "make a image in sunlight",
             Constants.imageBehaildText: [

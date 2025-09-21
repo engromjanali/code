@@ -60,7 +60,7 @@ class _SeeAllPageState extends State<SeeAllPage> {
                 return getImageCard(
                   ontap: (){
                     if(widget.isExplore){
-                      Get.to(()=>GetStartedScreen(
+                      Get.to(()=>GetThisPack(
                         isExplore: widget.isExplore,
                         eItem: widget.isExplore? EItemModel.fromMap(widget.explore!.items[index]) : null,
                         oneShotItem: !widget.isExplore? OSItemModel.fromMap(widget.oneShot!.items[index]) : null,

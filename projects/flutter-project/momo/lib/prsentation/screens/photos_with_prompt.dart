@@ -3,12 +3,15 @@ import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:momo/core/helper/assets/images.dart';
+import 'package:momo/core/util/constants/all_enums.dart';
 import 'package:momo/core/util/constants/colors.dart';
 import 'package:momo/core/util/constants/text_style.dart';
 import 'package:momo/core/util/services/image_picker.dart';
 import 'package:momo/core/widgets/bottom_button.dart';
+import 'package:momo/core/widgets/custom_Image_type_selection_dialog.dart';
 import 'package:momo/core/widgets/get_raw_image_card.dart';
 import 'package:momo/data/model/one_shot/oneshot_item_model.dart';
+import 'package:momo/prsentation/screens/purchese_screen.dart';
 
 class PhotosWithPrompt extends StatefulWidget {
   final OSItemModel osItem;
@@ -20,9 +23,11 @@ class PhotosWithPrompt extends StatefulWidget {
 
 class _PhotosWithPromptState extends State<PhotosWithPrompt> {
   List<String?> pickedImageList = [];
+  TextEditingController promptController = TextEditingController();
 
   @override
   void initState() {
+    promptController.text = widget.osItem.prompt!;
     pickedImageList.addAll(
       widget.osItem.imageBehaildText.map((x) => null).toList(),
     );
@@ -33,6 +38,11 @@ class _PhotosWithPromptState extends State<PhotosWithPrompt> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
+      backgroundColor: Colors.black,
+      bottomNavigationBar: getBottomRoundedButton(label: "Continue * 10", ontap: () {
+        Get.to(()=>PurcheseScreen());
+      }, isEnabled: !pickedImageList.contains(null)),
       body: Column(
         children: [
           // top area
@@ -74,11 +84,11 @@ class _PhotosWithPromptState extends State<PhotosWithPrompt> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Park Vives",
+                          widget.osItem.title,
                           style: getTitleStyle().copyWith(fontSize: 26),
                         ),
                         Text(
-                          "Bright, natural look with soft sunlight and relaxed outdoor vibes.",
+                          widget.osItem.subTitle,
                           style: getSubtitleStyle().copyWith(
                             color: subTitleColor,
                           ),
@@ -137,6 +147,7 @@ class _PhotosWithPromptState extends State<PhotosWithPrompt> {
                           Text("Enter Prompt", style: getTitleStyle()),
                           Expanded(
                             child: TextField(
+                              controller: promptController,
                               decoration: InputDecoration(
                                 hintText: "Write Your Prompt Here...",
                                 hintStyle: getSubtitleStyle(),
@@ -162,48 +173,47 @@ class _PhotosWithPromptState extends State<PhotosWithPrompt> {
                         int index = widget.osItem.imageBehaildText.indexOf(
                           behindText,
                         );
-                        return StatefulBuilder(
-                          builder: (context, setLocalState) {
-                            return Expanded(
-                              child: getImageCard(
-                                imagePath: pickedImageList[index],
-                                ontap: (isImage) async {
-
-                                  if(isImage){
-                                    setLocalState((){
-                                      pickedImageList[index] = null;
+                        return Expanded(
+                          child: getImageCard(
+                            imagePath: pickedImageList[index],
+                            ontap: (isImage) async {
+                              if (isImage) {
+                                setState(() {
+                                  pickedImageList[index] = null;
+                                });
+                              } else {
+                                SelectImageFrom res =
+                                    await customImageSourceSelectionDialog();
+                                if (res != SelectImageFrom.unSelected) {
+                                  XFile? pickedImageFile =
+                                      await ImagePickerServices()
+                                          .pickSingleImage(
+                                            choseFrom:
+                                                SelectImageFrom.camera ==
+                                                    res
+                                                ? ImageSource.camera
+                                                : ImageSource.gallery,
+                                          );
+                                  if (pickedImageFile != null) {
+                                    setState(() {
+                                      pickedImageList[index] =
+                                          pickedImageFile.path;
                                     });
                                   }
-                                  else{ 
-                                      ImagePickerServices ipServices =
-                                          ImagePickerServices();
-                                      XFile? pickedImageFile = await ipServices
-                                          .pickSingleImage();
-                                      if (pickedImageFile != null) {
-                                        setLocalState((){
-                                          pickedImageList[index] = pickedImageFile.path;
-                                        });
-                                      }
-                                  }
-                                },
-                                label: behindText,
-                              ),
-                            );
-                          }
+                                }
+                              }
+                            },
+                            label: behindText,
+                          ),
                         );
                       }).toList(),
                     ),
-                  ),
-
-                  getBottomRoundedButton(
-                    label: "Continue * 10",
-                    margin: EdgeInsets.only(bottom: 20, top: 10),
-                    ontap: () {},
                   ),
                 ],
               ),
             ),
           ),
+          SizedBox(height: 100),
         ],
       ),
     );

@@ -9,10 +9,10 @@ class ImagePickerServices {
 
   ImagePickerServices() {}
 
-  Future<XFile?> pickSingleImage() async {
+  Future<XFile?> pickSingleImage({ImageSource choseFrom = ImageSource.gallery}) async {
     XFile? pickedFile;
     try {
-      pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      pickedFile = await _picker.pickImage(source: choseFrom);
     } catch (e) {
       Get.snackbar("Image Picker", "Somthing Want Wrong!");
     }

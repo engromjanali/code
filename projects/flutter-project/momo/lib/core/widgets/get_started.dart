@@ -8,6 +8,7 @@ import 'package:momo/core/util/constants/text_style.dart';
 import 'package:momo/core/widgets/CustomElevatedButton.dart';
 import 'package:momo/core/widgets/bottom_button.dart';
 import 'package:momo/core/widgets/get_raw_image_card.dart';
+import 'package:momo/core/widgets/upload_screen.dart';
 
 class GetStarted extends StatefulWidget {
   final ImageType imageType;
@@ -146,12 +147,9 @@ class _GetStartedState extends State<GetStarted> {
               
                   getBottomRoundedButton(
                     label: "Get Stared",
-                    margin: EdgeInsets.only(bottom: 20, top: 10),
+                    margin: EdgeInsets.only(bottom: 0, top: 10),
                     ontap: () {
-                      setState(() {
-                        
-                      });
-                      debugPrint("kdjfa");
+                      Get.to(()=>UploadScreen());
                     },
                   ),
                 ],

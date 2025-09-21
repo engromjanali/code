@@ -3,7 +3,7 @@ import 'package:get/route_manager.dart';
 import 'package:momo/core/util/constants/all_enums.dart';
 import 'package:momo/core/controller/c_home.dart';
 import 'package:momo/main.dart';
-import 'package:momo/prsentation/screens/my_profile/ai_prifile/get_started.dart';
+import 'package:momo/core/widgets/get_started.dart';
 import 'package:momo/prsentation/screens/my_profile/setting/setting_screen.dart';
 import 'package:momo/prsentation/screens/my_profile/DialogScreen.dart';
 import 'package:momo/prsentation/screens/my_profile/ai_prifile/ai_profile.dart';

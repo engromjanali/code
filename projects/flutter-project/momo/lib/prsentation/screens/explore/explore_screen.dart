@@ -11,8 +11,8 @@ import 'package:momo/data/model/explore/explore_model.dart';
 import 'package:momo/prsentation/screens/explore/controllers/explore_controller.dart';
 import 'package:momo/prsentation/screens/explore/widgets/current_item_indicator.dart';
 import 'package:momo/prsentation/screens/explore/widgets/top_slider.dart';
-import 'package:momo/prsentation/screens/model_name_screen.dart';
-import 'package:momo/prsentation/screens/one_photo_without_prompt.dart';
+import 'package:momo/core/widgets/model_name_screen.dart';
+import 'package:momo/prsentation/screens/photos_without_prompt.dart';
 import 'package:momo/prsentation/screens/photos_with_prompt.dart';
 import 'package:momo/core/widgets/see_all_page.dart';
 import 'package:momo/prsentation/screens/explore/widgets/explore_list.dart';
@@ -65,7 +65,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   onTap: (explore) {
                     // we have to navigate to this page with the hole explore and show sorted few image and offer the whole explore pack
                     // but for this moment we are nagvigating with a item.
-                    Get.to(()=>GetStartedScreen(
+                    Get.to(()=>GetThisPack(
                       eItem: EItemModel.fromMap(explore.items[0]),
                     ));
                   },

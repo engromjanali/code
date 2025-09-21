@@ -51,22 +51,25 @@ Widget getImageCard({
               ontap(false);
             },
             child: Container(
+              color: Colors.transparent,
                 padding: EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.image_search_sharp,
-                      size: 40,
-                      color: subTitleColor,
-                    ),
-                    Text(
-                      label,
-                      style: getSubtitleStyle(),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+                child: SizedBox.expand(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.image_search_sharp,
+                        size: 40,
+                        color: subTitleColor,
+                      ),
+                      Text(
+                        label,
+                        style: getSubtitleStyle(),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
                 ),
               ),
           ),

@@ -1,13 +1,13 @@
 import 'package:get/get.dart';
 import 'package:momo/data/model/one_shot/oneshot_item_model.dart';
-import 'package:momo/prsentation/screens/one_photo_without_prompt.dart';
+import 'package:momo/prsentation/screens/photos_without_prompt.dart';
 import 'package:momo/prsentation/screens/photos_with_prompt.dart';
 
 class NServices {
   void onseShotToApply({required OSItemModel osItem}) {
       print(osItem.toMap());
     // with prompt
-    if (osItem.prompt.isNotEmpty) {
+    if (osItem.prompt?.isNotEmpty?? false) {
       Get.to(() => PhotosWithPrompt(osItem: osItem,));
       // switch (osItem.imageBehaildText.length) {
       //   case 1:
@@ -20,7 +20,7 @@ class NServices {
     }
     // without prompt
     else {
-      Get.to(() => OnePhotosWithOutPrompt());
+      Get.to(() => PhotosWithOutPrompt(osItem: osItem,));
     }
   }
 }

@@ -8,7 +8,7 @@ import 'package:momo/core/widgets/get_this_pack.dart';
 Widget getExploreItem({required EItemModel eItem}){
   return GestureDetector(
     onTap: () {
-      Get.to(()=>GetStartedScreen(eItem: eItem,));
+      Get.to(()=>GetThisPack(eItem: eItem,));
     },
     child: Stack(
       children: [

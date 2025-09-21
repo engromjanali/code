@@ -4,25 +4,26 @@ import 'package:momo/core/helper/assets/images.dart';
 import 'package:momo/core/util/constants/all_enums.dart';
 import 'package:momo/core/widgets/bottom_button.dart';
 import 'package:momo/core/widgets/custom_Image_type_selection_dialog.dart';
+import 'package:momo/core/widgets/get_started.dart';
 import 'package:momo/data/model/explore/explore_item_model.dart';
 import 'package:momo/data/model/one_shot/oneshot_item_model.dart';
 import 'package:momo/data/model/one_shot/oneshot_model.dart';
 
-class GetStartedScreen extends StatefulWidget {
+class GetThisPack extends StatefulWidget {
   final bool isExplore;
   final EItemModel? eItem;
   final OSItemModel? oneShotItem;
-  const GetStartedScreen({
+  const GetThisPack({
     super.key,
     this.isExplore = true,
     this.eItem,
     this.oneShotItem,
   });
   @override
-  _GetStartedScreenState createState() => _GetStartedScreenState();
+  _GetThisPackState createState() => _GetThisPackState();
 }
 
-class _GetStartedScreenState extends State<GetStartedScreen> {
+class _GetThisPackState extends State<GetThisPack> {
   final ScrollController _scrollController = ScrollController();
   double _opacity = 0.0;
   double _imageScale = 1.0; // Scale for bounce effect
@@ -130,8 +131,8 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
             bottomNavigationBar: getBottomRoundedButton(
               label: "Get This Pack",
               ontap: () async {
-                SelectImageFrom res = await customImageTypeSelectionDialog();
-                debugPrint(res.toString());
+                debugPrint("check");
+                Get.to(()=>GetStarted(imageType: ImageType.single,));
               },
             ),
 
@@ -146,10 +147,12 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                 },
                 icon: Icon(Icons.cancel, size: 35),
               ),
-              title: Opacity(opacity: _opacity, child: Text("Suit")),
+              centerTitle: true,
+              title: Opacity(opacity: _opacity, child: Text("Suit",),),
             ),
 
             body: CustomScrollView(
+              physics: BouncingScrollPhysics(),
               controller: _scrollController,
               slivers: [
                 SliverToBoxAdapter(
@@ -180,25 +183,27 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                                   ),
                                 ),
                                 Spacer(),
-                                ElevatedButton(
-                                  onPressed: () {
+                                Container(
+                                  
+                                  
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 4,
+                                      horizontal: 4
 
-                                  },
+                                    ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+
+                                      borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  
+                                  
                                   child: Text(
                                     "SNEAK PEEK",
                                     style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                     ),
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 5,
-                                    ),
-                                    foregroundColor: Colors.black,
-
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
+                                    
                                   ),
                                 ),
                               ],

@@ -8,6 +8,13 @@ TextStyle getTitleStyle() {
     fontWeight: FontWeight.w600,
   );
 }
+TextStyle getTextFieldStyle() {
+  return const TextStyle(
+    fontSize: 18,
+    color: Colors.white,
+    fontWeight: FontWeight.normal,
+  );
+}
 
 TextStyle getTitleStyleExplore() {
   return const TextStyle(

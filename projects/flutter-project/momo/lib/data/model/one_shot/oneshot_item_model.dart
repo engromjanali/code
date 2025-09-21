@@ -3,7 +3,7 @@ import 'package:momo/core/util/constants/constants.dart';
 class OSItemModel {
   String title;
   String subTitle;
-  String prompt;
+  String? prompt;
   String example;
   List<String> inputImages; // user input
   List<String> imageBehaildText;
