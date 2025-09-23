@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:momo/core/helper/assets/images.dart';
+import 'package:momo/core/asset_manager/assets/images.dart';
 import 'package:momo/prsentation/screens/home_page.dart';
 import 'package:momo/core/widgets/bottom_button.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:momo/core/helper/assets/images.dart';
+import 'package:momo/core/asset_manager/assets/images.dart';
 import 'package:momo/core/util/constants/all_enums.dart';
 import 'package:momo/core/widgets/bottom_button.dart';
 import 'package:momo/core/widgets/custom_Image_type_selection_dialog.dart';

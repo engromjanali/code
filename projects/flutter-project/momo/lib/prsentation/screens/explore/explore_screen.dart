@@ -4,7 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:momo/core/helper/assets/images.dart';
+import 'package:momo/core/asset_manager/assets/images.dart';
 import 'package:momo/core/widgets/get_this_pack.dart';
 import 'package:momo/data/model/explore/explore_item_model.dart';
 import 'package:momo/data/model/explore/explore_model.dart';

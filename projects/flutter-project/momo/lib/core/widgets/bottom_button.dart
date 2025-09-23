@@ -35,5 +35,3 @@ Widget getBottomRoundedButton({
     ),
   );
 }
-
-

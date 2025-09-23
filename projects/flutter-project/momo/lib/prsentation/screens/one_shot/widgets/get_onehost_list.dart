@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:momo/core/helper/assets/images.dart';
+import 'package:momo/core/asset_manager/assets/images.dart';
 import 'package:momo/core/widgets/see_all_page.dart';
 import 'package:momo/data/model/explore/explore_item_model.dart';
 import 'package:momo/data/model/explore/explore_model.dart';

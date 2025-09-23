@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
-import 'package:momo/core/helper/assets/images.dart';
+import 'package:momo/core/asset_manager/assets/images.dart';
 import 'package:momo/core/util/constants/all_enums.dart';
 import 'package:momo/core/util/constants/constants.dart';
 import 'package:momo/core/widgets/CustomElevatedButton.dart';

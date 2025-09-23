@@ -1,43 +1,121 @@
-import 'dart:ui'; // important for ImageFilter
 import 'package:flutter/material.dart';
+import 'package:momo/core/asset_manager/assets/font_menager.dart';
 
-class GlassContainerDemo extends StatelessWidget {
-  const GlassContainerDemo({super.key});
+class test extends StatefulWidget {
+  const test({super.key});
 
+  @override
+  State<test> createState() => _testState();
+}
+
+class _testState extends State<test> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.red,
-      appBar: AppBar(),
-      body: Center(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20), // rounded corners
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10), // blur effect
-            child: Container(
-              width: 250,
-              height: 150,
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2), // transparent white
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: Colors.white.withOpacity(0.3),
-                  width: 1.5,
-                ),
-              ),
-              child: Center(
-                child: Text(
-                  "Glass Effect",
+      body: Column(
+        children: [
+          Container(
+            height: 300,
+            width: 400,
+            child: Column(
+              children: [
+                Text(
+                  "Romjan",
                   style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
+                    fontFamily: FontMenager.SF_Compact_Rounded,
+                    fontWeight: FontWeight.w100,
                   ),
+                ),
+              ],
+            ),
+          ),
+          Center(
+            child: Container(
+              color: Colors.amber,
+              padding: EdgeInsets.all(10),
+              height: 500,
+              width: 400,
+              child: Center(
+                child: Column(
+                  children: [
+                    Text(
+                      "Romjan",
+                      style: TextStyle(
+                        fontFamily: FontMenager.SF_Compact_Rounded,
+                        fontWeight: FontWeight.w100,
+                        fontSize: 30,
+                      ),
+                    ),
+                    Text(
+                      "Romjan",
+                      style: TextStyle(
+                        fontFamily: FontMenager.SF_Compact_Rounded,
+                        fontWeight: FontWeight.w200,
+                        fontSize: 30,
+                      ),
+                    ),
+                    Text(
+                      "Romjan",
+                      style: TextStyle(
+                        fontFamily: FontMenager.SF_Compact_Rounded,
+                        fontWeight: FontWeight.w300,
+                        fontSize: 30,
+                      ),
+                    ),
+                    Text(
+                      "Romjan",
+                      style: TextStyle(
+                        fontFamily: FontMenager.SF_Compact_Rounded,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 30,
+                      ),
+                    ),
+                    Text(
+                      "Romjan",
+                      style: TextStyle(
+                        fontFamily: FontMenager.SF_Compact_Rounded,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 30,
+                      ),
+                    ),
+                    Text(
+                      "Romjan",
+                      style: TextStyle(
+                        fontFamily: FontMenager.SF_Compact_Rounded,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 30,
+                      ),
+                    ),
+                    Text(
+                      "Romjan",
+                      style: TextStyle(
+                        fontFamily: FontMenager.SF_Compact_Rounded,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 30,
+                      ),
+                    ),
+                    Text(
+                      "Romjan",
+                      style: TextStyle(
+                        fontFamily: FontMenager.SF_Compact_Rounded,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 30,
+                      ),
+                    ),
+                    Text(
+                      "Romjan",
+                      style: TextStyle(
+                        fontFamily: FontMenager.SF_Compact_Rounded,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 30,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

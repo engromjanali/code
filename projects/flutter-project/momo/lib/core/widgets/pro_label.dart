@@ -1,6 +1,9 @@
+import 'dart:isolate';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:momo/core/asset_manager/assets/font_menager.dart';
 import 'package:momo/core/util/constants/colors.dart';
 import 'package:momo/prsentation/screens/purchese_screen.dart';
 import 'package:momo/core/widgets/get_this_pack.dart';
@@ -21,11 +24,15 @@ Widget proLabel() {
             Text(
               "MOMO",
               style: TextStyle(
+                fontFamily: FontMenager.SF_Compact_Rounded,
+                fontWeight: FontWeight.bold,
                 color: white,
-                fontWeight: FontWeight.w700,
                 fontSize: 24,
+                // fontWeight: FontWeight.bold,
+                // fontStyle: FontStyle.normal
               ),
             ),
+            
             GestureDetector(
               onTap: () {
                 Get.to(() => PurcheseScreen());
@@ -57,3 +64,7 @@ Widget proLabel() {
     ),
   );
 }
+
+
+
+

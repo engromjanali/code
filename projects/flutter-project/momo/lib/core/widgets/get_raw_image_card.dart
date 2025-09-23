@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:momo/core/helper/assets/images.dart';
+import 'package:momo/core/asset_manager/assets/images.dart';
 import 'package:momo/core/util/constants/colors.dart';
 import 'package:momo/core/util/constants/text_style.dart';
 
