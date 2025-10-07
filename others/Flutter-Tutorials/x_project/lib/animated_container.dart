@@ -56,7 +56,8 @@ class HomePageState extends State<HomePage>{
           title: Text("Deashboards"),
 
         ),
-      body: Container(
+      body: AnimatedContainer(
+        duration: Duration(seconds: 1),
         width: double.infinity,
         height: double.infinity,
         color: Colors.orange,

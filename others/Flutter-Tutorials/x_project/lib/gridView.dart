@@ -28,18 +28,6 @@ class MyApp extends StatelessWidget{ // we use StatelessWidget when we did't sho
   }
 }
 
-// class DeashBoardScreen extends StatefulWidget{
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         appBar: AppBar(
-//           title: Text("Deashboard"),
-//         ),
-//         body: Container(
-//           color: Colors.blueGrey,
-//         ),
-//     );
-//   }
 class HomePage extends StatefulWidget
 {
 

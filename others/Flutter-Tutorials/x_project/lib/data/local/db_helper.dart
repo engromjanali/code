@@ -8,8 +8,9 @@ class DBHelper{
 
   DBHelper._(); // we are privation the constructor here.
   static final DBHelper getInstance = DBHelper._(); // first way with final
+  static final DBHelper _instance;
   // static DbHelper getInstance(){ //  2nd way but we can't make it final but final is fully optional
-  //   return DbHelper._();
+  //   return _instance??= DbHelper._();
   // }
 
   Database? myDB;
